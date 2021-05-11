@@ -1,11 +1,10 @@
 package org.parchmentmc.feather.manifests;
 
+import com.google.common.collect.ImmutableList;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,7 +22,7 @@ public class LauncherManifest implements Serializable {
 
     public LauncherManifest(LatestVersionInfo latest, List<VersionData> versions) {
         this.latest = latest;
-        this.versions = Collections.unmodifiableList(new ArrayList<>(versions));
+        this.versions = ImmutableList.copyOf(versions);
     }
 
     /**

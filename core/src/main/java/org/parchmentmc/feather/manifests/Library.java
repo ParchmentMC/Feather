@@ -1,10 +1,10 @@
 package org.parchmentmc.feather.manifests;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +26,7 @@ public class Library implements Serializable {
         this.extract = extract;
         this.downloads = downloads;
         this.natives = natives;
-        this.rules = Collections.unmodifiableList(new ArrayList<>(rules));
+        this.rules = ImmutableList.copyOf(rules);
     }
 
     /**
@@ -71,12 +71,12 @@ public class Library implements Serializable {
     }
 
     /**
-     * Returns the list of rules for this library.
+     * Returns the immutable list of rules for this library.
      *
      * <p>If there are no rules specified for a library, it will default to allowing the library. If there is at least one
      * rule specified, then the library is denied unless allowed by a rule.</p>
      *
-     * @return the list of rules
+     * @return the immutable list of rules
      */
     public List<Rule> getRules() {
         return rules;
@@ -93,7 +93,7 @@ public class Library implements Serializable {
 
         public LibraryDownloads(@Nullable ArtifactDownload artifact, @Nullable Map<String, ArtifactDownload> classifiers) {
             this.artifact = artifact;
-            this.classifiers = classifiers;
+            this.classifiers = classifiers != null ? ImmutableMap.copyOf(classifiers) : null;
         }
 
         /**
@@ -110,11 +110,11 @@ public class Library implements Serializable {
         }
 
         /**
-         * Returns a map of classifiers to their respective artifact download information.
+         * Returns an immutable map of classifiers to their respective artifact download information.
          *
          * <p>If this is {@code null}, the {@link #artifact} is usually specified, and vice-versa.</p>
          *
-         * @return a map of classifiers to artifact download info, or {@code null} if there are no classifiers
+         * @return an immutable map of classifiers to artifact download info, or {@code null} if there are no classifiers
          */
         @Nullable
         public Map<String, ArtifactDownload> getClassifiers() {
@@ -153,13 +153,13 @@ public class Library implements Serializable {
         private final List<String> exclude;
 
         public ExtractInfo(List<String> exclude) {
-            this.exclude = exclude;
+            this.exclude = ImmutableList.copyOf(exclude);
         }
 
         /**
-         * Returns a list of paths within the library which is excluded from extraction.
+         * Returns an immutable list of paths within the library which is excluded from extraction.
          *
-         * @return a list of excluded paths
+         * @return an immutable list of excluded paths
          */
         public List<String> getExclude() {
             return exclude;

@@ -1,5 +1,7 @@
 package org.parchmentmc.feather.manifests;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.Serializable;
@@ -43,8 +45,8 @@ public class VersionManifest implements Serializable {
         this.javaVersionInfo = javaVersionInfo;
         this.assets = assets;
         this.assetIndex = assetIndex;
-        this.downloads = downloads;
-        this.libraries = libraries;
+        this.downloads = ImmutableMap.copyOf(downloads);
+        this.libraries = ImmutableList.copyOf(libraries);
         this.minecraftArguments = minecraftArguments;
     }
 
@@ -146,7 +148,7 @@ public class VersionManifest implements Serializable {
     }
 
     /**
-     * Returns a map of download keys and their corresponding information.
+     * Returns an immutable map of download keys and their corresponding information.
      *
      * <p>As of 21w15a, there are four known downloads:
      * <dl>
@@ -160,16 +162,16 @@ public class VersionManifest implements Serializable {
      *     <dd>The obfuscation map for the dedicated server JAR.</dd>
      * </dl></p>
      *
-     * @return a map of download keys and their information
+     * @return an immutable map of download keys and their information
      */
     public Map<String, DownloadInfo> getDownloads() {
         return downloads;
     }
 
     /**
-     * Returns the list of libraries for this game version.
+     * Returns the immutable list of libraries for this game version.
      *
-     * @return the list of libraries
+     * @return the immutable list of libraries
      */
     public List<Library> getLibraries() {
         return libraries;
