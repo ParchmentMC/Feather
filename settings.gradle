@@ -1,2 +1,3 @@
 rootProject.name = 'Feather'
 include 'core'
+include 'io-moshi'
