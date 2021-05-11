@@ -1,17 +1,21 @@
 package org.parchmentmc.feather.manifests;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The launcher manifest, version 2.
  *
  * <p>Retrievable from <tt>https://launchermeta.mojang.com/mc/game/version_manifest_v2.json</tt>.</p>
  *
- * @see <a href="https://minecraft.fandom.com/wiki/Version_manifest.json">Official Minecraft wiki, <tt>Version_manifest.json</tt></a>
+ * @see <a href="https://minecraft.fandom.com/wiki/Version_manifest.json">Official Minecraft wiki,
+ * <tt>Version_manifest.json</tt></a>
  */
 public class LauncherManifest implements Serializable {
     /**
@@ -44,6 +48,19 @@ public class LauncherManifest implements Serializable {
      */
     public List<VersionData> getVersions() {
         return versions;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LauncherManifest that = (LauncherManifest) o;
+        return getLatest().equals(that.getLatest()) && getVersions().equals(that.getVersions());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getLatest(), getVersions());
     }
 
     /**
@@ -81,6 +98,19 @@ public class LauncherManifest implements Serializable {
         public String getSnapshot() {
             return snapshot;
         }
+
+        @Override
+        public boolean equals(@Nullable Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            LatestVersionInfo that = (LatestVersionInfo) o;
+            return getRelease().equals(that.getRelease()) && getSnapshot().equals(that.getSnapshot());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(getRelease(), getSnapshot());
+        }
     }
 
     /**
@@ -116,7 +146,8 @@ public class LauncherManifest implements Serializable {
          */
         private final int complianceLevel;
 
-        public VersionData(String id, String type, String url, OffsetDateTime time, OffsetDateTime releaseTime, String sha1, int complianceLevel) {
+        public VersionData(String id, String type, String url, OffsetDateTime time, OffsetDateTime releaseTime,
+                           String sha1, int complianceLevel) {
             this.id = id;
             this.type = type;
             this.url = url;
@@ -163,7 +194,8 @@ public class LauncherManifest implements Serializable {
         /**
          * Returns the URL where the manifest for this version can be downloaded from.
          *
-         * <p>The current format is <tt>https://launchermeta.mojang.com/v1/packages/<strong>&lt;SHA-1 checksum of manifest></strong>/<strong><{@link #id}></strong>.json</tt></p>
+         * <p>The current format is <tt>https://launchermeta.mojang.com/v1/packages/<strong>&lt;SHA-1 checksum of
+         * manifest></strong>/<strong><{@link #id}></strong>.json</tt></p>
          *
          * @return the manifest URL
          */
@@ -211,6 +243,21 @@ public class LauncherManifest implements Serializable {
          */
         public int getComplianceLevel() {
             return complianceLevel;
+        }
+
+        @Override
+        public boolean equals(@Nullable Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            VersionData that = (VersionData) o;
+            return getComplianceLevel() == that.getComplianceLevel() && getId().equals(that.getId())
+                    && getType().equals(that.getType()) && getUrl().equals(that.getUrl()) && getTime().equals(that.getTime())
+                    && getReleaseTime().equals(that.getReleaseTime()) && getSHA1().equals(that.getSHA1());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(getId(), getType(), getUrl(), getTime(), getReleaseTime(), getSHA1(), getComplianceLevel());
         }
     }
 }
