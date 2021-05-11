@@ -204,17 +204,17 @@ public class MappingDataBuilder implements MappingDataContainer {
             return fieldsMap.get(fieldName);
         }
 
-        public MutableFieldData addField(String fieldName, String descriptor) {
-            MutableFieldData field = createField(fieldName, descriptor);
+        public MutableFieldData createField(String fieldName, String descriptor) {
+            MutableFieldData field = makeField(fieldName, descriptor);
             fieldsMap.put(fieldName, field);
             return field;
         }
 
         public MutableFieldData getOrCreateField(String fieldName, String descriptor) {
-            return fieldsMap.computeIfAbsent(fieldName, name -> this.createField(name, descriptor));
+            return fieldsMap.computeIfAbsent(fieldName, name -> this.makeField(name, descriptor));
         }
 
-        private MutableFieldData createField(String fieldName, String descriptor) {
+        private MutableFieldData makeField(String fieldName, String descriptor) {
             MutableFieldData field = new MutableFieldData(fieldName, descriptor);
             fields.add(field);
             return field;
@@ -237,17 +237,17 @@ public class MappingDataBuilder implements MappingDataContainer {
             return methodsMap.get(key(methodName, descriptor));
         }
 
-        public MutableMethodData addMethod(String methodName, String descriptor) {
-            MutableMethodData method = createMethod(methodName, descriptor);
+        public MutableMethodData createMethod(String methodName, String descriptor) {
+            MutableMethodData method = makeMethod(methodName, descriptor);
             methodsMap.put(key(methodName, descriptor), method);
             return method;
         }
 
         public MutableMethodData getOrCreateMethod(String methodName, String descriptor) {
-            return methodsMap.computeIfAbsent(key(methodName, descriptor), key -> this.createMethod(methodName, descriptor));
+            return methodsMap.computeIfAbsent(key(methodName, descriptor), key -> this.makeMethod(methodName, descriptor));
         }
 
-        private MutableMethodData createMethod(String methodName, String descriptor) {
+        private MutableMethodData makeMethod(String methodName, String descriptor) {
             MutableMethodData method = new MutableMethodData(methodName, descriptor);
             methods.add(method);
             return method;
