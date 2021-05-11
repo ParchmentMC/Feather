@@ -17,12 +17,12 @@ public class MappingDataBuilder implements MappingDataContainer {
     private transient final Map<String, MutableClassData> classesMap = new HashMap<>();
     private transient final Collection<MutableClassData> classesView = Collections.unmodifiableSet(classes);
 
-    public MappingDataBuilder(SimpleVersion version) {
-        this.version = version;
+    public static MappingDataBuilder copyOf(MappingDataContainer data) {
+        return MappingUtil.copyData(data);
     }
 
-    public MappingDataBuilder() {
-        this(CURRENT_FORMAT);
+    public MappingDataBuilder(SimpleVersion version) {
+        this.version = version;
     }
 
     @Override
