@@ -1,26 +1,2 @@
-plugins {
-    id 'java'
-}
 
-group 'org.parchmentmc'
-archivesBaseName = 'feather'
 version '0.1.0-SNAPSHOT'
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation 'com.google.code.findbugs:jsr305:3.0.2'
-
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-}
-
-java {
-    toolchain.languageVersion = JavaLanguageVersion.of(8)
-}
-
-test {
-    useJUnitPlatform()
-}
