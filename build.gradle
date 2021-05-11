@@ -1,2 +1,30 @@
+plugins {
+    id 'maven-publish'
+}
 
 version '0.1.0-SNAPSHOT'
+
+publishing {
+    publications.create("core", MavenPublication) {
+        groupId = 'org.parchmentmc'
+        artifactId = 'feather'
+
+        project(':core').afterEvaluate { p ->
+            from p.components.java
+        }
+    }
+    publications.create("moshiIO", MavenPublication) {
+        groupId = 'org.parchmentmc.feather'
+        artifactId = 'io-moshi'
+
+        project(':io-moshi').afterEvaluate { p ->
+            from p.components.java
+        }
+    }
+    repositories {
+        maven {
+            name "projectLocal"
+            url "file://${project.file('repo').absolutePath}"
+        }
+    }
+}
