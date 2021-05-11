@@ -8,7 +8,10 @@ import org.parchmentmc.feather.mapping.MappingDataContainer.*;
 /**
  * Utilities for working with {@link MappingDataContainer}s.
  */
-public class MappingUtil {
+public final class MappingUtil {
+    private MappingUtil() {  // Prevent instantiation
+    }
+
     static MappingDataBuilder copyData(MappingDataContainer container) {
         MappingDataBuilder builder = new MappingDataBuilder(container.getFormatVersion());
 
