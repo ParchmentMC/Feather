@@ -18,13 +18,7 @@ import java.util.Objects;
  * <tt>Version_manifest.json</tt></a>
  */
 public class LauncherManifest implements Serializable {
-    /**
-     * The latest version information.
-     */
     private final LatestVersionInfo latest;
-    /**
-     * The list of Minecraft version data.
-     */
     private final List<VersionData> versions;
 
     public LauncherManifest(LatestVersionInfo latest, List<VersionData> versions) {
@@ -67,13 +61,7 @@ public class LauncherManifest implements Serializable {
      * The information for the latest release and snapshot versions.
      */
     public static class LatestVersionInfo implements Serializable {
-        /**
-         * The ID of the latest Minecraft release version.
-         */
         private final String release;
-        /**
-         * The ID of the latest Minecraft snapshot version.
-         */
         private final String snapshot;
 
         public LatestVersionInfo(String release, String snapshot) {
@@ -117,33 +105,12 @@ public class LauncherManifest implements Serializable {
      * The version data for a specific Minecraft version.
      */
     public static class VersionData implements Serializable {
-        /**
-         * The ID of the Minecraft version associated with the data.
-         */
         private final String id;
-        /**
-         * The type of release for this version.
-         */
         private final String type;
-        /**
-         * The URL where the manifest for this version can be downloaded from.
-         */
         private final String url;
-        /**
-         * The (presumably) last date and time the manifest for the version was modified or updated.
-         */
         private final OffsetDateTime time;
-        /**
-         * The date and time when this version was publicly released.
-         */
         private final OffsetDateTime releaseTime;
-        /**
-         * The SHA-1 checksum of the manifest for this version.
-         */
         private final String sha1;
-        /**
-         * The safety compliance level of this version.
-         */
         private final int complianceLevel;
 
         public VersionData(String id, String type, String url, OffsetDateTime time, OffsetDateTime releaseTime,
