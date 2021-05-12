@@ -1,30 +1,38 @@
-plugins {
-    id 'maven-publish'
+allprojects {
+    group 'org.parchmentmc'
+    version '0.1.0-SNAPSHOT'
 }
 
-version '0.1.0-SNAPSHOT'
+subprojects {
+    apply plugin: 'maven-publish'
+    apply plugin: 'java-library'
 
-publishing {
-    publications.create("core", MavenPublication) {
-        groupId = 'org.parchmentmc'
-        artifactId = 'feather'
+    group rootProject.group
+    version rootProject.version
 
-        project(':core').afterEvaluate { p ->
-            from p.components.java
-        }
-    }
-    publications.create("moshiIO", MavenPublication) {
-        groupId = 'org.parchmentmc.feather'
-        artifactId = 'io-moshi'
-
-        project(':io-moshi').afterEvaluate { p ->
-            from p.components.java
-        }
-    }
     repositories {
-        maven {
-            name "projectLocal"
-            url "file://${project.file('repo').absolutePath}"
+        mavenCentral()
+    }
+
+    dependencies {
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    java {
+        toolchain.languageVersion = JavaLanguageVersion.of(8)
+    }
+
+    publishing {
+        repositories {
+            maven {
+                name "projectLocal"
+                url "file://${rootProject.file('repo').absolutePath}"
+            }
         }
     }
 }
