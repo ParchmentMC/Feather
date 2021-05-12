@@ -1,6 +1,5 @@
 package org.parchmentmc.feather.mapping;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.parchmentmc.feather.mapping.MappingDataBuilder.MutableClassData;
 import org.parchmentmc.feather.mapping.MappingDataBuilder.MutableMethodData;
 import org.parchmentmc.feather.mapping.MappingDataContainer.*;
