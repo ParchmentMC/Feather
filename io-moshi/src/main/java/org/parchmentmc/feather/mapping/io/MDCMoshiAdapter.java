@@ -1,7 +1,6 @@
 package org.parchmentmc.feather.mapping.io;
 
 import com.squareup.moshi.*;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.parchmentmc.feather.mapping.ImmutableMappingDataContainer;
 import org.parchmentmc.feather.mapping.MappingDataContainer;
 import org.parchmentmc.feather.util.SimpleVersion;
@@ -68,8 +67,8 @@ public class MDCMoshiAdapter {
                      JsonAdapter<List<String>> stringListAdapter,
                      JsonAdapter<Collection<? extends MappingDataContainer.FieldData>> fieldAdapter,
                      JsonAdapter<Collection<? extends MappingDataContainer.MethodData>> methodAdapter) throws IOException {
-        @Nullable Object fields = fieldAdapter.toJsonValue(classData.getFields());
-        @Nullable Object methods = methodAdapter.toJsonValue(classData.getMethods());
+        Object fields = fieldAdapter.toJsonValue(classData.getFields());
+        Object methods = methodAdapter.toJsonValue(classData.getMethods());
         if (isIgnoreNonDocumented()
                 && (fields == null || (fields instanceof Collection && ((Collection<?>) fields).isEmpty()))
                 && (methods == null || (methods instanceof Collection && ((Collection<?>) methods).isEmpty()))
@@ -105,7 +104,7 @@ public class MDCMoshiAdapter {
                       MappingDataContainer.MethodData methodData,
                       JsonAdapter<List<String>> stringListAdapter,
                       JsonAdapter<Collection<? extends MappingDataContainer.ParameterData>> paramAdapter) throws IOException {
-        @Nullable Object params = paramAdapter.toJsonValue(methodData.getParameters());
+        Object params = paramAdapter.toJsonValue(methodData.getParameters());
         if (isIgnoreNonDocumented()
                 && (params == null || (params instanceof Collection && ((Collection<?>) params).isEmpty()))
                 && methodData.getJavadoc().isEmpty()) return;
@@ -142,9 +141,9 @@ public class MDCMoshiAdapter {
                                          JsonAdapter<Collection<? extends MappingDataContainer.PackageData>> packageAdapter,
                                          JsonAdapter<Collection<? extends MappingDataContainer.ClassData>> classAdapter) throws IOException {
 
-        @Nullable SimpleVersion version = null;
-        @Nullable Collection<? extends MappingDataContainer.PackageData> packages = null;
-        @Nullable Collection<? extends MappingDataContainer.ClassData> classes = null;
+        SimpleVersion version = null;
+        Collection<? extends MappingDataContainer.PackageData> packages = null;
+        Collection<? extends MappingDataContainer.ClassData> classes = null;
 
         reader.beginObject();
         while (reader.hasNext()) {
@@ -180,8 +179,8 @@ public class MDCMoshiAdapter {
     MappingDataContainer.PackageData packageFromJson(JsonReader reader,
                                                      JsonAdapter<List<String>> stringListAdapter) throws IOException {
 
-        @Nullable String name = null;
-        @Nullable List<String> javadoc = null;
+        String name = null;
+        List<String> javadoc = null;
 
         reader.beginObject();
         while (reader.hasNext()) {
@@ -212,10 +211,10 @@ public class MDCMoshiAdapter {
                                                  JsonAdapter<List<String>> stringListAdapter,
                                                  JsonAdapter<Collection<? extends MappingDataContainer.FieldData>> fieldAdapter,
                                                  JsonAdapter<Collection<? extends MappingDataContainer.MethodData>> methodAdapter) throws IOException {
-        @Nullable String name = null;
-        @Nullable List<String> javadoc = null;
-        @Nullable Collection<? extends MappingDataContainer.FieldData> fields = null;
-        @Nullable Collection<? extends MappingDataContainer.MethodData> methods = null;
+        String name = null;
+        List<String> javadoc = null;
+        Collection<? extends MappingDataContainer.FieldData> fields = null;
+        Collection<? extends MappingDataContainer.MethodData> methods = null;
 
         reader.beginObject();
         while (reader.hasNext()) {
@@ -251,9 +250,9 @@ public class MDCMoshiAdapter {
     @FromJson
     MappingDataContainer.FieldData fieldFromJson(JsonReader reader,
                                                  JsonAdapter<List<String>> stringListAdapter) throws IOException {
-        @Nullable String name = null;
-        @Nullable String descriptor = null;
-        @Nullable List<String> javadoc = null;
+        String name = null;
+        String descriptor = null;
+        List<String> javadoc = null;
 
         reader.beginObject();
         while (reader.hasNext()) {
@@ -286,10 +285,10 @@ public class MDCMoshiAdapter {
     MappingDataContainer.MethodData methodFromJson(JsonReader reader,
                                                    JsonAdapter<List<String>> stringListAdapter,
                                                    JsonAdapter<Collection<? extends MappingDataContainer.ParameterData>> paramAdapter) throws IOException {
-        @Nullable String name = null;
-        @Nullable String descriptor = null;
-        @Nullable List<String> javadoc = null;
-        @Nullable Collection<? extends MappingDataContainer.ParameterData> parameters = null;
+        String name = null;
+        String descriptor = null;
+        List<String> javadoc = null;
+        Collection<? extends MappingDataContainer.ParameterData> parameters = null;
 
         reader.beginObject();
         while (reader.hasNext()) {
@@ -326,8 +325,8 @@ public class MDCMoshiAdapter {
     MappingDataContainer.ParameterData paramToJson(JsonReader reader) throws IOException {
 
         byte index = -1;
-        @Nullable String name = null;
-        @Nullable String javadoc = null;
+        String name = null;
+        String javadoc = null;
 
         reader.beginObject();
         while (reader.hasNext()) {

@@ -62,29 +62,29 @@ public final class MappingUtil {
         MappingDataBuilder builder = new MappingDataBuilder(baseData.getFormatVersion());
 
         baseData.getPackages().forEach(pkg -> {
-            @Nullable PackageData newPkg = newData.getPackage(pkg.getName());
+            PackageData newPkg = newData.getPackage(pkg.getName());
             builder.createPackage(pkg.getName()).addJavadoc(newPkg != null ? newPkg.getJavadoc() : pkg.getJavadoc());
         });
 
         baseData.getClasses().forEach(cls -> {
-            @Nullable ClassData newCls = newData.getClass(cls.getName());
+            ClassData newCls = newData.getClass(cls.getName());
             MutableClassData classData = builder.createClass(cls.getName())
                     .addJavadoc(newCls != null ? newCls.getJavadoc() : cls.getJavadoc());
 
             cls.getFields().forEach(field -> {
 
-                @Nullable FieldData newField = newCls != null ? newCls.getField(field.getName()) : null;
+                FieldData newField = newCls != null ? newCls.getField(field.getName()) : null;
                 classData.createField(field.getName(), field.getDescriptor())
                         .addJavadoc(newField != null ? newField.getJavadoc() : field.getJavadoc());
             });
 
             cls.getMethods().forEach(method -> {
-                @Nullable MethodData newMethod = newCls != null ? newCls.getMethod(method.getName(), method.getDescriptor()) : null;
+                MethodData newMethod = newCls != null ? newCls.getMethod(method.getName(), method.getDescriptor()) : null;
                 MutableMethodData methodData = classData.createMethod(method.getName(), method.getDescriptor())
                         .addJavadoc(newMethod != null ? newMethod.getJavadoc() : method.getJavadoc());
 
                 method.getParameters().forEach(param -> {
-                    @Nullable ParameterData newParam = newMethod != null ? newMethod.getParameter(param.getIndex()) : null;
+                    ParameterData newParam = newMethod != null ? newMethod.getParameter(param.getIndex()) : null;
                     methodData.createParameter(param.getIndex()).setName(param.getName())
                             .setJavadoc(newParam != null ? newParam.getJavadoc() : param.getJavadoc());
                 });
