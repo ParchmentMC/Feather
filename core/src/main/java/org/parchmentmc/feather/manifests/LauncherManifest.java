@@ -135,7 +135,8 @@ public class LauncherManifest implements Serializable {
         /**
          * Returns the type of release for this version.
          *
-         * <p>This is used by the launcher to categorize old or snapshot versions. As of 21w15a, there are 4 known values:
+         * <p>This is used by the launcher to categorize old or snapshot versions. As of 21w15a, there are 4 known
+         * values: </p>
          * <dl>
          *     <dt><strong>{@code release}</strong></dt>
          *     <dd>A full release, such as {@code 1.16.5}.</dd>
@@ -149,7 +150,6 @@ public class LauncherManifest implements Serializable {
          *     <dt><strong>{@code old_alpha}</strong></dt>
          *     <dd>An old <em>alpha</em> version, such as {@code a1.2.6} (for version Alpha 1.2.6).</dd>
          * </dl>
-         * </p>
          *
          * @return the type of release
          */
@@ -161,7 +161,7 @@ public class LauncherManifest implements Serializable {
          * Returns the URL where the manifest for this version can be downloaded from.
          *
          * <p>The current format is <tt>https://launchermeta.mojang.com/v1/packages/<strong>&lt;SHA-1 checksum of
-         * manifest></strong>/<strong><{@link #id}></strong>.json</tt></p>
+         * manifest&gt;</strong>/<strong>&lt;{@link #id}&gt;</strong>.json</tt></p>
          *
          * @return the manifest URL
          */

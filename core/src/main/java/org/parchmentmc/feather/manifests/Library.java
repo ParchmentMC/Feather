@@ -239,14 +239,13 @@ public class Library implements Serializable {
         /**
          * Returns he action taken for the library, if the rule's conditions are satisfied.
          *
-         * <p>Two values have been seen so far:
+         * <p>Two values have been seen so far: </p>
          * <dl>
          *     <dt><tt><strong>allow</strong></tt></dt>
          *     <dd>Use this library for the game.</dd>
          *     <dt><tt><strong>deny</strong></tt></dt>
          *     <dd>Do not use this library for the game.</dd>
          * </dl>
-         * </p>
          *
          * @return the action for this rule
          */

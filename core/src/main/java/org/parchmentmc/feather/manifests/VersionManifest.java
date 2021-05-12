@@ -150,7 +150,7 @@ public class VersionManifest implements Serializable {
     /**
      * Returns an immutable map of download keys and their corresponding information.
      *
-     * <p>As of 21w15a, there are four known downloads:
+     * <p>As of 21w15a, there are four known downloads: </p>
      * <dl>
      *     <dt><strong><tt>client</tt></strong></dt>
      *     <dd>The client JAR. <em>Should always be available.</em></dd>
@@ -160,7 +160,7 @@ public class VersionManifest implements Serializable {
      *     <dd>The obfuscation map for the client JAR. </dd>
      *     <dt><strong><tt>server_mappings</tt></strong></dt>
      *     <dd>The obfuscation map for the dedicated server JAR.</dd>
-     * </dl></p>
+     * </dl>
      *
      * @return an immutable map of download keys and their information
      */

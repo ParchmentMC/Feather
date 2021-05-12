@@ -235,14 +235,14 @@ public interface MappingDataContainer {
          * Returns the name of this method.
          *
          * <p>A method name is either an identifier, as defined by &sect;3.8 <em>"Identifiers"</em> of the JLS 8, or
-         * one of two special method names used within the Java Virtual Machine (as supplied by the compiler):
+         * one of two special method names used within the Java Virtual Machine (as supplied by the compiler): </p>
          * <dl>
          *     <dt>{@code <init>}</dt>
          *     <dd>The <em>instance initialization method</em>, also known as a <em>constructor</em> in the Java
          *     programming language.</dd>
          *     <dt>{@code <clinit>}</dt>
          *     <dd>The <em>class/interface initialization method</em>, also known as the class initializer.</dd>
-         * </dl></p>
+         * </dl>
          *
          * <p>The two special method names are defined by &sect;2.9 <em>"Special Methods"</em> of the JVMS 8.</p>
          *
