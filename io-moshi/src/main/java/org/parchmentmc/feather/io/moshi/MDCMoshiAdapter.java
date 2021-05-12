@@ -1,4 +1,4 @@
-package org.parchmentmc.feather.mapping.io;
+package org.parchmentmc.feather.io.moshi;
 
 import com.squareup.moshi.*;
 import org.parchmentmc.feather.mapping.ImmutableMappingDataContainer;
