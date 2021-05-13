@@ -1,17 +1,21 @@
-allprojects {
-    group 'org.parchmentmc'
-    version '0.1.0-SNAPSHOT'
+plugins {
+    id "ParchmentMC-WrittenBooks" version "0.0.6" apply false
 }
+
+project.group 'org.parchmentmc'
 
 subprojects {
     apply plugin: 'maven-publish'
     apply plugin: 'java-library'
+    apply plugin: 'ParchmentMC-WrittenBooks'
 
     group rootProject.group
-    version rootProject.version
 
     repositories {
-        mavenCentral()
+        maven {
+            name 'ParchmentMC'
+            url 'https://ldtteam.jfrog.io/artifactory/parchmentmc/'
+        }
     }
 
     dependencies {
@@ -27,14 +31,5 @@ subprojects {
         toolchain.languageVersion = JavaLanguageVersion.of(8)
         withJavadocJar()
         withSourcesJar()
-    }
-
-    publishing {
-        repositories {
-            maven {
-                name "projectLocal"
-                url "file://${rootProject.file('repo').absolutePath}"
-            }
-        }
     }
 }
