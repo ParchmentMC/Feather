@@ -1,5 +1,5 @@
 plugins {
-    id "ParchmentMC-WrittenBooks" version "0.0.6" apply false
+    id "org.parchmentmc.writtenbooks" version "0.+" apply false
 }
 
 project.group 'org.parchmentmc'
@@ -7,7 +7,7 @@ project.group 'org.parchmentmc'
 subprojects {
     apply plugin: 'maven-publish'
     apply plugin: 'java-library'
-    apply plugin: 'ParchmentMC-WrittenBooks'
+    apply plugin: 'org.parchmentmc.writtenbooks'
 
     group rootProject.group
 
