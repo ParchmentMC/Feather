@@ -1,24 +1,35 @@
 plugins {
-    id 'java'
+    id "org.parchmentmc.writtenbooks" version "0.+" apply false
 }
 
-group 'org.parchmentmc'
-archivesBaseName = 'feather'
-version '0.1.0-SNAPSHOT'
+project.group 'org.parchmentmc'
 
-repositories {
-    mavenCentral()
-}
+subprojects {
+    apply plugin: 'maven-publish'
+    apply plugin: 'java-library'
+    apply plugin: 'org.parchmentmc.writtenbooks'
 
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-}
+    group rootProject.group
 
-java {
-    toolchain.languageVersion = JavaLanguageVersion.of(8)
-}
+    repositories {
+        maven {
+            name 'ParchmentMC'
+            url 'https://ldtteam.jfrog.io/artifactory/parchmentmc/'
+        }
+    }
 
-test {
-    useJUnitPlatform()
+    dependencies {
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    java {
+        toolchain.languageVersion = JavaLanguageVersion.of(8)
+        withJavadocJar()
+        withSourcesJar()
+    }
 }

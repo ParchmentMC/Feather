@@ -1,0 +1,13 @@
+dependencies {
+    api project(':core')
+    api 'com.squareup.moshi:moshi:1.12.0'
+}
+
+publishing {
+    publications.create("moshiIO", MavenPublication) {
+        groupId = 'org.parchmentmc.feather'
+        artifactId = 'io-moshi'
+
+        from components.java
+    }
+}
