@@ -3,9 +3,9 @@ package org.parchmentmc.feather.mapping;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.Maps;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.parchmentmc.feather.util.SimpleVersion;
 
-import javax.annotation.Nullable;
 import java.util.*;
 
 /**
@@ -180,7 +180,7 @@ public class ImmutableMappingDataContainer implements MappingDataContainer {
          */
         @Nullable
         @Override
-        public MappingDataContainer.FieldData getField(String fieldName) {
+        public FieldData getField(String fieldName) {
             return fieldsMap.get(fieldName);
         }
 
@@ -197,7 +197,7 @@ public class ImmutableMappingDataContainer implements MappingDataContainer {
          */
         @Nullable
         @Override
-        public MappingDataContainer.MethodData getMethod(String methodName, String descriptor) {
+        public MethodData getMethod(String methodName, String descriptor) {
             return methodsMap.get(key(methodName, descriptor));
         }
 
@@ -332,7 +332,7 @@ public class ImmutableMappingDataContainer implements MappingDataContainer {
          */
         @Nullable
         @Override
-        public MappingDataContainer.ParameterData getParameter(byte index) {
+        public ParameterData getParameter(byte index) {
             return parametersMap.get(index);
         }
 
