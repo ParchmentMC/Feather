@@ -17,7 +17,7 @@ public final class SimpleVersion implements Serializable, Comparable<SimpleVersi
     public SimpleVersion(String version) {
         String[] split = version.split("\\.");
         Preconditions.checkArgument(split.length >= 2, "Expected at least 2 tokens for version %s", version);
-        Preconditions.checkArgument(split.length <= 3, "Expected at most 3 tokens for version %s" + version);
+        Preconditions.checkArgument(split.length <= 3, "Expected at most 3 tokens for version %s", version);
         major = Integer.parseInt(split[0]);
         minor = Integer.parseInt(split[1]);
         patch = split.length == 3 ? Integer.parseInt(split[2]) : 0;
