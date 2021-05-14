@@ -10,4 +10,6 @@ pluginManagement {
 
 rootProject.name = 'Feather'
 include 'core'
+project(':core').name = 'feather'
 include 'io-moshi'
+project(':io-moshi').name = 'io-moshi'

@@ -2,7 +2,7 @@ group = 'org.parchmentmc.feather'
 archivesBaseName = 'io-moshi'
 
 dependencies {
-    api project(':core')
+    api project(':feather')
     api 'com.squareup.moshi:moshi:1.12.0'
 }
 
