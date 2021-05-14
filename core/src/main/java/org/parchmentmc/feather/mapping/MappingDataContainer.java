@@ -14,7 +14,7 @@ public interface MappingDataContainer {
     /**
      * The current recognized format version.
      */
-    SimpleVersion CURRENT_FORMAT = new SimpleVersion(1, 0, 0);
+    SimpleVersion CURRENT_FORMAT = SimpleVersion.of(1, 0, 0);
 
     /**
      * Returns the format version of this container.

@@ -14,26 +14,33 @@ public final class SimpleVersion implements Serializable, Comparable<SimpleVersi
     private final int minor;
     private final int patch;
 
-    public SimpleVersion(String version) {
+    public static SimpleVersion of(String version) {
         String[] split = version.split("\\.");
         Preconditions.checkArgument(split.length >= 2, "Expected at least 2 tokens for version %s", version);
         Preconditions.checkArgument(split.length <= 3, "Expected at most 3 tokens for version %s" + version);
-        major = Integer.parseInt(split[0]);
-        minor = Integer.parseInt(split[1]);
-        patch = split.length == 3 ? Integer.parseInt(split[2]) : 0;
+
+        int major = Integer.parseInt(split[0]);
+        int minor = Integer.parseInt(split[1]);
+        int patch = split.length == 3 ? Integer.parseInt(split[2]) : 0;
+
+        return SimpleVersion.of(major, minor, patch);
     }
 
-    public SimpleVersion(int major, int minor, int patch) {
+    public static SimpleVersion copyOf(SimpleVersion other) {
+        return SimpleVersion.of(other.major, other.minor, other.patch);
+    }
+
+    public static SimpleVersion of(int major, int minor, int patch) {
+        return new SimpleVersion(major, minor, patch);
+    }
+
+    SimpleVersion(int major, int minor, int patch) {
         Preconditions.checkArgument(major >= 0, "Major version %s must not be negative", major);
         Preconditions.checkArgument(minor >= 0, "Minor version %s must not be negative", minor);
         Preconditions.checkArgument(patch >= 0, "Patch version %s must not be negative", patch);
         this.major = major;
         this.minor = minor;
         this.patch = patch;
-    }
-
-    public SimpleVersion(SimpleVersion o) {
-        this(o.major, o.minor, o.patch);
     }
 
     /**
