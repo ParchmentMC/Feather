@@ -46,4 +46,31 @@ public class SimpleVersionTest {
 
         assertFalse(of(2, 0, 0).isCompatibleWith(of(1, 5, 0)));
     }
+
+    @Test
+    public void testComparisons() {
+        assertTrue(of("1.0.0").compareTo(of("1.0.1")) < 0);
+        assertTrue(of("1.1.0").compareTo(of("1.0.1")) > 0);
+        assertTrue(of("1.1.0").compareTo(of("1.1.1")) < 0);
+        assertEquals(0, of("1.1.1").compareTo(of("1.1.1")));
+    }
+
+    @Test
+    public void testHashCodeEquals() {
+        SimpleVersion verA = of(1, 0, 0);
+        SimpleVersion verB = of(1, 0, 0);
+
+        assertNotSame(verA, verB);
+
+        assertEquals(verA, verB);
+
+        assertEquals(verA.hashCode(), verB.hashCode());
+    }
+
+    @Test
+    public void testToString() {
+        assertEquals(of("1.2.3").toString(), of(1, 2, 3).toString());
+
+        assertEquals(of("1.2").toString(), of(1, 2, 0).toString());
+    }
 }
