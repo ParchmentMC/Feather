@@ -1,0 +1,13 @@
+group = 'org.parchmentmc.feather'
+archivesBaseName = 'io-gson'
+
+dependencies {
+    api project(':feather')
+    api 'com.google.code.gson:gson:2.8.6'
+}
+
+publishing {
+    publications.create("gsonIO", MavenPublication) {
+        from components.java
+    }
+}
