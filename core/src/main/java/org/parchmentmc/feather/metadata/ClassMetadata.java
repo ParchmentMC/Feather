@@ -16,7 +16,7 @@ public interface ClassMetadata extends SecuredObject, ClassOwnedObject, NamedObj
      *
      * @return The name holder of the super class.
      */
-    @Nullable
+    @NonNull
     Named getSuperName();
 
     /**

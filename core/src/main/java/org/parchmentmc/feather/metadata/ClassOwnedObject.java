@@ -1,5 +1,6 @@
 package org.parchmentmc.feather.metadata;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.parchmentmc.feather.named.Named;
 
@@ -13,6 +14,6 @@ public interface ClassOwnedObject
      *
      * @return The name of the class.
      */
-    @Nullable
+    @NonNull
     Named getOwner();
 }
