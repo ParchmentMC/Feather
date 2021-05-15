@@ -1,18 +1,8 @@
 package org.parchmentmc.feather.metadata;
 
-public interface FieldMetadata
+/**
+ * Represents the metadata of a given field.
+ */
+public interface FieldMetadata extends ClassOwnedObject, NamedObject, TypedObject, SecuredObject
 {
-    String getObfuscatedName();
-
-    String getObfuscatedDescriptor();
-
-    String getObfuscatedSignature();
-
-    String getMojMapName();
-
-    String getMojMapDescriptor();
-
-    String getMojMapSignature();
-
-    Integer getAccessSpecification();
 }

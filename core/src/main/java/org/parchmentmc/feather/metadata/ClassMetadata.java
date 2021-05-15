@@ -1,53 +1,38 @@
 package org.parchmentmc.feather.metadata;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.parchmentmc.feather.named.Named;
+
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represents the metadata that is extracted during static analysis from a given class.
  */
-public interface ClassMetadata
+public interface ClassMetadata extends SecuredObject, ClassOwnedObject, NamedObject
 {
     /**
-     * The obfuscated name of a given class.
+     * The name of the super class.
      *
-     * @return The obfuscated name.
+     * @return The name holder of the super class.
      */
-    String getObfuscatedName();
+    @Nullable
+    Named getSuperName();
 
     /**
-     * The mojang maps name of a given class.
+     * A list of all names of interfaces that this class implements.
      *
-     * @return The mojmap name of a given class
+     * @return The name holders of all implemented interfaces.
      */
-    String getMojMapName();
-
-    /**
-     * The obfuscated super name of a given class.
-     *
-     * @return The obfuscated name of the super class.
-     */
-    String getObfuscatedSuperName();
-
-    /**
-     * A list of all obfuscated names of interfaces that this class implements.
-     *
-     * @return The obfuscated names of all implemented interfaces.
-     */
-    List<String> getObfuscatedInterfaceNames();
-
-    /**
-     * The access specification in ASM bit field format.
-     *
-     * @return The access specification.
-     */
-    Integer getAccessSpecification();
+    @NonNull
+    List<Named> getInterfaceNames();
 
     /**
      * A list of all methods that reside in the current class.
      *
      * @return All methods of the current class.
      */
+    @NonNull
     List<MethodMetadata> getMethods();
 
     /**
@@ -55,5 +40,14 @@ public interface ClassMetadata
      *
      * @return All fields of the current class.
      */
+    @NonNull
     List<FieldMetadata> getFields();
+
+    /**
+     * A list of all inner classes that reside in the current class.
+     *
+     * @return All inner class of the current class.
+     */
+    @NonNull
+    List<ClassMetadata> getInnerClasses();
 }
