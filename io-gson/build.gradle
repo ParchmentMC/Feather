@@ -4,6 +4,7 @@ archivesBaseName = 'io-gson'
 dependencies {
     api project(':feather')
     api 'com.google.code.gson:gson:2.8.6'
+    testImplementation project(':feather').sourceSets.test.output
 }
 
 publishing {
