@@ -11,6 +11,7 @@ import org.parchmentmc.feather.util.SimpleVersion;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.lang.reflect.WildcardType;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -43,6 +44,12 @@ public class MDCGsonAdapterFactory implements TypeAdapterFactory {
     @Nullable
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
         Type type = typeToken.getType();
+        if (type instanceof WildcardType) {
+            WildcardType wildcard = (WildcardType) type;
+            if (wildcard.getUpperBounds().length == 1) { // ? extends SomeType
+                type = wildcard.getUpperBounds()[0];
+            }
+        }
         if (type.equals(MappingDataContainer.class)) {
             return (TypeAdapter<T>) new MappingDataContainerAdapter(gson).nullSafe();
         } else if (type.equals(MappingDataContainer.PackageData.class)) {
