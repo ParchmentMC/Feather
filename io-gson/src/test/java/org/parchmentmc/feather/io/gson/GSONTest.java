@@ -11,9 +11,9 @@ import java.util.function.Consumer;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Abstract superclass for tests which use GSON functionality (such as de/serialization tests).
+ * Superclass for tests which use GSON functionality (such as de/serialization tests).
  */
-public abstract class GSONTest {
+public class GSONTest {
     protected final Gson gson;
 
     protected GSONTest(Consumer<GsonBuilder> builderConfig) {

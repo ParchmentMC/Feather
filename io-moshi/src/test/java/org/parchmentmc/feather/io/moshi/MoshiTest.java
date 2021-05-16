@@ -10,9 +10,9 @@ import java.util.function.Consumer;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Abstract superclass for tests which use Moshi functionality (such as de/serialization tests).
+ * Superclass for tests which use Moshi functionality (such as de/serialization tests).
  */
-public abstract class MoshiTest {
+public class MoshiTest {
     protected final Moshi moshi;
 
     protected MoshiTest(Consumer<Moshi.Builder> builderConfig) {
