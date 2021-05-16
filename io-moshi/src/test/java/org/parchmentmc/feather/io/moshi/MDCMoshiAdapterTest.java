@@ -7,6 +7,7 @@ import org.parchmentmc.feather.mapping.MappingDataContainer.ClassData;
 import org.parchmentmc.feather.mapping.MappingDataContainer.FieldData;
 import org.parchmentmc.feather.mapping.MappingDataContainer.MethodData;
 import org.parchmentmc.feather.mapping.MappingDataContainer.PackageData;
+import org.parchmentmc.feather.mapping.VersionedMappingDataContainer;
 
 import static org.parchmentmc.feather.mapping.MappingDataContainer.ParameterData;
 
@@ -42,6 +43,6 @@ public class MDCMoshiAdapterTest extends MoshiTest implements MDCTestConstants {
 
     @Test
     public void testDataContainers() {
-        DATA_CONTAINERS.forEach(data -> test(MappingDataContainer.class, data));
+        DATA_CONTAINERS.forEach(data -> test(VersionedMappingDataContainer.class, data));
     }
 }

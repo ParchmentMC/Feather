@@ -1,7 +1,6 @@
 package org.parchmentmc.feather.mapping;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.parchmentmc.feather.util.SimpleVersion;
 
 import java.util.*;
 
@@ -9,7 +8,6 @@ import java.util.*;
  * A mutable builder implementation of {@link MappingDataContainer}.
  */
 public class MappingDataBuilder implements MappingDataContainer {
-    private final SimpleVersion version;
     private final Set<MutablePackageData> packages = new TreeSet<>(PackageData.COMPARATOR);
     private transient final Map<String, MutablePackageData> packagesMap = new HashMap<>();
     private transient final Collection<MutablePackageData> packagesView = Collections.unmodifiableSet(packages);
@@ -21,13 +19,7 @@ public class MappingDataBuilder implements MappingDataContainer {
         return MappingUtil.copyData(data);
     }
 
-    public MappingDataBuilder(SimpleVersion version) {
-        this.version = version;
-    }
-
-    @Override
-    public SimpleVersion getFormatVersion() {
-        return version;
+    public MappingDataBuilder() {
     }
 
     @Override

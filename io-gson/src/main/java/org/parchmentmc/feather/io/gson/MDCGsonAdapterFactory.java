@@ -6,7 +6,9 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.parchmentmc.feather.mapping.ImmutableMappingDataContainer;
+import org.parchmentmc.feather.mapping.ImmutableVersionedMappingDataContainer;
 import org.parchmentmc.feather.mapping.MappingDataContainer;
+import org.parchmentmc.feather.mapping.VersionedMappingDataContainer;
 import org.parchmentmc.feather.util.SimpleVersion;
 
 import java.io.IOException;
@@ -17,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * GSON adapter factory for {@link MappingDataContainer}s and its inner data classes.
+ * GSON adapter factory for {@link VersionedMappingDataContainer}s and its inner data classes.
  */
 public class MDCGsonAdapterFactory implements TypeAdapterFactory {
     private final boolean ignoreNonDocumented;
@@ -50,8 +52,8 @@ public class MDCGsonAdapterFactory implements TypeAdapterFactory {
                 type = wildcard.getUpperBounds()[0];
             }
         }
-        if (type.equals(MappingDataContainer.class)) {
-            return (TypeAdapter<T>) new MappingDataContainerAdapter(gson).nullSafe();
+        if (type.equals(VersionedMappingDataContainer.class)) {
+            return (TypeAdapter<T>) new VersionedMappingDataContainerAdapter(gson).nullSafe();
         } else if (type.equals(MappingDataContainer.PackageData.class)) {
             return (TypeAdapter<T>) new PackageDataAdapter(gson, ignoreNonDocumented).nullSafe();
         } else if (type.equals(MappingDataContainer.ClassData.class)) {
@@ -69,7 +71,7 @@ public class MDCGsonAdapterFactory implements TypeAdapterFactory {
     /**
      * GSON adapter for {@link MappingDataContainer}s.
      */
-    static class MappingDataContainerAdapter extends TypeAdapter<MappingDataContainer> {
+    static class VersionedMappingDataContainerAdapter extends TypeAdapter<VersionedMappingDataContainer> {
         static final TypeToken<Collection<? extends MappingDataContainer.PackageData>> PACKAGE_DATA_COLLECTION =
                 new TypeToken<Collection<? extends MappingDataContainer.PackageData>>() {
                 };
@@ -78,12 +80,12 @@ public class MDCGsonAdapterFactory implements TypeAdapterFactory {
                 };
         private final Gson gson;
 
-        MappingDataContainerAdapter(Gson gson) {
+        VersionedMappingDataContainerAdapter(Gson gson) {
             this.gson = gson;
         }
 
         @Override
-        public void write(JsonWriter writer, MappingDataContainer value) throws IOException {
+        public void write(JsonWriter writer, VersionedMappingDataContainer value) throws IOException {
             writer.beginObject();
             writer.name("version");
             gson.getAdapter(SimpleVersion.class).write(writer, value.getFormatVersion());
@@ -95,7 +97,7 @@ public class MDCGsonAdapterFactory implements TypeAdapterFactory {
         }
 
         @Override
-        public MappingDataContainer read(JsonReader reader) throws IOException {
+        public VersionedMappingDataContainer read(JsonReader reader) throws IOException {
             SimpleVersion version = null;
             Collection<? extends MappingDataContainer.PackageData> packages = null;
             Collection<? extends MappingDataContainer.ClassData> classes = null;
@@ -106,9 +108,9 @@ public class MDCGsonAdapterFactory implements TypeAdapterFactory {
                 switch (propertyName) {
                     case "version":
                         version = gson.getAdapter(SimpleVersion.class).read(reader);
-                        if (version != null && !version.isCompatibleWith(MappingDataContainer.CURRENT_FORMAT))
+                        if (version != null && !version.isCompatibleWith(VersionedMappingDataContainer.CURRENT_FORMAT))
                             throw new JsonParseException("Version " + version + " is incompatible with current version "
-                                    + MappingDataContainer.CURRENT_FORMAT);
+                                    + VersionedMappingDataContainer.CURRENT_FORMAT);
                         break;
                     case "packages":
                         packages = gson.getAdapter(PACKAGE_DATA_COLLECTION).read(reader);
@@ -127,7 +129,7 @@ public class MDCGsonAdapterFactory implements TypeAdapterFactory {
             if (classes == null) classes = Collections.emptyList();
             if (version == null) throw new JsonParseException("No version found");
 
-            return new ImmutableMappingDataContainer(version, packages, classes);
+            return new ImmutableVersionedMappingDataContainer(version, packages, classes);
         }
     }
 

@@ -1,7 +1,6 @@
 package org.parchmentmc.feather.mapping;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.parchmentmc.feather.util.SimpleVersion;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -11,26 +10,6 @@ import java.util.List;
  * A container for mapping data, for packages, classes, methods, fields, and parameters.
  */
 public interface MappingDataContainer {
-    /**
-     * The current recognized format version.
-     */
-    SimpleVersion CURRENT_FORMAT = SimpleVersion.of(1, 0, 0);
-
-    /**
-     * Returns the format version of this container.
-     *
-     * <p>The format version is used in JSON serialization to ensure that a serialized mapping data container is in a
-     * format recognized by the program.</p>
-     *
-     * <p>This version number is incremented for each <em>non-backwards compatible</em> change to the JSON format. Additive
-     * changes will usually not cause the version to be incremented, as JSON deserializers should ignore any unknown
-     * fields.</p>
-     *
-     * @return the format version of this container
-     * @see #CURRENT_FORMAT
-     */
-    SimpleVersion getFormatVersion();
-
     /**
      * Returns the never-{@code null} unmodifiable collection of package data stored within this container.
      *

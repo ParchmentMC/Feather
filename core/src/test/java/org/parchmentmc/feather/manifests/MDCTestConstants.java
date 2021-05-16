@@ -1,13 +1,15 @@
 package org.parchmentmc.feather.manifests;
 
 import org.parchmentmc.feather.mapping.ImmutableMappingDataContainer;
+import org.parchmentmc.feather.mapping.ImmutableVersionedMappingDataContainer;
 import org.parchmentmc.feather.mapping.MappingDataContainer;
+import org.parchmentmc.feather.mapping.VersionedMappingDataContainer;
 import org.parchmentmc.feather.util.SimpleVersion;
 
 import java.util.List;
 
 import static com.google.common.collect.ImmutableList.of;
-import static org.parchmentmc.feather.mapping.MappingDataContainer.CURRENT_FORMAT;
+import static org.parchmentmc.feather.mapping.VersionedMappingDataContainer.CURRENT_FORMAT;
 
 /**
  * Constants of {@link MappingDataContainer} and inner classes, for use in tests.
@@ -59,10 +61,10 @@ public interface MDCTestConstants {
             new ImmutableMappingDataContainer.ImmutablePackageData("com/example/test", MULTILINE_JAVADOC)
     );
 
-    List<MappingDataContainer> DATA_CONTAINERS = of(
-            new ImmutableMappingDataContainer(CURRENT_FORMAT, of(), of()),
-            new ImmutableMappingDataContainer(CURRENT_FORMAT, PACKAGES, of()),
-            new ImmutableMappingDataContainer(CURRENT_FORMAT, of(), CLASSES),
-            new ImmutableMappingDataContainer(SimpleVersion.of("1.0.1"), PACKAGES, CLASSES)
+    List<VersionedMappingDataContainer> DATA_CONTAINERS = of(
+            new ImmutableVersionedMappingDataContainer(CURRENT_FORMAT, of(), of()),
+            new ImmutableVersionedMappingDataContainer(CURRENT_FORMAT, PACKAGES, of()),
+            new ImmutableVersionedMappingDataContainer(CURRENT_FORMAT, of(), CLASSES),
+            new ImmutableVersionedMappingDataContainer(SimpleVersion.of("1.0.1"), PACKAGES, CLASSES)
     );
 }

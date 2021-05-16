@@ -12,7 +12,7 @@ public final class MappingUtil {
     }
 
     static MappingDataBuilder copyData(MappingDataContainer container) {
-        MappingDataBuilder builder = new MappingDataBuilder(container.getFormatVersion());
+        MappingDataBuilder builder = new MappingDataBuilder();
 
         // Copy packages
         container.getPackages().forEach(pkg -> builder.createPackage(pkg.getName()).addJavadoc(pkg.getJavadoc()));
@@ -58,7 +58,7 @@ public final class MappingUtil {
     public static MappingDataContainer apply(MappingDataContainer baseData, MappingDataContainer newData) {
         if (newData.getClasses().isEmpty() && newData.getPackages().isEmpty()) return baseData;
 
-        MappingDataBuilder builder = new MappingDataBuilder(baseData.getFormatVersion());
+        MappingDataBuilder builder = new MappingDataBuilder();
 
         baseData.getPackages().forEach(pkg -> {
             PackageData newPkg = newData.getPackage(pkg.getName());
