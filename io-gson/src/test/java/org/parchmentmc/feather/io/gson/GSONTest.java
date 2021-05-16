@@ -42,18 +42,14 @@ public class GSONTest {
      *     <li>The adapter {@linkplain Assertions#assertDoesNotThrow(ThrowingSupplier) does not throw an exception}
      *     while serializing the original object.</li>
      *     <li>The adapter does not throw an exception while deserializing the resulting JSON from assertion #1.</li>
-     *     <li>The resulting object from assertion #2 {@linkplain Assertions#assertNotNull(Object) is not
-     *     <code>null</code>}, confirming that the deserialization succeeded.</li>
      *     <li>The adapter does not throw an exception while serializing the resulting object from assertion #2.</li>
-     *     <li>The adapter does not throw an exception while deserializing the resulting JSON from assertion #4.</li>
-     *     <li>The resulting object from assertion #5 is not {@code null}, confirming that the deserialization
-     *     succeeded.</li>
+     *     <li>The adapter does not throw an exception while deserializing the resulting JSON from assertion #3.</li>
      *     <li>The original object and the resulting object from assertion #2 {@linkplain
      *     Assertions#assertEquals(Object, Object) are equal}.</li>
-     *     <li>The resulting objects from assertions #2 and #5 are equal.</li>
+     *     <li>The resulting objects from assertions #2 and #4 are equal.</li>
      *     <li>The original object and the resulting object from assertion #2 {@linkplain
      *     Assertions#assertNotSame(Object, Object) are not the same object}.</li>
-     *     <li>The resulting objects from assertions #2 and #5 are not the same
+     *     <li>The resulting objects from assertions #2 and #4 are not the same
      *     object.</li>
      *     <li>The resulting JSONs from assertions #1 and #4 are equal.</li>
      * </ol>
@@ -66,12 +62,10 @@ public class GSONTest {
         final String originalJson = assertDoesNotThrow(() -> adapter.toJson(original));
 
         final T versionA = assertDoesNotThrow(() -> adapter.fromJson(originalJson));
-        assertNotNull(versionA);
 
         final String versionAJson = assertDoesNotThrow(() -> adapter.toJson(versionA));
 
         final T versionB = assertDoesNotThrow(() -> adapter.fromJson(versionAJson));
-        assertNotNull(versionB);
 
         assertEquals(original, versionA);
         assertEquals(versionA, versionB);
