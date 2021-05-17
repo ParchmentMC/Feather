@@ -10,7 +10,7 @@ import org.parchmentmc.feather.util.SimpleVersion;
 import java.lang.reflect.Type;
 import java.util.List;
 
-public final class SourceMetadataHandler implements JsonSerializer<SourceMetadata>, JsonDeserializer<SourceMetadata>
+public final class SourceMetadataAdapter implements JsonSerializer<SourceMetadata>, JsonDeserializer<SourceMetadata>
 {
     private static final TypeToken<List<FieldMetadata>> LIST_OF_CLASS_METADATA_TYPE = new TypeToken<List<FieldMetadata>>() {};
 

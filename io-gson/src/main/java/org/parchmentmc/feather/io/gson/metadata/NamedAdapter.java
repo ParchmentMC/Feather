@@ -7,7 +7,7 @@ import org.parchmentmc.feather.named.Named;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-public final class NamedHandler implements JsonSerializer<Named>, JsonDeserializer<Named>
+public final class NamedAdapter implements JsonSerializer<Named>, JsonDeserializer<Named>
 {
     @Override
     public Named deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context) throws JsonParseException

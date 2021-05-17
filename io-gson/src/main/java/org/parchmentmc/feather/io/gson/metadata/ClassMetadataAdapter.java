@@ -11,7 +11,7 @@ import org.parchmentmc.feather.named.Named;
 import java.lang.reflect.Type;
 import java.util.List;
 
-public final class ClassMetadataHandler implements JsonSerializer<ClassMetadata>, JsonDeserializer<ClassMetadata>
+public final class ClassMetadataAdapter implements JsonSerializer<ClassMetadata>, JsonDeserializer<ClassMetadata>
 {
 
     private static final TypeToken<List<Named>>          LIST_OF_NAMED_TYPE           = new TypeToken<List<Named>>() {};

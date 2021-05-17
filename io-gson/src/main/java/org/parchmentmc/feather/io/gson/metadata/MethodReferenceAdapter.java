@@ -7,7 +7,7 @@ import org.parchmentmc.feather.named.Named;
 
 import java.lang.reflect.Type;
 
-public final class MethodReferenceHandler implements JsonSerializer<MethodReference>, JsonDeserializer<MethodReference>
+public final class MethodReferenceAdapter implements JsonSerializer<MethodReference>, JsonDeserializer<MethodReference>
 {
     @Override
     public MethodReference deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context) throws JsonParseException

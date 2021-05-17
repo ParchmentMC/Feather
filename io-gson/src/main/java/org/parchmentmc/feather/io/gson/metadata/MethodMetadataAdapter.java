@@ -10,7 +10,7 @@ import org.parchmentmc.feather.named.Named;
 import java.lang.reflect.Type;
 import java.util.List;
 
-public final class MethodMetadataHandler implements JsonSerializer<MethodMetadata>, JsonDeserializer<MethodMetadata>
+public final class MethodMetadataAdapter implements JsonSerializer<MethodMetadata>, JsonDeserializer<MethodMetadata>
 {
     private static final     TypeToken<List<MethodReference>> LIST_OF_METHOD_REFERENCE_TYPE = new TypeToken<List<MethodReference>>() {};
 

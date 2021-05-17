@@ -7,7 +7,7 @@ import org.parchmentmc.feather.named.Named;
 
 import java.lang.reflect.Type;
 
-public final class FieldMetadataHandler implements JsonSerializer<FieldMetadata>, JsonDeserializer<FieldMetadata>
+public final class FieldMetadataAdapter implements JsonSerializer<FieldMetadata>, JsonDeserializer<FieldMetadata>
 {
     @Override
     public FieldMetadata deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context) throws JsonParseException
