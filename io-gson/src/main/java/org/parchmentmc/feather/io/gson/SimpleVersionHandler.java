@@ -6,7 +6,7 @@ import org.parchmentmc.feather.util.SimpleVersion;
 import java.lang.reflect.Type;
 
 /**
- * Moshi adapter for {@link SimpleVersion}.
+ * Gson adapter for {@link SimpleVersion}.
  */
 public final class SimpleVersionHandler implements JsonSerializer<SimpleVersion>, JsonDeserializer<SimpleVersion>
 {
