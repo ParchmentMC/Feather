@@ -40,7 +40,7 @@ public class ImmutableClassMetadata implements ClassMetadata
     }
 
     @Override
-    public @NonNull List<Named> getInterfaceNames()
+    public @NonNull List<Named> getInterfaces()
     {
         return interfaces;
     }

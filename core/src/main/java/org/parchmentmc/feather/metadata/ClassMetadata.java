@@ -25,7 +25,7 @@ public interface ClassMetadata extends SecuredObject, ClassOwnedObject, NamedObj
      * @return The name holders of all implemented interfaces.
      */
     @NonNull
-    List<Named> getInterfaceNames();
+    List<Named> getInterfaces();
 
     /**
      * A list of all methods that reside in the current class.

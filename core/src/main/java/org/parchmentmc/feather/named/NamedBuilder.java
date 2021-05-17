@@ -8,11 +8,39 @@ import java.util.Map;
 /**
  * A mutable named object.
  */
-public class MutableNamed implements Named
+public class NamedBuilder implements Named
 {
     private final Map<String, String> names = Maps.newHashMap();
 
-    public MutableNamed(
+    public static NamedBuilder create(
+      final String mappingName,
+      final String mappingValue
+    )
+    {
+        return new NamedBuilder(mappingName, mappingValue);
+    }
+
+
+    public static NamedBuilder create(
+      final Map<String, String> names
+    )
+    {
+        return new NamedBuilder(names);
+    }
+
+    public static NamedBuilder create(
+      final Named named
+    )
+    {
+        return new NamedBuilder(named);
+    }
+
+    public static NamedBuilder create()
+    {
+        return new NamedBuilder();
+    }
+
+    private NamedBuilder(
       final String mappingName,
       final String mappingValue
     )
@@ -20,21 +48,21 @@ public class MutableNamed implements Named
         this.names.put(mappingName, mappingValue);
     }
 
-    public MutableNamed(
+    private NamedBuilder(
       final Map<String, String> names
     )
     {
         this.names.putAll(names);
     }
 
-    public MutableNamed(
+    private NamedBuilder(
       final Named named
     )
     {
         this.names.putAll(named.getNames());
     }
 
-    public MutableNamed()
+    private NamedBuilder()
     {
     }
 
@@ -51,7 +79,7 @@ public class MutableNamed implements Named
      * @param name The name to add.
      * @return This instance.
      */
-    public MutableNamed with(
+    public NamedBuilder with(
       final String scheme,
       final String name
     ) {
@@ -65,7 +93,7 @@ public class MutableNamed implements Named
      * @param name The name to add.
      * @return This instance.
      */
-    public MutableNamed withObfuscated(
+    public NamedBuilder withObfuscated(
       final String name
     ) {
         return with(Constants.Names.OBFUSCATED, name);
@@ -77,7 +105,7 @@ public class MutableNamed implements Named
      * @param name The name to add.
      * @return This instance.
      */
-    public MutableNamed withMojang(
+    public NamedBuilder withMojang(
       final String name
     ) {
         return with(Constants.Names.MOJANG, name);
@@ -88,7 +116,7 @@ public class MutableNamed implements Named
      *
      * @return The immutable snapshot.
      */
-    public Named toImmutable() {
+    public Named build() {
         return new ImmutableNamed(this.names);
     }
 }

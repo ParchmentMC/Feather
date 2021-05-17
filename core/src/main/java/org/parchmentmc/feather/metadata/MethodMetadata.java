@@ -1,5 +1,8 @@
 package org.parchmentmc.feather.metadata;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.util.List;
 
 /**
@@ -20,6 +23,7 @@ public interface MethodMetadata extends MethodReference, SecuredObject
      *
      * @return The bouncer target.
      */
+    @Nullable
     MethodReference getBouncingTarget();
 
     /**
@@ -27,5 +31,6 @@ public interface MethodMetadata extends MethodReference, SecuredObject
      *
      * @return The methods this method overrides.
      */
+    @NonNull
     List<MethodReference> getOverrides();
 }

@@ -1,24 +1,27 @@
 package org.parchmentmc.feather.metadata;
 
+import com.google.common.collect.Lists;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.parchmentmc.feather.named.ImmutableNamed;
 import org.parchmentmc.feather.named.Named;
 
 import java.util.List;
 
 public final class MethodMetadataBuilder implements MethodMetadata
 {
-    private Named                 owner;
-    private boolean               lambda;
-    private MethodReference       bouncingTarget;
-    private List<MethodReference> overrides;
-    private Named                 name;
-    private int                   securitySpecification;
-    private Named                 descriptor;
-    private Named                 signature;
+    private Named                 owner = new ImmutableNamed();
+    private boolean               lambda = false;
+    private MethodReference       bouncingTarget = null;
+    private List<MethodReference> overrides = Lists.newArrayList();
+    private Named                 name = new ImmutableNamed();
+    private int                   securitySpecification = 0;
+    private Named                 descriptor = new ImmutableNamed();
+    private Named                 signature = new ImmutableNamed();
 
     private MethodMetadataBuilder() {}
 
-    public static MethodMetadataBuilder anImmutableMethodMetadata() { return new MethodMetadataBuilder(); }
+    public static MethodMetadataBuilder create() { return new MethodMetadataBuilder(); }
 
     public MethodMetadataBuilder withOwner(Named owner)
     {
@@ -81,13 +84,14 @@ public final class MethodMetadataBuilder implements MethodMetadata
     }
 
     @Override
+    @Nullable
     public MethodReference getBouncingTarget()
     {
         return bouncingTarget;
     }
 
     @Override
-    public List<MethodReference> getOverrides()
+    public @NonNull List<MethodReference> getOverrides()
     {
         return overrides;
     }

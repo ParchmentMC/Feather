@@ -1,7 +1,9 @@
 package org.parchmentmc.feather.util;
 
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public enum AccessFlag
@@ -38,7 +40,7 @@ public enum AccessFlag
         return (bitField & this.bitMask) == this.bitMask;
     }
     
-    public static List<AccessFlag> getAccessFlags(final int bitField) {
-        return Arrays.stream(values()).filter(a -> a.isActive(bitField)).collect(Collectors.toList());
+    public static EnumSet<AccessFlag> getAccessFlags(final int bitField) {
+        return Arrays.stream(values()).filter(a -> a.isActive(bitField)).collect(Collectors.toCollection(() -> EnumSet.noneOf(AccessFlag.class)));
     }
 }

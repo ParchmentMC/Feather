@@ -1,20 +1,22 @@
 package org.parchmentmc.feather.metadata;
 
+import com.google.common.collect.Lists;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.parchmentmc.feather.named.ImmutableNamed;
 import org.parchmentmc.feather.named.Named;
 
 import java.util.List;
 
 public final class ClassMetadataBuilder implements ClassMetadata
 {
-    private Named                superName;
-    private List<Named>          interfaces;
-    private List<MethodMetadata> methods;
-    private List<FieldMetadata>  fields;
-    private List<ClassMetadata>  innerClasses;
-    private Named                owner;
-    private Named                name;
-    private int                  securitySpecifications;
+    private Named                superName = new ImmutableNamed();
+    private List<Named>          interfaces = Lists.newArrayList();
+    private List<MethodMetadata> methods = Lists.newArrayList();
+    private List<FieldMetadata>  fields = Lists.newArrayList();
+    private List<ClassMetadata>  innerClasses = Lists.newArrayList();
+    private Named                owner = new ImmutableNamed();
+    private Named                name = new ImmutableNamed();
+    private int                  securitySpecifications = 0;
 
     private ClassMetadataBuilder() {}
 
@@ -76,7 +78,7 @@ public final class ClassMetadataBuilder implements ClassMetadata
     }
 
     @Override
-    public @NonNull List<Named> getInterfaceNames()
+    public @NonNull List<Named> getInterfaces()
     {
         return interfaces;
     }
