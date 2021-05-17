@@ -20,7 +20,7 @@ public class ImmutableSourceMetadata implements SourceMetadata
 
     ImmutableSourceMetadata()
     {
-        this(new SimpleVersion("1.0.0"), "1.0.0", Lists.newArrayList());
+        this(SimpleVersion.of("1.0.0"), "1.0.0", Lists.newArrayList());
     }
 
     @Override
