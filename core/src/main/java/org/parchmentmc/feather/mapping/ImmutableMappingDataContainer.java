@@ -12,32 +12,17 @@ import java.util.*;
  * An immutable {@link MappingDataContainer}.
  */
 public class ImmutableMappingDataContainer implements MappingDataContainer {
-    private final SimpleVersion version;
-
     private final Set<PackageData> packages;
     private final Map<String, PackageData> packagesMap;
 
     private final Set<ClassData> classes;
     private final Map<String, ClassData> classesMap;
 
-    public ImmutableMappingDataContainer(SimpleVersion version, Collection<? extends PackageData> packages, Collection<? extends ClassData> classes) {
-        this.version = version;
+    public ImmutableMappingDataContainer(Collection<? extends PackageData> packages, Collection<? extends ClassData> classes) {
         this.packages = ImmutableSortedSet.copyOf(PackageData.COMPARATOR, packages);
         this.classes = ImmutableSortedSet.copyOf(ClassData.COMPARATOR, classes);
         this.packagesMap = Maps.uniqueIndex(this.packages, PackageData::getName);
         this.classesMap = Maps.uniqueIndex(this.classes, ClassData::getName);
-    }
-
-    public ImmutableMappingDataContainer(Collection<? extends PackageData> packages, Collection<? extends ClassData> classes) {
-        this(CURRENT_FORMAT, packages, classes);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public SimpleVersion getFormatVersion() {
-        return version;
     }
 
     /**
