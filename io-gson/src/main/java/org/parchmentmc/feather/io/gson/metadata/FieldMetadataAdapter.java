@@ -8,6 +8,7 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import org.parchmentmc.feather.metadata.FieldMetadata;
 import org.parchmentmc.feather.metadata.ImmutableFieldMetadata;
+import org.parchmentmc.feather.named.ImmutableNamed;
 import org.parchmentmc.feather.named.Named;
 
 import java.io.IOException;
@@ -51,11 +52,11 @@ class FieldMetadataAdapter extends TypeAdapter<FieldMetadata> {
             return null;
         }
 
-        Named name = null;
-        Named owner = null;
+        Named name = ImmutableNamed.empty();
+        Named owner = ImmutableNamed.empty();
         int security = -1;
-        Named descriptor = null;
-        Named signature = null;
+        Named descriptor = ImmutableNamed.empty();
+        Named signature = ImmutableNamed.empty();
 
         in.beginObject();
         while (in.hasNext()) {
@@ -82,11 +83,11 @@ class FieldMetadataAdapter extends TypeAdapter<FieldMetadata> {
         }
         in.endObject();
 
-        if (name == null) throw new JsonParseException("Field name is not present");
-        if (owner == null) throw new JsonParseException("Field owner is not present");
+        if (name.isEmpty()) throw new JsonParseException("Field name is not present or empty");
+        if (owner.isEmpty()) throw new JsonParseException("Field owner is not present or empty");
         if (security == -1) throw new JsonParseException("Field security specification is not present");
-        if (descriptor == null) throw new JsonParseException("Field descriptor is not present");
-        if (signature == null) throw new JsonParseException("Field signature is not present");
+        if (descriptor.isEmpty()) throw new JsonParseException("Field descriptor is not present or empty");
+        if (signature.isEmpty()) throw new JsonParseException("Field signature is not present or empty");
 
         return new ImmutableFieldMetadata(owner, name, security, descriptor, signature);
     }

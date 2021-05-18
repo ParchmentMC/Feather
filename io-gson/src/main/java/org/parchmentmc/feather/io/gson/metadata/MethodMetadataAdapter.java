@@ -10,6 +10,7 @@ import com.google.gson.stream.JsonWriter;
 import org.parchmentmc.feather.metadata.ImmutableMethodMetadata;
 import org.parchmentmc.feather.metadata.MethodMetadata;
 import org.parchmentmc.feather.metadata.MethodReference;
+import org.parchmentmc.feather.named.ImmutableNamed;
 import org.parchmentmc.feather.named.Named;
 
 import java.io.IOException;
@@ -62,11 +63,11 @@ class MethodMetadataAdapter extends TypeAdapter<MethodMetadata> {
             return null;
         }
 
-        Named name = null;
-        Named owner = null;
+        Named name = ImmutableNamed.empty();
+        Named owner = ImmutableNamed.empty();
         int security = -1;
-        Named descriptor = null;
-        Named signature = null;
+        Named descriptor = ImmutableNamed.empty();
+        Named signature = ImmutableNamed.empty();
         boolean lambda = false;
         MethodReference bouncingTarget = null;
         List<MethodReference> overrides = null;
@@ -105,10 +106,10 @@ class MethodMetadataAdapter extends TypeAdapter<MethodMetadata> {
         }
         in.endObject();
 
-        if (name == null) throw new JsonParseException("Method metadata name is not present");
-        if (owner == null) throw new JsonParseException("Method metadata owner is not present");
-        if (descriptor == null) throw new JsonParseException("Method metadata descriptor is not present");
-        if (signature == null) throw new JsonParseException("Method metadata signature is not present");
+        if (name.isEmpty()) throw new JsonParseException("Method metadata name is not present or empty");
+        if (owner.isEmpty()) throw new JsonParseException("Method metadata owner is not present or empty");
+        if (descriptor.isEmpty()) throw new JsonParseException("Method metadata descriptor is not present or empty");
+        if (signature.isEmpty()) throw new JsonParseException("Method metadata signature is not present or empty");
         if (security == -1) throw new JsonParseException("Method metadata security specification is not present");
         // lambda is a primitive
         // bouncingTarget can be null

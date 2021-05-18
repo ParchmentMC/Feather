@@ -8,6 +8,7 @@ import java.util.List;
 
 import static com.google.common.collect.ImmutableList.of;
 import static org.parchmentmc.feather.manifests.TestConstantsHelper.named;
+import static org.parchmentmc.feather.named.ImmutableNamed.empty;
 
 public interface MetadataTestConstants {
     List<MethodReference> METHOD_REFERENCES = of(
@@ -47,13 +48,13 @@ public interface MetadataTestConstants {
             new ImmutableClassMetadata(named("a"),
                     of(named("b"), named("c", "IInterface")),
                     METHOD_METADATA, FIELD_METADATA, of(),
-                    null, named("d"),
+                    empty(), named("d"),
                     Modifier.PUBLIC | Modifier.FINAL
             ),
-            new ImmutableClassMetadata(null,
+            new ImmutableClassMetadata(empty(),
                     of(),
                     METHOD_METADATA, FIELD_METADATA, of(),
-                    null, named("e"),
+                    empty(), named("e"),
                     Modifier.PUBLIC | Modifier.FINAL
             )
     );
@@ -62,13 +63,13 @@ public interface MetadataTestConstants {
             new ImmutableClassMetadata(named("f"),
                     of(named("h"), named("c", "IInterface")),
                     METHOD_METADATA, FIELD_METADATA, INNER_CLASSES,
-                    null, named("g"),
+                    empty(), named("g"),
                     Modifier.PUBLIC
             ),
-            new ImmutableClassMetadata(null,
+            new ImmutableClassMetadata(empty(),
                     of(),
                     METHOD_METADATA, FIELD_METADATA, of(),
-                    null, named("h"),
+                    empty(), named("h"),
                     Modifier.PUBLIC
             )
     );

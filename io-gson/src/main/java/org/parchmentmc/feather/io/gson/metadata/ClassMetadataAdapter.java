@@ -11,6 +11,7 @@ import org.parchmentmc.feather.metadata.ClassMetadata;
 import org.parchmentmc.feather.metadata.FieldMetadata;
 import org.parchmentmc.feather.metadata.ImmutableClassMetadata;
 import org.parchmentmc.feather.metadata.MethodMetadata;
+import org.parchmentmc.feather.named.ImmutableNamed;
 import org.parchmentmc.feather.named.Named;
 
 import java.io.IOException;
@@ -71,10 +72,10 @@ class ClassMetadataAdapter extends TypeAdapter<ClassMetadata> {
             return null;
         }
 
-        Named name = null;
-        Named owner = null;
+        Named name = ImmutableNamed.empty();
+        Named owner = ImmutableNamed.empty();
         int security = -1;
-        Named superName = null;
+        Named superName = ImmutableNamed.empty();
         List<Named> interfaces = null;
         List<FieldMetadata> fields = null;
         List<MethodMetadata> methods = null;
@@ -114,10 +115,10 @@ class ClassMetadataAdapter extends TypeAdapter<ClassMetadata> {
         }
         in.endObject();
 
-        if (name == null) throw new JsonParseException("Class metadata name is not present");
-        // owner can be null
+        if (name.isEmpty()) throw new JsonParseException("Class metadata name is not present or empty");
+        // owner can be empty
         if (security == -1) throw new JsonParseException("Class metadata security specification is not present");
-        // superName can be null
+        // superName can be empty
         if (interfaces == null) methods = Collections.emptyList();
         if (fields == null) methods = Collections.emptyList();
         if (methods == null) methods = Collections.emptyList();
