@@ -17,6 +17,15 @@ public interface Named
     Map<String, String> getNames();
 
     /**
+     * Returns whether this named object has no names.
+     *
+     * @return if this object has no names
+     */
+    default boolean isEmpty() {
+        return getNames().isEmpty();
+    }
+
+    /**
      * Looks up a name in the obfuscated schema ({@link Constants.Names#OBFUSCATED}).
      * If no name in the obfuscated schema exists in this named object then the {@link Constants.Defaults#UNKNOWN_NAME} value is returned.
      *
