@@ -1,5 +1,6 @@
 package org.parchmentmc.feather.metadata;
 
+import com.google.common.collect.ImmutableList;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.parchmentmc.feather.named.Named;
@@ -24,7 +25,7 @@ public class ImmutableMethodMetadata extends ImmutableMethodReference implements
         super(owner, name, descriptor, signature);
         this.lambda = lambda;
         this.bouncingTarget = bouncingTarget;
-        this.overrides = overrides;
+        this.overrides = ImmutableList.copyOf(overrides);
         this.securitySpecification = securitySpecification;
     }
 

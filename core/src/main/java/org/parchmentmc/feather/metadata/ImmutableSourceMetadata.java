@@ -1,5 +1,6 @@
 package org.parchmentmc.feather.metadata;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import org.parchmentmc.feather.util.SimpleVersion;
 
@@ -14,7 +15,7 @@ public class ImmutableSourceMetadata implements SourceMetadata {
     public ImmutableSourceMetadata(final SimpleVersion specVersion, final String minecraftVersion, final List<ClassMetadata> classes) {
         this.specVersion = specVersion;
         this.minecraftVersion = minecraftVersion;
-        this.classes = classes;
+        this.classes = ImmutableList.copyOf(classes);
     }
 
     ImmutableSourceMetadata() {

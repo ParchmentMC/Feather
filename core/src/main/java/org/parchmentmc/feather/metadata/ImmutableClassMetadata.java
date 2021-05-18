@@ -1,5 +1,6 @@
 package org.parchmentmc.feather.metadata;
 
+import com.google.common.collect.ImmutableList;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.parchmentmc.feather.named.Named;
 
@@ -23,10 +24,10 @@ public class ImmutableClassMetadata implements ClassMetadata {
             final List<FieldMetadata> fields,
             final List<ClassMetadata> innerClasses, final Named owner, final Named name, final int securitySpecifications) {
         this.superName = superName;
-        this.interfaces = interfaces;
-        this.methods = methods;
-        this.fields = fields;
-        this.innerClasses = innerClasses;
+        this.interfaces = ImmutableList.copyOf(interfaces);
+        this.methods = ImmutableList.copyOf(methods);
+        this.fields = ImmutableList.copyOf(fields);
+        this.innerClasses = ImmutableList.copyOf(innerClasses);
         this.owner = owner;
         this.name = name;
         this.securitySpecifications = securitySpecifications;
