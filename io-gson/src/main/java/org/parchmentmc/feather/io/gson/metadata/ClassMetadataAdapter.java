@@ -115,7 +115,7 @@ class ClassMetadataAdapter extends TypeAdapter<ClassMetadata> {
         in.endObject();
 
         if (name == null) throw new JsonParseException("Class metadata name is not present");
-        if (owner == null) throw new JsonParseException("Class metadata owner is not present");
+        // owner can be null
         if (security == -1) throw new JsonParseException("Class metadata security specification is not present");
         // superName can be null
         if (interfaces == null) methods = Collections.emptyList();
