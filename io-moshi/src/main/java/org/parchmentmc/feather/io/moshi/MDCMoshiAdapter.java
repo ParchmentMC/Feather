@@ -15,6 +15,7 @@ import java.util.List;
 /**
  * Moshi adapter for {@link VersionedMappingDataContainer}s and its inner data classes.
  */
+@SuppressWarnings("unused")
 public class MDCMoshiAdapter {
     private final boolean ignoreNonDocumented;
 
