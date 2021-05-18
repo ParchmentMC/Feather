@@ -1,54 +1,117 @@
 package org.parchmentmc.feather.io.gson.metadata;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
+import org.parchmentmc.feather.metadata.ImmutableMethodMetadata;
 import org.parchmentmc.feather.metadata.MethodMetadata;
-import org.parchmentmc.feather.metadata.MethodMetadataBuilder;
 import org.parchmentmc.feather.metadata.MethodReference;
 import org.parchmentmc.feather.named.Named;
 
-import java.lang.reflect.Type;
+import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
-public final class MethodMetadataAdapter implements JsonSerializer<MethodMetadata>, JsonDeserializer<MethodMetadata>
-{
-    private static final     TypeToken<List<MethodReference>> LIST_OF_METHOD_REFERENCE_TYPE = new TypeToken<List<MethodReference>>() {};
+/**
+ * GSON adapter for {@link MethodMetadata} objects.
+ *
+ * <p>For internal use. Users should use {@link MetadataAdapterFactory} instead.</p>
+ */
+class MethodMetadataAdapter extends TypeAdapter<MethodMetadata> {
+    private static final TypeToken<List<MethodReference>> METHOD_REFERENCE_LIST_TOKEN = new TypeToken<List<MethodReference>>() {
+    };
+    private final Gson gson;
 
-    @Override
-    public MethodMetadata deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context) throws JsonParseException
-    {
-        if (!json.isJsonObject())
-            throw new JsonParseException("MethodMetadata needs to be an object");
-
-        final JsonObject source = json.getAsJsonObject();
-        final MethodMetadataBuilder builder = MethodMetadataBuilder.create();
-
-        builder.withOwner(context.deserialize(source.get("owner"), Named.class));
-        builder.withName(context.deserialize(source.get("name"), Named.class));
-        builder.withDescriptor(context.deserialize(source.get("descriptor"), Named.class));
-        builder.withSignature(context.deserialize(source.get("signature"), Named.class));
-        builder.withSecuritySpecification(source.get("security").getAsInt());
-        builder.withLambda(source.get("lambda").getAsBoolean());
-        builder.withBouncingTarget(context.deserialize(source.get("bouncingTarget"), MethodReference.class));
-        builder.withOverrides(context.deserialize(source.get("overrides"), LIST_OF_METHOD_REFERENCE_TYPE.getType()));
-
-        return builder.build();
+    public MethodMetadataAdapter(Gson gson) {
+        this.gson = gson;
     }
 
     @Override
-    public JsonElement serialize(final MethodMetadata src, final Type typeOfSrc, final JsonSerializationContext context)
-    {
-        final JsonObject target = new JsonObject();
+    public void write(JsonWriter out, MethodMetadata value) throws IOException {
+        if (value == null) {
+            out.nullValue();
+            return;
+        }
 
-        target.add("owner", context.serialize(src.getOwner()));
-        target.add("name", context.serialize(src.getName()));
-        target.add("descriptor", context.serialize(src.getDescriptor()));
-        target.add("signature", context.serialize(src.getSignature()));
-        target.addProperty("security", src.getSecuritySpecification());
-        target.addProperty("lambda", src.isLambda());
-        target.add("bouncingTarget", context.serialize(src.getBouncingTarget(), MethodReference.class));
-        target.add("overrides", context.serialize(src.getOverrides(), LIST_OF_METHOD_REFERENCE_TYPE.getType()));
+        out.beginObject();
+        out.name("name");
+        gson.toJson(value.getName(), Named.class, out);
+        out.name("owner");
+        gson.toJson(value.getOwner(), Named.class, out);
+        out.name("security").value(value.getSecuritySpecification());
+        out.name("descriptor");
+        gson.toJson(value.getDescriptor(), Named.class, out);
+        out.name("signature");
+        gson.toJson(value.getSignature(), Named.class, out);
+        out.name("lambda").value(value.isLambda());
+        out.name("bouncingTarget");
+        gson.toJson(value.getBouncingTarget(), MethodReference.class, out);
+        out.name("overrides");
+        gson.toJson(value.getOverrides(), METHOD_REFERENCE_LIST_TOKEN.getType(), out);
+        out.endObject();
+    }
 
-        return target;
+    @Override
+    public MethodMetadata read(JsonReader in) throws IOException {
+        if (in.peek() == JsonToken.NULL) {
+            in.nextNull();
+            return null;
+        }
+
+        Named name = null;
+        Named owner = null;
+        int security = -1;
+        Named descriptor = null;
+        Named signature = null;
+        boolean lambda = false;
+        MethodReference bouncingTarget = null;
+        List<MethodReference> overrides = null;
+
+        while (in.hasNext()) {
+            final String propertyName = in.nextName();
+            switch (propertyName) {
+                case "name":
+                    name = gson.fromJson(in, Named.class);
+                    break;
+                case "owner":
+                    owner = gson.fromJson(in, Named.class);
+                    break;
+                case "security":
+                    security = in.nextInt();
+                    break;
+                case "descriptor":
+                    descriptor = gson.fromJson(in, Named.class);
+                    break;
+                case "signature":
+                    signature = gson.fromJson(in, Named.class);
+                    break;
+                case "lambda":
+                    lambda = in.nextBoolean();
+                    break;
+                case "bouncingTarget":
+                    bouncingTarget = gson.fromJson(in, MethodReference.class);
+                    break;
+                case "overrides":
+                    overrides = gson.fromJson(in, METHOD_REFERENCE_LIST_TOKEN.getType());
+                    break;
+                default:
+                    in.skipValue();
+            }
+        }
+
+        if (name == null) throw new JsonParseException("Method metadata name is not present");
+        if (owner == null) throw new JsonParseException("Method metadata owner is not present");
+        if (descriptor == null) throw new JsonParseException("Method metadata descriptor is not present");
+        if (signature == null) throw new JsonParseException("Method metadata signature is not present");
+        if (security == -1) throw new JsonParseException("Method metadata security specification is not present");
+        // lambda is a primitive
+        // bouncingTarget can be null
+        if (overrides == null) overrides = Collections.emptyList();
+
+        return new ImmutableMethodMetadata(owner, lambda, bouncingTarget, overrides, name, security, descriptor, signature);
     }
 }
