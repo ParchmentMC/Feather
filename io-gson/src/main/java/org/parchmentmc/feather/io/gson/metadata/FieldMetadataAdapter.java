@@ -57,6 +57,7 @@ class FieldMetadataAdapter extends TypeAdapter<FieldMetadata> {
         Named descriptor = null;
         Named signature = null;
 
+        in.beginObject();
         while (in.hasNext()) {
             final String propertyName = in.nextName();
             switch (propertyName) {
@@ -79,6 +80,7 @@ class FieldMetadataAdapter extends TypeAdapter<FieldMetadata> {
                     in.skipValue();
             }
         }
+        in.endObject();
 
         if (name == null) throw new JsonParseException("Field name is not present");
         if (owner == null) throw new JsonParseException("Field owner is not present");

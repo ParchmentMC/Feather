@@ -57,6 +57,7 @@ class SourceMetadataAdapter extends TypeAdapter<SourceMetadata> {
         String minecraftVersion = null;
         List<ClassMetadata> classes = null;
 
+        in.beginObject();
         while (in.hasNext()) {
             final String name = in.nextName();
             switch (name) {
@@ -73,6 +74,7 @@ class SourceMetadataAdapter extends TypeAdapter<SourceMetadata> {
                     in.skipValue();
             }
         }
+        in.endObject();
 
         if (specVersion == null) throw new JsonParseException("Specification version is not present");
         if (minecraftVersion == null) throw new JsonParseException("Minecraft version is not present");

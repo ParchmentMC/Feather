@@ -80,6 +80,7 @@ class ClassMetadataAdapter extends TypeAdapter<ClassMetadata> {
         List<MethodMetadata> methods = null;
         List<ClassMetadata> innerClasses = null;
 
+        in.beginObject();
         while (in.hasNext()) {
             final String propertyName = in.nextName();
             switch (propertyName) {
@@ -111,6 +112,7 @@ class ClassMetadataAdapter extends TypeAdapter<ClassMetadata> {
                     in.skipValue();
             }
         }
+        in.endObject();
 
         if (name == null) throw new JsonParseException("Class metadata name is not present");
         if (owner == null) throw new JsonParseException("Class metadata owner is not present");

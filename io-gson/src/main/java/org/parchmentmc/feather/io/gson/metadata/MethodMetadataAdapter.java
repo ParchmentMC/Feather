@@ -71,6 +71,7 @@ class MethodMetadataAdapter extends TypeAdapter<MethodMetadata> {
         MethodReference bouncingTarget = null;
         List<MethodReference> overrides = null;
 
+        in.beginObject();
         while (in.hasNext()) {
             final String propertyName = in.nextName();
             switch (propertyName) {
@@ -102,6 +103,7 @@ class MethodMetadataAdapter extends TypeAdapter<MethodMetadata> {
                     in.skipValue();
             }
         }
+        in.endObject();
 
         if (name == null) throw new JsonParseException("Method metadata name is not present");
         if (owner == null) throw new JsonParseException("Method metadata owner is not present");

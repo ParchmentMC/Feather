@@ -55,6 +55,7 @@ class MethodReferenceAdapter extends TypeAdapter<MethodReference> {
         Named descriptor = null;
         Named signature = null;
 
+        in.beginObject();
         while (in.hasNext()) {
             final String propertyName = in.nextName();
             switch (propertyName) {
@@ -74,6 +75,7 @@ class MethodReferenceAdapter extends TypeAdapter<MethodReference> {
                     in.skipValue();
             }
         }
+        in.endObject();
 
         if (name == null) throw new JsonParseException("Method reference name is not present");
         if (owner == null) throw new JsonParseException("Method reference owner is not present");
