@@ -6,24 +6,22 @@ import org.parchmentmc.feather.named.Named;
 import java.util.List;
 import java.util.Objects;
 
-public class ImmutableClassMetadata implements ClassMetadata
-{
-    private final Named                superName;
-    private final List<Named>          interfaces;
+public class ImmutableClassMetadata implements ClassMetadata {
+    private final Named superName;
+    private final List<Named> interfaces;
     private final List<MethodMetadata> methods;
-    private final List<FieldMetadata>  fields;
-    private final List<ClassMetadata>  innerClasses;
-    private final Named                owner;
-    private final Named                name;
-    private final int                  securitySpecifications;
+    private final List<FieldMetadata> fields;
+    private final List<ClassMetadata> innerClasses;
+    private final Named owner;
+    private final Named name;
+    private final int securitySpecifications;
 
     public ImmutableClassMetadata(
-      final Named superName,
-      final List<Named> interfaces,
-      final List<MethodMetadata> methods,
-      final List<FieldMetadata> fields,
-      final List<ClassMetadata> innerClasses, final Named owner, final Named name, final int securitySpecifications)
-    {
+            final Named superName,
+            final List<Named> interfaces,
+            final List<MethodMetadata> methods,
+            final List<FieldMetadata> fields,
+            final List<ClassMetadata> innerClasses, final Named owner, final Named name, final int securitySpecifications) {
         this.superName = superName;
         this.interfaces = interfaces;
         this.methods = methods;
@@ -35,50 +33,42 @@ public class ImmutableClassMetadata implements ClassMetadata
     }
 
     @Override
-    public @NonNull Named getSuperName()
-    {
+    public @NonNull Named getSuperName() {
         return superName;
     }
 
     @Override
-    public @NonNull List<Named> getInterfaces()
-    {
+    public @NonNull List<Named> getInterfaces() {
         return interfaces;
     }
 
     @Override
-    public @NonNull List<MethodMetadata> getMethods()
-    {
+    public @NonNull List<MethodMetadata> getMethods() {
         return methods;
     }
 
     @Override
-    public @NonNull List<FieldMetadata> getFields()
-    {
+    public @NonNull List<FieldMetadata> getFields() {
         return fields;
     }
 
     @Override
-    public @NonNull List<ClassMetadata> getInnerClasses()
-    {
+    public @NonNull List<ClassMetadata> getInnerClasses() {
         return innerClasses;
     }
 
     @Override
-    public @NonNull Named getOwner()
-    {
+    public @NonNull Named getOwner() {
         return owner;
     }
 
     @Override
-    public @NonNull Named getName()
-    {
+    public @NonNull Named getName() {
         return name;
     }
 
     @Override
-    public int getSecuritySpecification()
-    {
+    public int getSecuritySpecification() {
         return securitySpecifications;
     }
 

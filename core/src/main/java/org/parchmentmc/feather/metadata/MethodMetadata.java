@@ -8,8 +8,7 @@ import java.util.List;
 /**
  * Represents the metadata of a given method.
  */
-public interface MethodMetadata extends MethodReference, SecuredObject
-{
+public interface MethodMetadata extends MethodReference, SecuredObject {
     /**
      * Indicates if this method is a lambda method.
      *

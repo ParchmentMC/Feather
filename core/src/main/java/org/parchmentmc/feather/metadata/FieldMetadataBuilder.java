@@ -6,79 +6,73 @@ import org.parchmentmc.feather.named.Named;
 
 import java.util.Objects;
 
-public final class FieldMetadataBuilder implements FieldMetadata
-{
+public final class FieldMetadataBuilder implements FieldMetadata {
     private Named owner = ImmutableNamed.empty();
     private Named name = ImmutableNamed.empty();
-    private int   securitySpecification = 0;
+    private int securitySpecification = 0;
     private Named descriptor = ImmutableNamed.empty();
     private Named signature = ImmutableNamed.empty();
 
-    private FieldMetadataBuilder() {}
+    private FieldMetadataBuilder() {
+    }
 
-    public static FieldMetadataBuilder create() { return new FieldMetadataBuilder(); }
+    public static FieldMetadataBuilder create() {
+        return new FieldMetadataBuilder();
+    }
 
-    public FieldMetadataBuilder withOwner(Named owner)
-    {
+    public FieldMetadataBuilder withOwner(Named owner) {
         this.owner = owner;
         return this;
     }
 
-    public FieldMetadataBuilder withName(Named name)
-    {
+    public FieldMetadataBuilder withName(Named name) {
         this.name = name;
         return this;
     }
 
-    public FieldMetadataBuilder withSecuritySpecification(int securitySpecification)
-    {
+    public FieldMetadataBuilder withSecuritySpecification(int securitySpecification) {
         this.securitySpecification = securitySpecification;
         return this;
     }
 
-    public FieldMetadataBuilder withDescriptor(Named descriptor)
-    {
+    public FieldMetadataBuilder withDescriptor(Named descriptor) {
         this.descriptor = descriptor;
         return this;
     }
 
-    public FieldMetadataBuilder withSignature(Named signature)
-    {
+    public FieldMetadataBuilder withSignature(Named signature) {
         this.signature = signature;
         return this;
     }
 
     @Override
-    public @NonNull Named getOwner()
-    {
+    public @NonNull Named getOwner() {
         return owner;
     }
 
     @Override
-    public @NonNull Named getName()
-    {
+    public @NonNull Named getName() {
         return name;
     }
 
     @Override
-    public int getSecuritySpecification()
-    {
+    public int getSecuritySpecification() {
         return securitySpecification;
     }
 
     @Override
-    public @NonNull Named getDescriptor()
-    {
+    public @NonNull Named getDescriptor() {
         return descriptor;
     }
 
     @Override
-    public @NonNull Named getSignature()
-    {
+    public @NonNull Named getSignature() {
         return signature;
     }
 
-    public ImmutableFieldMetadata build() { return new ImmutableFieldMetadata(owner, name, securitySpecification, descriptor, signature); }
+    public ImmutableFieldMetadata build() {
+        return new ImmutableFieldMetadata(owner, name, securitySpecification, descriptor, signature);
+    }
 
     @Override
     public boolean equals(Object o) {

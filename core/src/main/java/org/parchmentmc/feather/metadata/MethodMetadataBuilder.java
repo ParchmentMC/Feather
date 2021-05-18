@@ -9,119 +9,107 @@ import org.parchmentmc.feather.named.Named;
 import java.util.List;
 import java.util.Objects;
 
-public final class MethodMetadataBuilder implements MethodMetadata
-{
-    private Named                 owner = ImmutableNamed.empty();
-    private boolean               lambda = false;
-    private MethodReference       bouncingTarget = null;
+public final class MethodMetadataBuilder implements MethodMetadata {
+    private Named owner = ImmutableNamed.empty();
+    private boolean lambda = false;
+    private MethodReference bouncingTarget = null;
     private List<MethodReference> overrides = Lists.newArrayList();
-    private Named                 name = ImmutableNamed.empty();
-    private int                   securitySpecification = 0;
-    private Named                 descriptor = ImmutableNamed.empty();
-    private Named                 signature = ImmutableNamed.empty();
+    private Named name = ImmutableNamed.empty();
+    private int securitySpecification = 0;
+    private Named descriptor = ImmutableNamed.empty();
+    private Named signature = ImmutableNamed.empty();
 
-    private MethodMetadataBuilder() {}
+    private MethodMetadataBuilder() {
+    }
 
-    public static MethodMetadataBuilder create() { return new MethodMetadataBuilder(); }
+    public static MethodMetadataBuilder create() {
+        return new MethodMetadataBuilder();
+    }
 
-    public MethodMetadataBuilder withOwner(Named owner)
-    {
+    public MethodMetadataBuilder withOwner(Named owner) {
         this.owner = owner;
         return this;
     }
 
-    public MethodMetadataBuilder withLambda(boolean lambda)
-    {
+    public MethodMetadataBuilder withLambda(boolean lambda) {
         this.lambda = lambda;
         return this;
     }
 
-    public MethodMetadataBuilder withBouncingTarget(MethodReference bouncingTarget)
-    {
+    public MethodMetadataBuilder withBouncingTarget(MethodReference bouncingTarget) {
         this.bouncingTarget = bouncingTarget;
         return this;
     }
 
-    public MethodMetadataBuilder withOverrides(List<MethodReference> overrides)
-    {
+    public MethodMetadataBuilder withOverrides(List<MethodReference> overrides) {
         this.overrides = overrides;
         return this;
     }
 
-    public MethodMetadataBuilder withName(Named name)
-    {
+    public MethodMetadataBuilder withName(Named name) {
         this.name = name;
         return this;
     }
 
-    public MethodMetadataBuilder withSecuritySpecification(int securitySpecification)
-    {
+    public MethodMetadataBuilder withSecuritySpecification(int securitySpecification) {
         this.securitySpecification = securitySpecification;
         return this;
     }
 
-    public MethodMetadataBuilder withDescriptor(Named descriptor)
-    {
+    public MethodMetadataBuilder withDescriptor(Named descriptor) {
         this.descriptor = descriptor;
         return this;
     }
 
-    public MethodMetadataBuilder withSignature(Named signature)
-    {
+    public MethodMetadataBuilder withSignature(Named signature) {
         this.signature = signature;
         return this;
     }
 
     @Override
-    public @NonNull Named getOwner()
-    {
+    public @NonNull Named getOwner() {
         return owner;
     }
 
     @Override
-    public boolean isLambda()
-    {
+    public boolean isLambda() {
         return lambda;
     }
 
     @Override
     @Nullable
-    public MethodReference getBouncingTarget()
-    {
+    public MethodReference getBouncingTarget() {
         return bouncingTarget;
     }
 
     @Override
-    public @NonNull List<MethodReference> getOverrides()
-    {
+    public @NonNull List<MethodReference> getOverrides() {
         return overrides;
     }
 
     @Override
-    public @NonNull Named getName()
-    {
+    public @NonNull Named getName() {
         return name;
     }
 
     @Override
-    public int getSecuritySpecification()
-    {
+    public int getSecuritySpecification() {
         return securitySpecification;
     }
 
     @Override
-    public @NonNull Named getDescriptor()
-    {
+    public @NonNull Named getDescriptor() {
         return descriptor;
     }
 
     @Override
-    public @NonNull Named getSignature()
-    {
+    public @NonNull Named getSignature() {
         return signature;
     }
 
-    public ImmutableMethodMetadata build() { return new ImmutableMethodMetadata(owner, lambda, bouncingTarget, overrides, name, securitySpecification, descriptor, signature); }
+    public ImmutableMethodMetadata build() {
+        return new ImmutableMethodMetadata(owner, lambda, bouncingTarget, overrides, name, securitySpecification, descriptor, signature);
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -7,22 +7,20 @@ import org.parchmentmc.feather.named.Named;
 import java.util.List;
 import java.util.Objects;
 
-public class ImmutableMethodMetadata extends ImmutableMethodReference implements MethodMetadata
-{
-    private final boolean               lambda;
-    private final MethodReference       bouncingTarget;
+public class ImmutableMethodMetadata extends ImmutableMethodReference implements MethodMetadata {
+    private final boolean lambda;
+    private final MethodReference bouncingTarget;
     private final List<MethodReference> overrides;
-    private final int                   securitySpecification;
+    private final int securitySpecification;
 
     public ImmutableMethodMetadata(
-      final Named owner,
-      final boolean lambda,
-      final MethodReference bouncingTarget,
-      final List<MethodReference> overrides,
-      final Named name,
-      final int securitySpecification,
-      final Named descriptor, final Named signature)
-    {
+            final Named owner,
+            final boolean lambda,
+            final MethodReference bouncingTarget,
+            final List<MethodReference> overrides,
+            final Named name,
+            final int securitySpecification,
+            final Named descriptor, final Named signature) {
         super(owner, name, descriptor, signature);
         this.lambda = lambda;
         this.bouncingTarget = bouncingTarget;
@@ -31,27 +29,23 @@ public class ImmutableMethodMetadata extends ImmutableMethodReference implements
     }
 
     @Override
-    public boolean isLambda()
-    {
+    public boolean isLambda() {
         return lambda;
     }
 
     @Override
     @Nullable
-    public MethodReference getBouncingTarget()
-    {
+    public MethodReference getBouncingTarget() {
         return bouncingTarget;
     }
 
     @Override
-    public @NonNull List<MethodReference> getOverrides()
-    {
+    public @NonNull List<MethodReference> getOverrides() {
         return overrides;
     }
 
     @Override
-    public int getSecuritySpecification()
-    {
+    public int getSecuritySpecification() {
         return securitySpecification;
     }
 

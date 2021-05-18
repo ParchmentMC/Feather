@@ -6,67 +6,63 @@ import org.parchmentmc.feather.named.Named;
 
 import java.util.Objects;
 
-public final class MethodReferenceBuilder implements MethodReference
-{
+public final class MethodReferenceBuilder implements MethodReference {
     protected Named owner = ImmutableNamed.empty();
     protected Named name = ImmutableNamed.empty();
     protected Named descriptor = ImmutableNamed.empty();
     protected Named signature = ImmutableNamed.empty();
 
-    private MethodReferenceBuilder() {}
+    private MethodReferenceBuilder() {
+    }
 
-    public static MethodReferenceBuilder create() { return new MethodReferenceBuilder(); }
+    public static MethodReferenceBuilder create() {
+        return new MethodReferenceBuilder();
+    }
 
-    public MethodReferenceBuilder withOwner(Named owner)
-    {
+    public MethodReferenceBuilder withOwner(Named owner) {
         this.owner = owner;
         return this;
     }
 
-    public MethodReferenceBuilder withName(Named name)
-    {
+    public MethodReferenceBuilder withName(Named name) {
         this.name = name;
         return this;
     }
 
-    public MethodReferenceBuilder withDescriptor(Named descriptor)
-    {
+    public MethodReferenceBuilder withDescriptor(Named descriptor) {
         this.descriptor = descriptor;
         return this;
     }
 
-    public MethodReferenceBuilder withSignature(Named signature)
-    {
+    public MethodReferenceBuilder withSignature(Named signature) {
         this.signature = signature;
         return this;
     }
 
 
     @Override
-    public @NonNull Named getOwner()
-    {
+    public @NonNull Named getOwner() {
         return owner;
     }
 
     @Override
-    public @NonNull Named getName()
-    {
+    public @NonNull Named getName() {
         return name;
     }
 
     @Override
-    public @NonNull Named getDescriptor()
-    {
+    public @NonNull Named getDescriptor() {
         return descriptor;
     }
 
     @Override
-    public @NonNull Named getSignature()
-    {
+    public @NonNull Named getSignature() {
         return signature;
     }
 
-    public ImmutableMethodReference build() { return new ImmutableMethodReference(owner, name, descriptor, signature); }
+    public ImmutableMethodReference build() {
+        return new ImmutableMethodReference(owner, name, descriptor, signature);
+    }
 
     @Override
     public boolean equals(Object o) {

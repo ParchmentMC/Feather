@@ -1,7 +1,6 @@
 package org.parchmentmc.feather.metadata;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.parchmentmc.feather.named.Named;
 
 import java.util.List;
@@ -9,8 +8,7 @@ import java.util.List;
 /**
  * Represents the metadata that is extracted during static analysis from a given class.
  */
-public interface ClassMetadata extends SecuredObject, ClassOwnedObject, NamedObject
-{
+public interface ClassMetadata extends SecuredObject, ClassOwnedObject, NamedObject {
     /**
      * The name of the super class.
      *

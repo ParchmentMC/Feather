@@ -7,8 +7,7 @@ import java.util.List;
 /**
  * The metadata of a given minecraft version.
  */
-public interface SourceMetadata
-{
+public interface SourceMetadata {
 
     /**
      * The version of the metadata loaded.
