@@ -82,6 +82,6 @@ class MethodReferenceAdapter extends TypeAdapter<MethodReference> {
         if (descriptor == null) throw new JsonParseException("Method reference descriptor is not present");
         if (signature == null) throw new JsonParseException("Method reference signature is not present");
 
-        return new ImmutableMethodReference(name, owner, descriptor, signature);
+        return new ImmutableMethodReference(owner, name, descriptor, signature);
     }
 }

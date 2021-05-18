@@ -88,6 +88,6 @@ class FieldMetadataAdapter extends TypeAdapter<FieldMetadata> {
         if (descriptor == null) throw new JsonParseException("Field descriptor is not present");
         if (signature == null) throw new JsonParseException("Field signature is not present");
 
-        return new ImmutableFieldMetadata(name, owner, security, descriptor, signature);
+        return new ImmutableFieldMetadata(owner, name, security, descriptor, signature);
     }
 }
