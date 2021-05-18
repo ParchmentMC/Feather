@@ -15,6 +15,6 @@ public class SimpleVersionAdapter {
 
     @FromJson
     SimpleVersion fromJson(String json) {
-        return new SimpleVersion(json);
+        return SimpleVersion.of(json);
     }
 }

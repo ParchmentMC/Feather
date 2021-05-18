@@ -2,7 +2,9 @@ package org.parchmentmc.feather.io.moshi;
 
 import com.squareup.moshi.*;
 import org.parchmentmc.feather.mapping.ImmutableMappingDataContainer;
+import org.parchmentmc.feather.mapping.ImmutableVersionedMappingDataContainer;
 import org.parchmentmc.feather.mapping.MappingDataContainer;
+import org.parchmentmc.feather.mapping.VersionedMappingDataContainer;
 import org.parchmentmc.feather.util.SimpleVersion;
 
 import java.io.IOException;
@@ -11,8 +13,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Moshi adapter for {@link MappingDataContainer}s and its inner data classes.
+ * Moshi adapter for {@link VersionedMappingDataContainer}s and its inner data classes.
  */
+@SuppressWarnings("unused")
 public class MDCMoshiAdapter {
     private final boolean ignoreNonDocumented;
 
@@ -37,7 +40,7 @@ public class MDCMoshiAdapter {
 
     @ToJson
     void containerToJson(JsonWriter writer,
-                         MappingDataContainer container,
+                         VersionedMappingDataContainer container,
                          JsonAdapter<SimpleVersion> versionAdapter,
                          JsonAdapter<Collection<? extends MappingDataContainer.PackageData>> packageAdapter,
                          JsonAdapter<Collection<? extends MappingDataContainer.ClassData>> classAdapter) throws IOException {
@@ -136,7 +139,7 @@ public class MDCMoshiAdapter {
     /* ***************** Deserialization ***************** */
 
     @FromJson
-    MappingDataContainer containerToJson(JsonReader reader,
+    VersionedMappingDataContainer containerToJson(JsonReader reader,
                                          JsonAdapter<SimpleVersion> versionAdapter,
                                          JsonAdapter<Collection<? extends MappingDataContainer.PackageData>> packageAdapter,
                                          JsonAdapter<Collection<? extends MappingDataContainer.ClassData>> classAdapter) throws IOException {
@@ -151,9 +154,9 @@ public class MDCMoshiAdapter {
             switch (propertyName) {
                 case "version":
                     version = versionAdapter.fromJson(reader);
-                    if (version != null && !version.isCompatibleWith(MappingDataContainer.CURRENT_FORMAT))
+                    if (version != null && !version.isCompatibleWith(VersionedMappingDataContainer.CURRENT_FORMAT))
                         throw new JsonDataException("Version " + version + " is incompatible with current version "
-                                + MappingDataContainer.CURRENT_FORMAT);
+                                + VersionedMappingDataContainer.CURRENT_FORMAT);
                     break;
                 case "packages":
                     packages = packageAdapter.fromJson(reader);
@@ -172,7 +175,7 @@ public class MDCMoshiAdapter {
         if (classes == null) classes = Collections.emptyList();
         if (version == null) throw new JsonDataException("No version found");
 
-        return new ImmutableMappingDataContainer(version, packages, classes);
+        return new ImmutableVersionedMappingDataContainer(version, packages, classes);
     }
 
     @FromJson
