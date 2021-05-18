@@ -13,16 +13,16 @@ import java.util.Collections;
 import java.util.Map;
 
 @SuppressWarnings("unused")
-public class MetadataMoshiAdapter
-{
+public class MetadataMoshiAdapter {
+
+    /* ****************** Serialization ****************** */
+
     @ToJson
     void namedToJson(JsonWriter writer,
-      Named named) throws IOException
-    {
+                     Named named) throws IOException {
         writer.beginObject();
 
-        for (Map.Entry<String, String> entry : named.getNames().entrySet())
-        {
+        for (Map.Entry<String, String> entry : named.getNames().entrySet()) {
             String schema = entry.getKey();
             String name = entry.getValue();
             writer.name(schema).jsonValue(name);
@@ -33,9 +33,8 @@ public class MetadataMoshiAdapter
 
     @ToJson
     void methodReferenceToJson(JsonWriter writer,
-      MethodReference methodReference,
-      JsonAdapter<Named> namedAdapter) throws IOException
-    {
+                               MethodReference methodReference,
+                               JsonAdapter<Named> namedAdapter) throws IOException {
         writer.beginObject();
 
         writer.name("owner").jsonValue(namedAdapter.toJsonValue(methodReference.getOwner()));
@@ -48,10 +47,9 @@ public class MetadataMoshiAdapter
 
     @ToJson
     void sourceToJson(JsonWriter writer,
-      SourceMetadata sourceMetadata,
-      JsonAdapter<SimpleVersion> specVersionAdapter,
-      JsonAdapter<Collection<? extends ClassMetadata>> classCollectionAdapter) throws IOException
-    {
+                      SourceMetadata sourceMetadata,
+                      JsonAdapter<SimpleVersion> specVersionAdapter,
+                      JsonAdapter<Collection<? extends ClassMetadata>> classCollectionAdapter) throws IOException {
         writer.beginObject();
 
         writer.name("specVersion").jsonValue(specVersionAdapter.toJsonValue(sourceMetadata.getSpecificationVersion()));
@@ -63,13 +61,12 @@ public class MetadataMoshiAdapter
 
     @ToJson
     void classToJson(JsonWriter writer,
-      ClassMetadata classMetadata,
-      JsonAdapter<Named> namedAdapter,
-      JsonAdapter<Collection<? extends Named>> namedCollectionAdapter,
-      JsonAdapter<Collection<? extends MethodMetadata>> methodCollectionAdapter,
-      JsonAdapter<Collection<? extends FieldMetadata>> fieldCollectionAdapter,
-      JsonAdapter<Collection<? extends ClassMetadata>> classCollectionAdapter) throws IOException
-    {
+                     ClassMetadata classMetadata,
+                     JsonAdapter<Named> namedAdapter,
+                     JsonAdapter<Collection<? extends Named>> namedCollectionAdapter,
+                     JsonAdapter<Collection<? extends MethodMetadata>> methodCollectionAdapter,
+                     JsonAdapter<Collection<? extends FieldMetadata>> fieldCollectionAdapter,
+                     JsonAdapter<Collection<? extends ClassMetadata>> classCollectionAdapter) throws IOException {
         writer.beginObject();
 
         writer.name("name").jsonValue(namedAdapter.toJsonValue(classMetadata.getName()));
@@ -86,12 +83,11 @@ public class MetadataMoshiAdapter
 
     @ToJson
     void methodToJson(JsonWriter writer,
-      MethodMetadata methodMetadata,
-      JsonAdapter<Named> namedAdapter,
-      JsonAdapter<MethodReference> methodReferenceAdapter,
-      JsonAdapter<Collection<? extends MethodReference>> methodReferenceCollectionAdapter
-    ) throws IOException
-    {
+                      MethodMetadata methodMetadata,
+                      JsonAdapter<Named> namedAdapter,
+                      JsonAdapter<MethodReference> methodReferenceAdapter,
+                      JsonAdapter<Collection<? extends MethodReference>> methodReferenceCollectionAdapter
+    ) throws IOException {
         writer.beginObject();
 
         writer.name("owner").jsonValue(namedAdapter.toJsonValue(methodMetadata.getOwner()));
@@ -108,10 +104,9 @@ public class MetadataMoshiAdapter
 
     @ToJson
     void fieldToJson(JsonWriter writer,
-      FieldMetadata fieldMetadata,
-      JsonAdapter<Named> namedAdapter
-    ) throws IOException
-    {
+                     FieldMetadata fieldMetadata,
+                     JsonAdapter<Named> namedAdapter
+    ) throws IOException {
         writer.beginObject();
 
         writer.name("owner").jsonValue(namedAdapter.toJsonValue(fieldMetadata.getOwner()));
@@ -123,13 +118,14 @@ public class MetadataMoshiAdapter
         writer.endObject();
     }
 
+    /* ***************** Deserialization ***************** */
+
     @FromJson
-    Named namedFromJson(JsonReader reader) throws IOException
-    {
+    Named namedFromJson(JsonReader reader) throws IOException {
         final NamedBuilder builder = NamedBuilder.create();
 
         reader.beginObject();
-        while(reader.hasNext()) {
+        while (reader.hasNext()) {
             final String schema = reader.nextName();
             final String name = reader.nextString();
 
@@ -142,8 +138,7 @@ public class MetadataMoshiAdapter
 
     @FromJson
     MethodReference methodReferenceFromJson(JsonReader reader,
-      JsonAdapter<Named> namedAdapter) throws IOException
-    {
+                                            JsonAdapter<Named> namedAdapter) throws IOException {
         reader.beginObject();
 
         final MethodReferenceBuilder builder = MethodReferenceBuilder.create();
@@ -176,15 +171,13 @@ public class MetadataMoshiAdapter
 
     @FromJson
     SourceMetadata sourceFromJson(JsonReader reader,
-      JsonAdapter<SimpleVersion> specVersionAdapter,
-      JsonAdapter<Collection<? extends ClassMetadata>> classCollectionAdapter) throws IOException
-    {
+                                  JsonAdapter<SimpleVersion> specVersionAdapter,
+                                  JsonAdapter<Collection<? extends ClassMetadata>> classCollectionAdapter) throws IOException {
         reader.beginObject();
 
         final SourceMetadataBuilder builder = SourceMetadataBuilder.create();
 
-        while(reader.hasNext())
-        {
+        while (reader.hasNext()) {
             switch (reader.nextName()) {
                 case "specVersion":
                     builder.withSpecVersion(specVersionAdapter.fromJson(reader));
@@ -209,17 +202,16 @@ public class MetadataMoshiAdapter
 
     @FromJson
     ClassMetadata classFromJson(JsonReader reader,
-      JsonAdapter<Named> namedAdapter,
-      JsonAdapter<Collection<? extends Named>> namedCollectionAdapter,
-      JsonAdapter<Collection<? extends MethodMetadata>> methodCollectionAdapter,
-      JsonAdapter<Collection<? extends FieldMetadata>> fieldCollectionAdapter,
-      JsonAdapter<Collection<? extends ClassMetadata>> classCollectionAdapter) throws IOException
-    {
+                                JsonAdapter<Named> namedAdapter,
+                                JsonAdapter<Collection<? extends Named>> namedCollectionAdapter,
+                                JsonAdapter<Collection<? extends MethodMetadata>> methodCollectionAdapter,
+                                JsonAdapter<Collection<? extends FieldMetadata>> fieldCollectionAdapter,
+                                JsonAdapter<Collection<? extends ClassMetadata>> classCollectionAdapter) throws IOException {
         final ClassMetadataBuilder builder = ClassMetadataBuilder.create();
 
         reader.beginObject();
 
-        while(reader.hasNext()) {
+        while (reader.hasNext()) {
             switch (reader.nextName()) {
                 case "name":
                     builder.withName(namedAdapter.fromJson(reader));
@@ -247,7 +239,7 @@ public class MetadataMoshiAdapter
                     break;
                 case "inner":
                     final Collection<? extends ClassMetadata> inner = classCollectionAdapter.fromJson(reader);
-                    builder.withInnerClasses(inner == null ? Collections.emptyList(): new ArrayList<>(inner));
+                    builder.withInnerClasses(inner == null ? Collections.emptyList() : new ArrayList<>(inner));
                     break;
                 default:
                     reader.skipValue();
@@ -261,10 +253,9 @@ public class MetadataMoshiAdapter
 
     @FromJson
     MethodMetadata methodFromJson(JsonReader reader,
-      JsonAdapter<Named> namedAdapter,
-      JsonAdapter<MethodReference> methodReferenceAdapter,
-      JsonAdapter<Collection<? extends MethodReference>> methodReferenceCollectionAdapter) throws IOException
-    {
+                                  JsonAdapter<Named> namedAdapter,
+                                  JsonAdapter<MethodReference> methodReferenceAdapter,
+                                  JsonAdapter<Collection<? extends MethodReference>> methodReferenceCollectionAdapter) throws IOException {
         reader.beginObject();
 
         final MethodMetadataBuilder builder = MethodMetadataBuilder.create();
@@ -310,8 +301,7 @@ public class MetadataMoshiAdapter
 
     @FromJson
     FieldMetadata FieldFromJson(JsonReader reader,
-      JsonAdapter<Named> namedAdapter) throws IOException
-    {
+                                JsonAdapter<Named> namedAdapter) throws IOException {
         reader.beginObject();
 
         final FieldMetadataBuilder builder = FieldMetadataBuilder.create();
