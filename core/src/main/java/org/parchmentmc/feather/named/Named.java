@@ -1,8 +1,10 @@
 package org.parchmentmc.feather.named;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.parchmentmc.feather.util.Constants;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Represents a named object that potentially has names in different mapping types (also known as schemas)
@@ -27,12 +29,11 @@ public interface Named
 
     /**
      * Looks up a name in the obfuscated schema ({@link Constants.Names#OBFUSCATED}).
-     * If no name in the obfuscated schema exists in this named object then the {@link Constants.Defaults#UNKNOWN_NAME} value is returned.
      *
-     * @return The obfuscated name, or the {@link Constants.Defaults#UNKNOWN_NAME} value.
+     * @return The obfuscated name.
      */
-    default String getObfuscatedName() {
-        return getObfuscatedName(Constants.Defaults.UNKNOWN_NAME);
+    default Optional<String> getObfuscatedName() {
+        return getObfuscatedName(null);
     }
 
     /**
@@ -42,18 +43,17 @@ public interface Named
      * @param orElse The value that should be returned if this object does not have an obfuscated name.
      * @return The obfuscated name or the {@code orElse} value.
      */
-    default String getObfuscatedName(String orElse) {
+    default Optional<String> getObfuscatedName(@Nullable String orElse) {
         return getName(Constants.Names.OBFUSCATED, orElse);
     }
 
     /**
      * Looks up a name in the mojang schema ({@link Constants.Names#MOJANG}).
-     * If no name in the mojang schema exists in this named object then the {@link Constants.Defaults#UNKNOWN_NAME} value is returned.
      *
-     * @return The mojang name, or the {@link Constants.Defaults#UNKNOWN_NAME} value.
+     * @return The mojang name.
      */
-    default String getMojangName() {
-        return getMojangName(Constants.Defaults.UNKNOWN_NAME);
+    default Optional<String> getMojangName() {
+        return getMojangName(null);
     }
 
     /**
@@ -63,19 +63,18 @@ public interface Named
      * @param orElse The value that should be returned if this object does not have a mojang name.
      * @return The mojang name or the {@code orElse} value.
      */
-    default String getMojangName(String orElse) {
+    default Optional<String> getMojangName(String orElse) {
         return getName(Constants.Names.MOJANG, orElse);
     }
 
     /**
      * Looks up a name with the given schema in this named object.
-     * If no schema exists in this named object then the {@link Constants.Defaults#UNKNOWN_NAME} value is returned.
      *
      * @param scheme The schema for the name.
-     * @return The name registered for the given schema, or the {@link Constants.Defaults#UNKNOWN_NAME} value.
+     * @return The name registered for the given schema.
      */
-    default String getName(String scheme) {
-        return getName(scheme, Constants.Defaults.UNKNOWN_NAME);
+    default Optional<String> getName(String scheme) {
+        return getName(scheme, null);
     }
 
     /**
@@ -86,7 +85,7 @@ public interface Named
      * @param orElse The value returned when this named object does not contain a name for the given schema.
      * @return The name for the given schema or the {@code orElse} value.
      */
-    default String getName(String scheme, String orElse) {
-        return getNames().getOrDefault(scheme, orElse);
+    default Optional<String> getName(String scheme, String orElse) {
+        return Optional.ofNullable(getNames().getOrDefault(scheme, orElse));
     }
 }

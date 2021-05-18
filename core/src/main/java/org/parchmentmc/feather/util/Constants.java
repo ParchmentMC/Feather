@@ -12,8 +12,4 @@ public class Constants
         public static final String OBFUSCATED = "obf";
         public static final String MOJANG = "moj";
     }
-
-    public static class Defaults {
-        public static final String UNKNOWN_NAME = "<UNKNOWN>";
-    }
 }
