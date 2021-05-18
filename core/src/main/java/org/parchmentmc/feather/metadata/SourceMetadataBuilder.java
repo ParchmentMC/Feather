@@ -3,6 +3,7 @@ package org.parchmentmc.feather.metadata;
 import org.parchmentmc.feather.util.SimpleVersion;
 
 import java.util.List;
+import java.util.Objects;
 
 public final class SourceMetadataBuilder implements SourceMetadata
 {
@@ -51,4 +52,19 @@ public final class SourceMetadataBuilder implements SourceMetadata
     }
 
     public ImmutableSourceMetadata build() { return new ImmutableSourceMetadata(specVersion, minecraftVersion, classes); }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SourceMetadata)) return false;
+        SourceMetadata that = (SourceMetadata) o;
+        return getSpecificationVersion().equals(that.getSpecificationVersion())
+                && getMinecraftVersion().equals(that.getMinecraftVersion())
+                && getClasses().equals(that.getClasses());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getSpecificationVersion(), getMinecraftVersion(), getClasses());
+    }
 }

@@ -5,6 +5,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.parchmentmc.feather.named.Named;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ImmutableMethodMetadata extends ImmutableMethodReference implements MethodMetadata
 {
@@ -52,5 +53,22 @@ public class ImmutableMethodMetadata extends ImmutableMethodReference implements
     public int getSecuritySpecification()
     {
         return securitySpecification;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MethodMetadata)) return false;
+        if (!super.equals(o)) return false;
+        MethodMetadata that = (MethodMetadata) o;
+        return isLambda() == that.isLambda()
+                && getSecuritySpecification() == that.getSecuritySpecification()
+                && Objects.equals(getBouncingTarget(), that.getBouncingTarget())
+                && getOverrides().equals(that.getOverrides());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), isLambda(), getBouncingTarget(), getOverrides(), getSecuritySpecification());
     }
 }

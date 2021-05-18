@@ -6,6 +6,7 @@ import org.parchmentmc.feather.named.ImmutableNamed;
 import org.parchmentmc.feather.named.Named;
 
 import java.util.List;
+import java.util.Objects;
 
 public final class ClassMetadataBuilder implements ClassMetadata
 {
@@ -120,4 +121,25 @@ public final class ClassMetadataBuilder implements ClassMetadata
     }
 
     public ImmutableClassMetadata build() { return new ImmutableClassMetadata(superName, interfaces, methods, fields, innerClasses, owner, name, securitySpecifications); }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ClassMetadata)) return false;
+        ClassMetadata that = (ClassMetadata) o;
+        return getSecuritySpecification() == that.getSecuritySpecification()
+                && Objects.equals(getSuperName(), that.getSuperName())
+                && getInterfaces().equals(that.getInterfaces())
+                && getMethods().equals(that.getMethods())
+                && getFields().equals(that.getFields())
+                && getInnerClasses().equals(that.getInnerClasses())
+                && Objects.equals(getOwner(), that.getOwner())
+                && getName().equals(that.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getSuperName(), getInterfaces(), getMethods(), getFields(), getInnerClasses(), getOwner(),
+                getName(), getSecuritySpecification());
+    }
 }

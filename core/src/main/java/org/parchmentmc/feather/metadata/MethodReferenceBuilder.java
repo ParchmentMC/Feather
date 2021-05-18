@@ -4,6 +4,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.parchmentmc.feather.named.ImmutableNamed;
 import org.parchmentmc.feather.named.Named;
 
+import java.util.Objects;
+
 public final class MethodReferenceBuilder implements MethodReference
 {
     protected Named owner = new ImmutableNamed();
@@ -65,4 +67,20 @@ public final class MethodReferenceBuilder implements MethodReference
     }
 
     public ImmutableMethodReference build() { return new ImmutableMethodReference(owner, name, descriptor, signature); }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MethodReference)) return false;
+        MethodReference that = (MethodReference) o;
+        return Objects.equals(getOwner(), that.getOwner())
+                && getName().equals(that.getName())
+                && getDescriptor().equals(that.getDescriptor())
+                && Objects.equals(getSignature(), that.getSignature());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getOwner(), getName(), getDescriptor(), getSignature());
+    }
 }

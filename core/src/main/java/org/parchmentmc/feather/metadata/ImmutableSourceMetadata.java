@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import org.parchmentmc.feather.util.SimpleVersion;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ImmutableSourceMetadata implements SourceMetadata
 {
@@ -39,5 +40,20 @@ public class ImmutableSourceMetadata implements SourceMetadata
     public List<ClassMetadata> getClasses()
     {
         return classes;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SourceMetadata)) return false;
+        SourceMetadata that = (SourceMetadata) o;
+        return getSpecificationVersion().equals(that.getSpecificationVersion())
+                && getMinecraftVersion().equals(that.getMinecraftVersion())
+                && getClasses().equals(that.getClasses());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getSpecificationVersion(), getMinecraftVersion(), getClasses());
     }
 }

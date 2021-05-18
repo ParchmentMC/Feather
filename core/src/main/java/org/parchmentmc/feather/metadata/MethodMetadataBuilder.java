@@ -7,6 +7,7 @@ import org.parchmentmc.feather.named.ImmutableNamed;
 import org.parchmentmc.feather.named.Named;
 
 import java.util.List;
+import java.util.Objects;
 
 public final class MethodMetadataBuilder implements MethodMetadata
 {
@@ -122,4 +123,20 @@ public final class MethodMetadataBuilder implements MethodMetadata
 
     public ImmutableMethodMetadata build() { return new ImmutableMethodMetadata(owner, lambda, bouncingTarget, overrides, name, securitySpecification, descriptor, signature); }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MethodMetadata)) return false;
+        if (!super.equals(o)) return false;
+        MethodMetadata that = (MethodMetadata) o;
+        return isLambda() == that.isLambda()
+                && getSecuritySpecification() == that.getSecuritySpecification()
+                && Objects.equals(getBouncingTarget(), that.getBouncingTarget())
+                && getOverrides().equals(that.getOverrides());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), isLambda(), getBouncingTarget(), getOverrides(), getSecuritySpecification());
+    }
 }

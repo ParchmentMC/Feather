@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import org.parchmentmc.feather.util.Constants;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A mutable named object.
@@ -118,5 +119,18 @@ public class NamedBuilder implements Named
      */
     public Named build() {
         return new ImmutableNamed(this.names);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Named)) return false;
+        Named that = (Named) o;
+        return getNames().equals(that.getNames());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getNames());
     }
 }
