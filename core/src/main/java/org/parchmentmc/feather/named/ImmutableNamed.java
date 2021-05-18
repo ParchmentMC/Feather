@@ -18,7 +18,7 @@ public class ImmutableNamed implements Named {
     }
 
     public static ImmutableNamed of(Map<String, String> names) {
-        return new ImmutableNamed(names);
+        return names.isEmpty() ? empty() : new ImmutableNamed(names);
     }
 
     private final Map<String, String> names;
