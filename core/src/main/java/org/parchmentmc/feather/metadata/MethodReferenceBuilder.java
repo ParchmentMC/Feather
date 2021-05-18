@@ -8,10 +8,10 @@ import java.util.Objects;
 
 public final class MethodReferenceBuilder implements MethodReference
 {
-    protected Named owner = new ImmutableNamed();
-    protected Named name = new ImmutableNamed();
-    protected Named descriptor = new ImmutableNamed();
-    protected Named signature = new ImmutableNamed();
+    protected Named owner = ImmutableNamed.empty();
+    protected Named name = ImmutableNamed.empty();
+    protected Named descriptor = ImmutableNamed.empty();
+    protected Named signature = ImmutableNamed.empty();
 
     private MethodReferenceBuilder() {}
 

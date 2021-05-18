@@ -10,13 +10,13 @@ import java.util.Objects;
 
 public final class ClassMetadataBuilder implements ClassMetadata
 {
-    private Named                superName = new ImmutableNamed();
+    private Named                superName = ImmutableNamed.empty();
     private List<Named>          interfaces = Lists.newArrayList();
     private List<MethodMetadata> methods = Lists.newArrayList();
     private List<FieldMetadata>  fields = Lists.newArrayList();
     private List<ClassMetadata>  innerClasses = Lists.newArrayList();
-    private Named                owner = new ImmutableNamed();
-    private Named                name = new ImmutableNamed();
+    private Named                owner = ImmutableNamed.empty();
+    private Named                name = ImmutableNamed.empty();
     private int                  securitySpecifications = 0;
 
     private ClassMetadataBuilder() {}

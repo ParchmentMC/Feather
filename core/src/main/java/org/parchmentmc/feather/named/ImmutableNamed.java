@@ -1,39 +1,35 @@
 package org.parchmentmc.feather.named;
 
-import com.google.common.collect.Maps;
-import org.parchmentmc.feather.util.Constants;
+import com.google.common.collect.ImmutableMap;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
-public class ImmutableNamed implements Named
-{
-    private final Map<String, String> names = Maps.newHashMap();
+public class ImmutableNamed implements Named {
+    // A shared empty immutable singleton.
+    private static final ImmutableNamed EMPTY = new ImmutableNamed(ImmutableMap.of());
 
-    public ImmutableNamed(
-      final String mappingName,
-      final String mappingValue
-    )
-    {
-        this.names.put(mappingName, mappingValue);
+    public static ImmutableNamed empty() {
+        return EMPTY;
     }
 
-    public ImmutableNamed(
-      final Map<String, String> names
-    )
-    {
-        this.names.putAll(names);
+    public static ImmutableNamed of(String mappingSchema, String mappingValue) {
+        return new ImmutableNamed(ImmutableMap.of(mappingSchema, mappingValue));
     }
 
-    public ImmutableNamed()
-    {
+    public static ImmutableNamed of(Map<String, String> names) {
+        return new ImmutableNamed(names);
+    }
+
+    private final Map<String, String> names;
+
+    private ImmutableNamed(final Map<String, String> names) {
+        this.names = ImmutableMap.copyOf(names);
     }
 
     @Override
-    public Map<String, String> getNames()
-    {
-        return Collections.unmodifiableMap(names);
+    public Map<String, String> getNames() {
+        return names;
     }
 
     @Override

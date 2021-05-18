@@ -8,11 +8,11 @@ import java.util.Objects;
 
 public final class FieldMetadataBuilder implements FieldMetadata
 {
-    private Named owner = new ImmutableNamed();
-    private Named name = new ImmutableNamed();
+    private Named owner = ImmutableNamed.empty();
+    private Named name = ImmutableNamed.empty();
     private int   securitySpecification = 0;
-    private Named descriptor = new ImmutableNamed();
-    private Named signature = new ImmutableNamed();
+    private Named descriptor = ImmutableNamed.empty();
+    private Named signature = ImmutableNamed.empty();
 
     private FieldMetadataBuilder() {}
 

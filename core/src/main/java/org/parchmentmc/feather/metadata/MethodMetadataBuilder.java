@@ -11,14 +11,14 @@ import java.util.Objects;
 
 public final class MethodMetadataBuilder implements MethodMetadata
 {
-    private Named                 owner = new ImmutableNamed();
+    private Named                 owner = ImmutableNamed.empty();
     private boolean               lambda = false;
     private MethodReference       bouncingTarget = null;
     private List<MethodReference> overrides = Lists.newArrayList();
-    private Named                 name = new ImmutableNamed();
+    private Named                 name = ImmutableNamed.empty();
     private int                   securitySpecification = 0;
-    private Named                 descriptor = new ImmutableNamed();
-    private Named                 signature = new ImmutableNamed();
+    private Named                 descriptor = ImmutableNamed.empty();
+    private Named                 signature = ImmutableNamed.empty();
 
     private MethodMetadataBuilder() {}
 

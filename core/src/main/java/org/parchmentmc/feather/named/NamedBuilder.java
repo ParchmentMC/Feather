@@ -118,7 +118,7 @@ public class NamedBuilder implements Named
      * @return The immutable snapshot.
      */
     public Named build() {
-        return new ImmutableNamed(this.names);
+        return ImmutableNamed.of(this.names);
     }
 
     @Override
