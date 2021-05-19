@@ -45,7 +45,7 @@ public class MappingDataBuilder implements MappingDataContainer {
 
     private MutablePackageData makePackage(String packageName) {
         MutablePackageData pkg = new MutablePackageData(packageName);
-        packagesMap.put(packageName, pkg);
+        packages.add(pkg);
         return pkg;
     }
 
