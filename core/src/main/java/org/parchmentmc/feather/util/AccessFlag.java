@@ -43,4 +43,15 @@ public enum AccessFlag
     public static EnumSet<AccessFlag> getAccessFlags(final int bitField) {
         return Arrays.stream(values()).filter(a -> a.isActive(bitField)).collect(Collectors.toCollection(() -> EnumSet.noneOf(AccessFlag.class)));
     }
+
+    public static int toSecuritySpecification(final EnumSet<AccessFlag> accessFlags) {
+        int bitField = 0;
+
+        for (final AccessFlag accessFlag : accessFlags)
+        {
+            bitField |= accessFlag.bitMask;
+        }
+
+        return bitField;
+    }
 }

@@ -7,9 +7,9 @@ import org.parchmentmc.feather.named.NamedBuilder;
 import org.parchmentmc.feather.util.SimpleVersion;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 
 @SuppressWarnings("unused")
@@ -229,7 +229,7 @@ public class MetadataMoshiAdapter {
                     break;
                 case "classes":
                     final Collection<? extends ClassMetadata> classes = classCollectionAdapter.fromJson(reader);
-                    builder.withClasses(classes == null ? Collections.emptyList() : new ArrayList<>(classes));
+                    builder.withClasses(classes == null ? Collections.emptySet() : new HashSet<>(classes));
                     break;
                 default:
                     reader.skipValue();
@@ -273,19 +273,19 @@ public class MetadataMoshiAdapter {
                     break;
                 case "implements":
                     final Collection<? extends Named> interfaces = namedCollectionAdapter.fromJson(reader);
-                    builder.withInterfaces(interfaces == null ? Collections.emptyList() : new ArrayList<>(interfaces));
+                    builder.withInterfaces(interfaces == null ? Collections.emptySet() : new HashSet<>(interfaces));
                     break;
                 case "fields":
                     final Collection<? extends FieldMetadata> fields = fieldCollectionAdapter.fromJson(reader);
-                    builder.withFields(fields == null ? Collections.emptyList() : new ArrayList<>(fields));
+                    builder.withFields(fields == null ? Collections.emptySet() : new HashSet<>(fields));
                     break;
                 case "methods":
                     final Collection<? extends MethodMetadata> methods = methodCollectionAdapter.fromJson(reader);
-                    builder.withMethods(methods == null ? Collections.emptyList() : new ArrayList<>(methods));
+                    builder.withMethods(methods == null ? Collections.emptySet() : new HashSet<>(methods));
                     break;
                 case "inner":
                     final Collection<? extends ClassMetadata> inner = classCollectionAdapter.fromJson(reader);
-                    builder.withInnerClasses(inner == null ? Collections.emptyList() : new ArrayList<>(inner));
+                    builder.withInnerClasses(inner == null ? Collections.emptySet() : new HashSet<>(inner));
                     break;
                 default:
                     reader.skipValue();
@@ -336,7 +336,7 @@ public class MetadataMoshiAdapter {
                     break;
                 case "overrides":
                     final Collection<? extends MethodReference> overrides = methodReferenceCollectionAdapter.fromJson(reader);
-                    builder.withOverrides(overrides == null ? Collections.emptyList() : new ArrayList<>(overrides));
+                    builder.withOverrides(overrides == null ? Collections.emptySet() : new HashSet<>(overrides));
                     break;
                 default:
                     reader.skipValue();

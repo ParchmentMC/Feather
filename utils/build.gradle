@@ -1,0 +1,15 @@
+group = 'org.parchmentmc.feather'
+archivesBaseName = 'utils'
+
+dependencies {
+
+
+    api project(':feather')
+    testImplementation project(':feather').sourceSets.test.output
+}
+
+publishing {
+    publications.create("utils", MavenPublication) {
+        from components.java
+    }
+}

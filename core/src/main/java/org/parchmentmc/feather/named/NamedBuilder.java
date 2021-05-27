@@ -1,6 +1,7 @@
 package org.parchmentmc.feather.named;
 
 import com.google.common.collect.Maps;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.parchmentmc.feather.util.Constants;
 
 import java.util.Map;
@@ -20,7 +21,6 @@ public class NamedBuilder implements Named
     {
         return new NamedBuilder(mappingName, mappingValue);
     }
-
 
     public static NamedBuilder create(
       final Map<String, String> names
@@ -84,6 +84,9 @@ public class NamedBuilder implements Named
       final String scheme,
       final String name
     ) {
+        if (scheme.equals("") || name.equals(""))
+            return this;
+
         this.names.put(scheme, name);
         return this;
     }
@@ -113,6 +116,18 @@ public class NamedBuilder implements Named
     }
 
     /**
+     * Add all the schemas and names from the named object.
+     *
+     * @param source The named object to add all the schemas and names from.
+     * @return The builder.
+     */
+    public NamedBuilder merge(final Named source)
+    {
+        this.names.putAll(source.getNames());
+        return this;
+    }
+
+    /**
      * Creates a new immutable snapshot of this mutable named object.
      *
      * @return The immutable snapshot.
@@ -132,5 +147,11 @@ public class NamedBuilder implements Named
     @Override
     public int hashCode() {
         return Objects.hash(getNames());
+    }
+
+    @Override
+    public @NonNull Named toImmutable()
+    {
+        return build();
     }
 }

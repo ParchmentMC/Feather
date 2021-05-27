@@ -1,0 +1,16 @@
+group = 'org.parchmentmc.feather'
+archivesBaseName = 'io-proguard'
+
+dependencies {
+    api project(':feather')
+    testImplementation project(':feather').sourceSets.test.output
+
+    api project(':utils')
+    testImplementation project(':utils').sourceSets.test.output
+}
+
+publishing {
+    publications.create("proguardIO", MavenPublication) {
+        from components.java
+    }
+}

@@ -1,13 +1,16 @@
 package org.parchmentmc.feather.metadata;
 
+import org.parchmentmc.feather.named.NamedBuilder;
+import org.parchmentmc.feather.util.HasImmutable;
 import org.parchmentmc.feather.util.SimpleVersion;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * The metadata of a given minecraft version.
  */
-public interface SourceMetadata {
+public interface SourceMetadata extends HasImmutable<SourceMetadata>
+{
 
     /**
      * The version of the metadata loaded.
@@ -28,5 +31,5 @@ public interface SourceMetadata {
      *
      * @return The classes.
      */
-    List<ClassMetadata> getClasses();
+    Set<ClassMetadata> getClasses();
 }

@@ -61,4 +61,22 @@ public class ImmutableFieldMetadata implements FieldMetadata {
     public int hashCode() {
         return Objects.hash(getOwner(), getName(), getSecuritySpecification(), getDescriptor(), getSignature());
     }
+
+    @Override
+    public String toString()
+    {
+        return "ImmutableFieldMetadata{" +
+                 "owner=" + owner +
+                 ", name=" + name +
+                 ", securitySpecification=" + securitySpecification +
+                 ", descriptor=" + descriptor +
+                 ", signature=" + signature +
+                 '}';
+    }
+
+    @Override
+    public @NonNull FieldMetadata toImmutable()
+    {
+        return this;
+    }
 }

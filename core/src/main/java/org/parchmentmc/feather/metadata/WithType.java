@@ -7,7 +7,8 @@ import org.parchmentmc.feather.named.Named;
  * Represents an object with a descriptor and signature.
  * Most notably are fields and methods.
  */
-public interface TypedObject {
+public interface WithType
+{
 
     /**
      * The JVM Descriptor of the object.

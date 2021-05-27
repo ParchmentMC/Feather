@@ -13,7 +13,7 @@ import org.parchmentmc.feather.metadata.SourceMetadata;
 import org.parchmentmc.feather.util.SimpleVersion;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 
 /**
  * GSON adapter for {@link SourceMetadata} objects.
@@ -21,7 +21,7 @@ import java.util.List;
  * <p>For internal use. Users should use {@link MetadataAdapterFactory} instead.</p>
  */
 class SourceMetadataAdapter extends TypeAdapter<SourceMetadata> {
-    private static final TypeToken<List<ClassMetadata>> CLASS_METADATA_LIST_TOKEN = new TypeToken<List<ClassMetadata>>() {
+    private static final TypeToken<Set<ClassMetadata>> CLASS_METADATA_Set_TOKEN = new TypeToken<Set<ClassMetadata>>() {
     };
 
     private final Gson gson;
@@ -42,7 +42,7 @@ class SourceMetadataAdapter extends TypeAdapter<SourceMetadata> {
         gson.toJson(value.getSpecificationVersion(), SimpleVersion.class, out);
         out.name("minecraftVersion").value(value.getMinecraftVersion());
         out.name("classes");
-        gson.toJson(value.getClasses(), CLASS_METADATA_LIST_TOKEN.getType(), out);
+        gson.toJson(value.getClasses(), CLASS_METADATA_Set_TOKEN.getType(), out);
         out.endObject();
     }
 
@@ -55,7 +55,7 @@ class SourceMetadataAdapter extends TypeAdapter<SourceMetadata> {
 
         SimpleVersion specVersion = null;
         String minecraftVersion = null;
-        List<ClassMetadata> classes = null;
+        Set<ClassMetadata> classes = null;
 
         in.beginObject();
         while (in.hasNext()) {
@@ -68,7 +68,7 @@ class SourceMetadataAdapter extends TypeAdapter<SourceMetadata> {
                     minecraftVersion = in.nextString();
                     break;
                 case "classes":
-                    classes = gson.fromJson(in, CLASS_METADATA_LIST_TOKEN.getType());
+                    classes = gson.fromJson(in, CLASS_METADATA_Set_TOKEN.getType());
                     break;
                 default:
                     in.skipValue();
@@ -78,7 +78,7 @@ class SourceMetadataAdapter extends TypeAdapter<SourceMetadata> {
 
         if (specVersion == null) throw new JsonParseException("Specification version is not present");
         if (minecraftVersion == null) throw new JsonParseException("Minecraft version is not present");
-        if (classes == null) throw new JsonParseException("Classes list is not present");
+        if (classes == null) throw new JsonParseException("Classes Set is not present");
 
         return new ImmutableSourceMetadata(specVersion, minecraftVersion, classes);
     }
