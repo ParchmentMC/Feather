@@ -4,6 +4,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.parchmentmc.feather.util.HasImmutable;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.Optional;
 
@@ -34,7 +35,7 @@ public interface MethodMetadata extends BaseMethodReference, WithSecurity, HasIm
      * @return The methods this method overrides.
      */
     @NonNull
-    Set<MethodReference> getOverrides();
+    LinkedHashSet<MethodReference> getOverrides();
 
     /**
      * Indicates the line where this method starts in the obfuscated none patched none updated none remapped jar.

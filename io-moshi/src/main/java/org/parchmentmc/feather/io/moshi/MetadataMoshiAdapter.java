@@ -7,8 +7,7 @@ import org.parchmentmc.feather.named.NamedBuilder;
 import org.parchmentmc.feather.util.SimpleVersion;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.HashSet;
 import java.util.Map;
 
@@ -59,7 +58,7 @@ public class MetadataMoshiAdapter {
     void sourceToJson(JsonWriter writer,
                       SourceMetadata sourceMetadata,
                       JsonAdapter<SimpleVersion> specVersionAdapter,
-                      JsonAdapter<Collection<? extends ClassMetadata>> classCollectionAdapter) throws IOException {
+                      JsonAdapter<LinkedHashSet<? extends ClassMetadata>> classLinkedHashSetAdapter) throws IOException {
         if (sourceMetadata == null) {
             writer.nullValue();
             return;
@@ -69,7 +68,7 @@ public class MetadataMoshiAdapter {
 
         writer.name("specVersion").jsonValue(specVersionAdapter.toJsonValue(sourceMetadata.getSpecificationVersion()));
         writer.name("minecraftVersion").jsonValue(sourceMetadata.getMinecraftVersion());
-        writer.name("classes").jsonValue(classCollectionAdapter.toJsonValue(sourceMetadata.getClasses()));
+        writer.name("classes").jsonValue(classLinkedHashSetAdapter.toJsonValue(sourceMetadata.getClasses()));
 
         writer.endObject();
     }
@@ -78,10 +77,10 @@ public class MetadataMoshiAdapter {
     void classToJson(JsonWriter writer,
                      ClassMetadata classMetadata,
                      JsonAdapter<Named> namedAdapter,
-                     JsonAdapter<Collection<? extends Named>> namedCollectionAdapter,
-                     JsonAdapter<Collection<? extends MethodMetadata>> methodCollectionAdapter,
-                     JsonAdapter<Collection<? extends FieldMetadata>> fieldCollectionAdapter,
-                     JsonAdapter<Collection<? extends ClassMetadata>> classCollectionAdapter) throws IOException {
+                     JsonAdapter<LinkedHashSet<? extends Named>> namedLinkedHashSetAdapter,
+                     JsonAdapter<LinkedHashSet<? extends MethodMetadata>> methodLinkedHashSetAdapter,
+                     JsonAdapter<LinkedHashSet<? extends FieldMetadata>> fieldLinkedHashSetAdapter,
+                     JsonAdapter<LinkedHashSet<? extends ClassMetadata>> classLinkedHashSetAdapter) throws IOException {
         if (classMetadata == null) {
             writer.nullValue();
             return;
@@ -93,10 +92,10 @@ public class MetadataMoshiAdapter {
         writer.name("owner").jsonValue(namedAdapter.toJsonValue(classMetadata.getOwner()));
         writer.name("extends").jsonValue(namedAdapter.toJsonValue(classMetadata.getSuperName()));
         writer.name("security").jsonValue(classMetadata.getSecuritySpecification());
-        writer.name("implements").jsonValue(namedCollectionAdapter.toJsonValue(classMetadata.getInterfaces()));
-        writer.name("fields").jsonValue(fieldCollectionAdapter.toJsonValue(classMetadata.getFields()));
-        writer.name("methods").jsonValue(methodCollectionAdapter.toJsonValue(classMetadata.getMethods()));
-        writer.name("inner").jsonValue(classCollectionAdapter.toJsonValue(classMetadata.getInnerClasses()));
+        writer.name("implements").jsonValue(namedLinkedHashSetAdapter.toJsonValue(classMetadata.getInterfaces()));
+        writer.name("fields").jsonValue(fieldLinkedHashSetAdapter.toJsonValue(classMetadata.getFields()));
+        writer.name("methods").jsonValue(methodLinkedHashSetAdapter.toJsonValue(classMetadata.getMethods()));
+        writer.name("inner").jsonValue(classLinkedHashSetAdapter.toJsonValue(classMetadata.getInnerClasses()));
 
         writer.endObject();
     }
@@ -106,7 +105,7 @@ public class MetadataMoshiAdapter {
                       MethodMetadata methodMetadata,
                       JsonAdapter<Named> namedAdapter,
                       JsonAdapter<MethodReference> methodReferenceAdapter,
-                      JsonAdapter<Collection<? extends MethodReference>> methodReferenceCollectionAdapter
+                      JsonAdapter<LinkedHashSet<? extends MethodReference>> methodReferenceLinkedHashSetAdapter
     ) throws IOException {
         if (methodMetadata == null) {
             writer.nullValue();
@@ -122,7 +121,7 @@ public class MetadataMoshiAdapter {
         writer.name("security").jsonValue(methodMetadata.getSecuritySpecification());
         writer.name("lambda").jsonValue(methodMetadata.isLambda());
         writer.name("bouncingTarget").jsonValue(methodReferenceAdapter.toJsonValue(methodMetadata.getBouncingTarget()));
-        writer.name("overrides").jsonValue(methodReferenceCollectionAdapter.toJsonValue(methodMetadata.getOverrides()));
+        writer.name("overrides").jsonValue(methodReferenceLinkedHashSetAdapter.toJsonValue(methodMetadata.getOverrides()));
 
         writer.endObject();
     }
@@ -210,7 +209,7 @@ public class MetadataMoshiAdapter {
     @FromJson
     SourceMetadata sourceFromJson(JsonReader reader,
                                   JsonAdapter<SimpleVersion> specVersionAdapter,
-                                  JsonAdapter<Collection<? extends ClassMetadata>> classCollectionAdapter) throws IOException {
+                                  JsonAdapter<LinkedHashSet<? extends ClassMetadata>> classLinkedHashSetAdapter) throws IOException {
         if (reader.peek() == JsonReader.Token.NULL) {
             return reader.nextNull();
         }
@@ -228,8 +227,8 @@ public class MetadataMoshiAdapter {
                     builder.withMinecraftVersion(reader.nextString());
                     break;
                 case "classes":
-                    final Collection<? extends ClassMetadata> classes = classCollectionAdapter.fromJson(reader);
-                    builder.withClasses(classes == null ? Collections.emptySet() : new HashSet<>(classes));
+                    final LinkedHashSet<? extends ClassMetadata> classes = classLinkedHashSetAdapter.fromJson(reader);
+                    builder.withClasses(classes == null ? new LinkedHashSet<>() : new LinkedHashSet<>(classes));
                     break;
                 default:
                     reader.skipValue();
@@ -245,10 +244,10 @@ public class MetadataMoshiAdapter {
     @FromJson
     ClassMetadata classFromJson(JsonReader reader,
                                 JsonAdapter<Named> namedAdapter,
-                                JsonAdapter<Collection<? extends Named>> namedCollectionAdapter,
-                                JsonAdapter<Collection<? extends MethodMetadata>> methodCollectionAdapter,
-                                JsonAdapter<Collection<? extends FieldMetadata>> fieldCollectionAdapter,
-                                JsonAdapter<Collection<? extends ClassMetadata>> classCollectionAdapter) throws IOException {
+                                JsonAdapter<LinkedHashSet<? extends Named>> namedLinkedHashSetAdapter,
+                                JsonAdapter<LinkedHashSet<? extends MethodMetadata>> methodLinkedHashSetAdapter,
+                                JsonAdapter<LinkedHashSet<? extends FieldMetadata>> fieldLinkedHashSetAdapter,
+                                JsonAdapter<LinkedHashSet<? extends ClassMetadata>> classLinkedHashSetAdapter) throws IOException {
         if (reader.peek() == JsonReader.Token.NULL) {
             return reader.nextNull();
         }
@@ -272,20 +271,20 @@ public class MetadataMoshiAdapter {
                     builder.withSecuritySpecifications(reader.nextInt());
                     break;
                 case "implements":
-                    final Collection<? extends Named> interfaces = namedCollectionAdapter.fromJson(reader);
-                    builder.withInterfaces(interfaces == null ? Collections.emptySet() : new HashSet<>(interfaces));
+                    final LinkedHashSet<? extends Named> interfaces = namedLinkedHashSetAdapter.fromJson(reader);
+                    builder.withInterfaces(interfaces == null ? new LinkedHashSet<>() : new LinkedHashSet<>(interfaces));
                     break;
                 case "fields":
-                    final Collection<? extends FieldMetadata> fields = fieldCollectionAdapter.fromJson(reader);
-                    builder.withFields(fields == null ? Collections.emptySet() : new HashSet<>(fields));
+                    final LinkedHashSet<? extends FieldMetadata> fields = fieldLinkedHashSetAdapter.fromJson(reader);
+                    builder.withFields(fields == null ? new LinkedHashSet<>() : new LinkedHashSet<>(fields));
                     break;
                 case "methods":
-                    final Collection<? extends MethodMetadata> methods = methodCollectionAdapter.fromJson(reader);
-                    builder.withMethods(methods == null ? Collections.emptySet() : new HashSet<>(methods));
+                    final LinkedHashSet<? extends MethodMetadata> methods = methodLinkedHashSetAdapter.fromJson(reader);
+                    builder.withMethods(methods == null ? new LinkedHashSet<>() : new LinkedHashSet<>(methods));
                     break;
                 case "inner":
-                    final Collection<? extends ClassMetadata> inner = classCollectionAdapter.fromJson(reader);
-                    builder.withInnerClasses(inner == null ? Collections.emptySet() : new HashSet<>(inner));
+                    final LinkedHashSet<? extends ClassMetadata> inner = classLinkedHashSetAdapter.fromJson(reader);
+                    builder.withInnerClasses(inner == null ? new LinkedHashSet<>() : new LinkedHashSet<>(inner));
                     break;
                 default:
                     reader.skipValue();
@@ -301,7 +300,7 @@ public class MetadataMoshiAdapter {
     MethodMetadata methodFromJson(JsonReader reader,
                                   JsonAdapter<Named> namedAdapter,
                                   JsonAdapter<MethodReference> methodReferenceAdapter,
-                                  JsonAdapter<Collection<? extends MethodReference>> methodReferenceCollectionAdapter) throws IOException {
+                                  JsonAdapter<LinkedHashSet<? extends MethodReference>> methodReferenceLinkedHashSetAdapter) throws IOException {
         if (reader.peek() == JsonReader.Token.NULL) {
             return reader.nextNull();
         }
@@ -335,8 +334,8 @@ public class MetadataMoshiAdapter {
                     builder.withBouncingTarget(methodReferenceAdapter.fromJson(reader));
                     break;
                 case "overrides":
-                    final Collection<? extends MethodReference> overrides = methodReferenceCollectionAdapter.fromJson(reader);
-                    builder.withOverrides(overrides == null ? Collections.emptySet() : new HashSet<>(overrides));
+                    final LinkedHashSet<? extends MethodReference> overrides = methodReferenceLinkedHashSetAdapter.fromJson(reader);
+                    builder.withOverrides(overrides == null ? new LinkedHashSet<>() : new LinkedHashSet<>(overrides));
                     break;
                 default:
                     reader.skipValue();

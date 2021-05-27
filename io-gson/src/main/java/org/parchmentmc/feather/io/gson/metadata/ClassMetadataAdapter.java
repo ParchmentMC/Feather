@@ -16,6 +16,7 @@ import org.parchmentmc.feather.named.Named;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -76,10 +77,10 @@ class ClassMetadataAdapter extends TypeAdapter<ClassMetadata> {
         Named owner = ImmutableNamed.empty();
         int security = -1;
         Named superName = ImmutableNamed.empty();
-        Set<Named> interfaces = null;
-        Set<FieldMetadata> fields = null;
-        Set<MethodMetadata> methods = null;
-        Set<ClassMetadata> innerClasses = null;
+        LinkedHashSet<Named> interfaces = null;
+        LinkedHashSet<FieldMetadata> fields = null;
+        LinkedHashSet<MethodMetadata> methods = null;
+        LinkedHashSet<ClassMetadata> innerClasses = null;
 
         in.beginObject();
         while (in.hasNext()) {
@@ -119,10 +120,10 @@ class ClassMetadataAdapter extends TypeAdapter<ClassMetadata> {
         // owner can be empty
         if (security == -1) throw new JsonParseException("Class metadata security specification is not present");
         // superName can be empty
-        if (interfaces == null) methods = Collections.emptySet();
-        if (fields == null) methods = Collections.emptySet();
-        if (methods == null) methods = Collections.emptySet();
-        if (innerClasses == null) innerClasses = Collections.emptySet();
+        if (interfaces == null) methods = new LinkedHashSet<>();
+        if (fields == null) methods = new LinkedHashSet<>();
+        if (methods == null) methods = new LinkedHashSet<>();
+        if (innerClasses == null) innerClasses = new LinkedHashSet<>();
 
         return new ImmutableClassMetadata(superName, interfaces, methods, fields, innerClasses, owner, name, security);
     }

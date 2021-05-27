@@ -5,17 +5,16 @@ import org.parchmentmc.feather.named.Named;
 import org.parchmentmc.feather.named.NamedBuilder;
 import org.parchmentmc.feather.util.SimpleVersion;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public final class SourceMetadataBuilder implements SourceMetadata {
     private SimpleVersion specVersion = SimpleVersion.of(1,0,0);
     private String minecraftVersion = "0.0.0";
-    private Set<ClassMetadata> classes = new HashSet<>();
+    private LinkedHashSet<ClassMetadata> classes = new LinkedHashSet<>();
 
     private SourceMetadataBuilder() {
     }
@@ -42,7 +41,7 @@ public final class SourceMetadataBuilder implements SourceMetadata {
         return this;
     }
 
-    public SourceMetadataBuilder withClasses(Set<ClassMetadata> classes) {
+    public SourceMetadataBuilder withClasses(LinkedHashSet<ClassMetadata> classes) {
         this.classes = classes;
         return this;
     }
@@ -67,7 +66,7 @@ public final class SourceMetadataBuilder implements SourceMetadata {
               Function.identity()
             )
           );
-        this.classes = new HashSet<>();
+        this.classes = new LinkedHashSet<>();
         for (final Named keyReference : schemadLocalInnerClasses.keySet())
         {
             if (!schemadSourceInnerClasses.containsKey(keyReference))
@@ -101,7 +100,7 @@ public final class SourceMetadataBuilder implements SourceMetadata {
     }
 
     @Override
-    public Set<ClassMetadata> getClasses() {
+    public LinkedHashSet<ClassMetadata> getClasses() {
         return classes;
     }
 
@@ -109,7 +108,7 @@ public final class SourceMetadataBuilder implements SourceMetadata {
         return new ImmutableSourceMetadata(
           specVersion,
           minecraftVersion,
-          classes.stream().map(ClassMetadata::toImmutable).collect(Collectors.toSet())
+          classes.stream().map(ClassMetadata::toImmutable).collect(Collectors.toCollection(LinkedHashSet::new))
         );
     }
 

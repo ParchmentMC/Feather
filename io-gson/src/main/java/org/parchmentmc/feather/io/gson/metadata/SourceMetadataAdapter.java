@@ -13,6 +13,7 @@ import org.parchmentmc.feather.metadata.SourceMetadata;
 import org.parchmentmc.feather.util.SimpleVersion;
 
 import java.io.IOException;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -55,7 +56,7 @@ class SourceMetadataAdapter extends TypeAdapter<SourceMetadata> {
 
         SimpleVersion specVersion = null;
         String minecraftVersion = null;
-        Set<ClassMetadata> classes = null;
+        LinkedHashSet<ClassMetadata> classes = null;
 
         in.beginObject();
         while (in.hasNext()) {

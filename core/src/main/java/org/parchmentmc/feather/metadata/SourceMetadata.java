@@ -4,6 +4,7 @@ import org.parchmentmc.feather.named.NamedBuilder;
 import org.parchmentmc.feather.util.HasImmutable;
 import org.parchmentmc.feather.util.SimpleVersion;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -31,5 +32,5 @@ public interface SourceMetadata extends HasImmutable<SourceMetadata>
      *
      * @return The classes.
      */
-    Set<ClassMetadata> getClasses();
+    LinkedHashSet<ClassMetadata> getClasses();
 }

@@ -3,6 +3,7 @@ package org.parchmentmc.feather.named;
 import com.google.common.collect.ImmutableMap;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -25,7 +26,7 @@ public class ImmutableNamed implements Named {
     private final Map<String, String> names;
 
     private ImmutableNamed(final Map<String, String> names) {
-        this.names = ImmutableMap.copyOf(names);
+        this.names = new LinkedHashMap<>(names);
     }
 
     @Override

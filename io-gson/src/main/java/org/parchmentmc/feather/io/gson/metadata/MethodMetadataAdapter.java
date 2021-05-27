@@ -15,6 +15,7 @@ import org.parchmentmc.feather.named.Named;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -70,7 +71,7 @@ class MethodMetadataAdapter extends TypeAdapter<MethodMetadata> {
         Named signature = ImmutableNamed.empty();
         boolean lambda = false;
         MethodReference bouncingTarget = null;
-        Set<MethodReference> overrides = null;
+        LinkedHashSet<MethodReference> overrides = null;
         int startLine = 0;
         int endLine = 0;
 
@@ -121,7 +122,7 @@ class MethodMetadataAdapter extends TypeAdapter<MethodMetadata> {
         if (security == -1) throw new JsonParseException("Method metadata security specification is not present");
         // lambda is a primitive
         // bouncingTarget can be null
-        if (overrides == null) overrides = Collections.emptySet();
+        if (overrides == null) overrides = new LinkedHashSet<>();
         if (startLine < 0) throw new JsonParseException("Method metadata contains negative start line");
         if (endLine < 0) throw new JsonParseException("Method metadata contains negative end line");
         if (endLine < startLine) throw new JsonParseException("Method metadata contains end before start");

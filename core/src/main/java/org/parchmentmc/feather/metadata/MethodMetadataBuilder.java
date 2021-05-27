@@ -16,7 +16,7 @@ public final class MethodMetadataBuilder implements MethodMetadata {
     private Named owner = ImmutableNamed.empty();
     private boolean lambda = false;
     private MethodReference bouncingTarget = null;
-    private Set<MethodReference> overrides = Sets.newHashSet();
+    private LinkedHashSet<MethodReference> overrides = Sets.newLinkedHashSet();
     private Named name = ImmutableNamed.empty();
     private int securitySpecification = 0;
     private Named descriptor = ImmutableNamed.empty();
@@ -61,7 +61,7 @@ public final class MethodMetadataBuilder implements MethodMetadata {
         return this;
     }
 
-    public MethodMetadataBuilder withOverrides(Set<MethodReference> overrides) {
+    public MethodMetadataBuilder withOverrides(LinkedHashSet<MethodReference> overrides) {
         this.overrides = overrides;
         return this;
     }
@@ -182,7 +182,7 @@ public final class MethodMetadataBuilder implements MethodMetadata {
             )
           );
 
-        this.overrides = new HashSet<>();
+        this.overrides = new LinkedHashSet<>();
         for (final MethodReference keyReference : schemadLocalOverrides.keySet())
         {
             if (!schemadSoureOverrides.containsKey(keyReference))
@@ -245,7 +245,8 @@ public final class MethodMetadataBuilder implements MethodMetadata {
     }
 
     @Override
-    public @NonNull Set<MethodReference> getOverrides() {
+    @NonNull
+    public LinkedHashSet<MethodReference> getOverrides() {
         return overrides;
     }
 
@@ -293,7 +294,7 @@ public final class MethodMetadataBuilder implements MethodMetadata {
           owner.toImmutable(),
           lambda,
           bouncingTarget == null ? null : bouncingTarget.toImmutable(),
-          overrides.stream().map(MethodReference::toImmutable).collect(Collectors.toSet()),
+          overrides.stream().map(MethodReference::toImmutable).collect(Collectors.toCollection(LinkedHashSet::new)),
           name.toImmutable(),
           securitySpecification,
           descriptor.toImmutable(),

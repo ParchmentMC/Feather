@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 public class NamedBuilder implements Named
 {
-    private final Map<String, String> names = Maps.newHashMap();
+    private final Map<String, String> names = Maps.newLinkedHashMap();
 
     public static NamedBuilder create(
       final String mappingName,

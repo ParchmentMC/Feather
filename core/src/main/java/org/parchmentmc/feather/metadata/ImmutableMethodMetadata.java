@@ -1,19 +1,18 @@
 package org.parchmentmc.feather.metadata;
 
-import com.google.common.collect.ImmutableSet;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.parchmentmc.feather.named.Named;
 
-import java.util.Set;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Optional;
 
 public class ImmutableMethodMetadata extends AbstractMethodReference implements MethodMetadata {
     private final boolean lambda;
-    private final MethodReference bouncingTarget;
-    private final Set<MethodReference> overrides;
-    private final int securitySpecification;
+    private final MethodReference                bouncingTarget;
+    private final LinkedHashSet<MethodReference> overrides;
+    private final int                            securitySpecification;
     private final int startLine;
     private final int endLine;
 
@@ -21,7 +20,7 @@ public class ImmutableMethodMetadata extends AbstractMethodReference implements 
       final Named owner,
       final boolean lambda,
       final MethodReference bouncingTarget,
-      final Set<MethodReference> overrides,
+      final LinkedHashSet<MethodReference> overrides,
       final Named name,
       final int securitySpecification,
       final Named descriptor,
@@ -31,7 +30,7 @@ public class ImmutableMethodMetadata extends AbstractMethodReference implements 
         super(owner, name, descriptor, signature);
         this.lambda = lambda;
         this.bouncingTarget = bouncingTarget;
-        this.overrides = ImmutableSet.copyOf(overrides);
+        this.overrides = new LinkedHashSet<>(overrides);
         this.securitySpecification = securitySpecification;
         this.startLine = startLine;
         this.endLine = endLine;
@@ -49,7 +48,8 @@ public class ImmutableMethodMetadata extends AbstractMethodReference implements 
     }
 
     @Override
-    public @NonNull Set<MethodReference> getOverrides() {
+    @NonNull
+    public LinkedHashSet<MethodReference> getOverrides() {
         return overrides;
     }
 

@@ -4,6 +4,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.parchmentmc.feather.named.Named;
 import org.parchmentmc.feather.util.HasImmutable;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -25,7 +26,7 @@ public interface ClassMetadata extends WithSecurity, OwnedByClass, WithName, Has
      * @return The name holders of all implemented interfaces.
      */
     @NonNull
-    Set<Named> getInterfaces();
+    LinkedHashSet<Named> getInterfaces();
 
     /**
      * A Set of all methods that reside in the current class.
@@ -33,7 +34,7 @@ public interface ClassMetadata extends WithSecurity, OwnedByClass, WithName, Has
      * @return All methods of the current class.
      */
     @NonNull
-    Set<MethodMetadata> getMethods();
+    LinkedHashSet<MethodMetadata> getMethods();
 
     /**
      * A Set of all fields that reside in the current class.
@@ -41,7 +42,7 @@ public interface ClassMetadata extends WithSecurity, OwnedByClass, WithName, Has
      * @return All fields of the current class.
      */
     @NonNull
-    Set<FieldMetadata> getFields();
+    LinkedHashSet<FieldMetadata> getFields();
 
     /**
      * A Set of all inner classes that reside in the current class.
@@ -49,5 +50,5 @@ public interface ClassMetadata extends WithSecurity, OwnedByClass, WithName, Has
      * @return All inner class of the current class.
      */
     @NonNull
-    Set<ClassMetadata> getInnerClasses();
+    LinkedHashSet<ClassMetadata> getInnerClasses();
 }

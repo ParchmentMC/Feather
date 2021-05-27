@@ -2,7 +2,6 @@ package org.parchmentmc.feather.metadata;
 
 import com.google.common.collect.Sets;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.units.qual.A;
 import org.parchmentmc.feather.named.ImmutableNamed;
 import org.parchmentmc.feather.named.Named;
 import org.parchmentmc.feather.named.NamedBuilder;
@@ -14,10 +13,10 @@ import java.util.stream.Collectors;
 
 public final class ClassMetadataBuilder implements ClassMetadata {
     private Named superName = ImmutableNamed.empty();
-    private Set<Named> interfaces = Sets.newHashSet();
-    private Set<MethodMetadata> methods = Sets.newHashSet();
-    private Set<FieldMetadata> fields = Sets.newHashSet();
-    private Set<ClassMetadata> innerClasses = Sets.newHashSet();
+    private LinkedHashSet<Named> interfaces = Sets.newLinkedHashSet();
+    private LinkedHashSet<MethodMetadata> methods = Sets.newLinkedHashSet();
+    private LinkedHashSet<FieldMetadata> fields = Sets.newLinkedHashSet();
+    private LinkedHashSet<ClassMetadata> innerClasses = Sets.newLinkedHashSet();
     private Named owner = ImmutableNamed.empty();
     private Named name = ImmutableNamed.empty();
     private int securitySpecifications = 0;
@@ -47,12 +46,12 @@ public final class ClassMetadataBuilder implements ClassMetadata {
     }
 
     public ClassMetadataBuilder withInterfaces(Set<Named> interfaces) {
-        this.interfaces = new HashSet<>(interfaces);
+        this.interfaces = new LinkedHashSet<>(interfaces);
         return this;
     }
 
     public ClassMetadataBuilder withMethods(Set<MethodMetadata> methods) {
-        this.methods = new HashSet<>(methods);
+        this.methods = new LinkedHashSet<>(methods);
         return this;
     }
 
@@ -63,7 +62,7 @@ public final class ClassMetadataBuilder implements ClassMetadata {
     }
 
     public ClassMetadataBuilder withFields(Set<FieldMetadata> fields) {
-        this.fields = new HashSet<>(fields);
+        this.fields = new LinkedHashSet<>(fields);
         return this;
     }
 
@@ -74,7 +73,7 @@ public final class ClassMetadataBuilder implements ClassMetadata {
     }
 
     public ClassMetadataBuilder withInnerClasses(Set<ClassMetadata> innerClasses) {
-        this.innerClasses = new HashSet<>(innerClasses);
+        this.innerClasses = new LinkedHashSet<>(innerClasses);
         return this;
     }
 
@@ -194,7 +193,7 @@ public final class ClassMetadataBuilder implements ClassMetadata {
             )
           );
 
-        this.methods = new HashSet<>();
+        this.methods = new LinkedHashSet<>();
         for (final MethodReference keyReference : schemadLocalMethods.keySet())
         {
             if (!schemadSourceMethods.containsKey(keyReference))
@@ -232,7 +231,7 @@ public final class ClassMetadataBuilder implements ClassMetadata {
               Function.identity()
             )
           );
-        this.fields = new HashSet<>();
+        this.fields = new LinkedHashSet<>();
         for (final Named keyReference : schemadLocalFields.keySet())
         {
             if (!schemadSourceFields.containsKey(keyReference))
@@ -270,7 +269,7 @@ public final class ClassMetadataBuilder implements ClassMetadata {
               Function.identity()
             )
           );
-        this.innerClasses = new HashSet<>();
+        this.innerClasses = new LinkedHashSet<>();
         for (final Named keyReference : schemadLocalInnerClasses.keySet())
         {
             if (!schemadSourceInnerClasses.containsKey(keyReference))
@@ -299,22 +298,22 @@ public final class ClassMetadataBuilder implements ClassMetadata {
     }
 
     @Override
-    public @NonNull Set<Named> getInterfaces() {
+    public @NonNull LinkedHashSet<Named> getInterfaces() {
         return interfaces;
     }
 
     @Override
-    public @NonNull Set<MethodMetadata> getMethods() {
+    public @NonNull LinkedHashSet<MethodMetadata> getMethods() {
         return methods;
     }
 
     @Override
-    public @NonNull Set<FieldMetadata> getFields() {
+    public @NonNull LinkedHashSet<FieldMetadata> getFields() {
         return fields;
     }
 
     @Override
-    public @NonNull Set<ClassMetadata> getInnerClasses() {
+    public @NonNull LinkedHashSet<ClassMetadata> getInnerClasses() {
         return innerClasses;
     }
 
@@ -337,10 +336,10 @@ public final class ClassMetadataBuilder implements ClassMetadata {
     public ImmutableClassMetadata build() {
         return new ImmutableClassMetadata(
           superName.toImmutable(),
-          interfaces.stream().map(Named::toImmutable).collect(Collectors.toSet()),
-          methods.stream().map(MethodMetadata::toImmutable).collect(Collectors.toSet()),
-          fields.stream().map(FieldMetadata::toImmutable).collect(Collectors.toSet()),
-          innerClasses.stream().map(ClassMetadata::toImmutable).collect(Collectors.toSet()),
+          interfaces.stream().map(Named::toImmutable).collect(Collectors.toCollection(LinkedHashSet::new)),
+          methods.stream().map(MethodMetadata::toImmutable).collect(Collectors.toCollection(LinkedHashSet::new)),
+          fields.stream().map(FieldMetadata::toImmutable).collect(Collectors.toCollection(LinkedHashSet::new)),
+          innerClasses.stream().map(ClassMetadata::toImmutable).collect(Collectors.toCollection(LinkedHashSet::new)),
           owner.toImmutable(),
           name.toImmutable(),
           securitySpecifications);
