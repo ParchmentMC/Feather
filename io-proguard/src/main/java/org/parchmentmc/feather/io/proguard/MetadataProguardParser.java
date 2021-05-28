@@ -187,7 +187,7 @@ public final class MetadataProguardParser {
 
         for (final ClassMetadata aClass : sourceMetadata.getClasses()) {
             sourceMetadataBuilder.addClass(
-                    adaptClassTypes(
+                    adaptTypeDescriptors(
                             aClass,
                             mojToObfClassNameMap
                     )
@@ -197,80 +197,48 @@ public final class MetadataProguardParser {
         return sourceMetadataBuilder.build();
     }
 
-    private static ClassMetadata adaptClassTypes(final ClassMetadata classMetadata, final Map<String, String> mojToObfClassMap) {
-        final ClassMetadataBuilder classMetadataBuilder = ClassMetadataBuilder.create();
-
-        return classMetadataBuilder
-                .withName(classMetadata.getName())
-                .withSuperName(classMetadata.getSuperName())
-                .withInterfaces(classMetadata.getInterfaces())
+    /**
+     * Uses the given map to create {@link org.parchmentmc.feather.util.Constants.Names#OBFUSCATED} names by remapping
+     * the existing {@linkplain Named#getMojangName() Mojang names} for field and method descriptors in the given class
+     * and any inner classes.
+     *
+     * @param classMetadata    the original class metadata
+     * @param mojToObfClassMap map of Mojang class names to obfuscated class names
+     * @return a new class metadata with new obfuscated named descriptors for fields and methods in the class and any
+     * inner classes
+     * @throws IllegalStateException if a field or method descriptor does not have a Mojang name
+     */
+    private static ClassMetadata adaptTypeDescriptors(final ClassMetadata classMetadata, final Map<String, String> mojToObfClassMap) {
+        return ClassMetadataBuilder.create(classMetadata)
                 .withInnerClasses(classMetadata.getInnerClasses().stream()
-                        .map(innerClassMetadata -> adaptClassTypes(innerClassMetadata, mojToObfClassMap))
-                        .collect(Collectors.toSet())
-                )
-                .withOwner(classMetadata.getOwner())
-                .withSecuritySpecifications(classMetadata.getSecuritySpecification())
-                .withMethods(
-                        classMetadata
-                                .getMethods()
-                                .stream()
-                                .map(method -> {
-                                    final MethodMetadataBuilder methodMetadataBuilder = MethodMetadataBuilder.create();
+                        .map(inner -> adaptTypeDescriptors(inner, mojToObfClassMap))
+                        .collect(Collectors.toSet()))
+                .withMethods(classMetadata.getMethods().stream()
+                        .map(method -> {
+                            final RemappableDescriptor remappableDescriptor =
+                                    new RemappableDescriptor(method.getDescriptor().getMojangName().orElseThrow(() -> new IllegalStateException("Missing mojang descriptor")));
 
-                                    final RemappableDescriptor remappableDescriptor =
-                                            new RemappableDescriptor(method.getDescriptor().getMojangName().orElseThrow(() -> new IllegalStateException("Missing mojang descriptor")));
+                            return MethodMetadataBuilder.create(method)
+                                    .withDescriptor(NamedBuilder.create()
+                                            .withMojang(remappableDescriptor.toString())
+                                            .withObfuscated(remappableDescriptor.remap(type ->
+                                                    Optional.ofNullable(mojToObfClassMap.get(type))).toString())
+                                    );
+                        })
+                        .collect(Collectors.toSet()))
+                .withFields(classMetadata.getFields().stream()
+                        .map(field -> {
+                            final RemappableType remappableType =
+                                    new RemappableType(field.getDescriptor().getMojangName().orElseThrow(() -> new IllegalStateException("Missing mojang type.")));
 
-                                    return methodMetadataBuilder
-                                            .withName(method.getName())
-                                            .withOwner(method.getOwner())
-                                            .withLambda(method.isLambda())
-                                            .withSecuritySpecification(method.getSecuritySpecification())
-                                            .withDescriptor(NamedBuilder.create()
-                                                    .withMojang(remappableDescriptor.toString())
-                                                    .withObfuscated(remappableDescriptor
-                                                            .remap(type -> Optional.ofNullable(
-                                                                    mojToObfClassMap.get(type)
-                                                            ))
-                                                            .toString()
-                                                    )
-                                                    .build()
-                                            )
-                                            .withStartLine(method.getStartLine().orElse(0))
-                                            .withEndLine(method.getEndLine().orElse(0))
-                                            .build();
-                                })
-                                .collect(Collectors.toSet())
-                )
-                .withFields(
-                        classMetadata
-                                .getFields()
-                                .stream()
-                                .map(field -> {
-                                    final FieldMetadataBuilder fieldMetadataBuilder = FieldMetadataBuilder.create();
-
-                                    final RemappableType remappableType =
-                                            new RemappableType(field.getDescriptor().getMojangName().orElseThrow(() -> new IllegalStateException("Missing mojang type.")));
-
-                                    return fieldMetadataBuilder
-                                            .withName(field.getName())
-                                            .withOwner(field.getOwner())
-                                            .withSecuritySpecification(field.getSecuritySpecification())
-                                            .withDescriptor(
-                                                    NamedBuilder.create()
-                                                            .withMojang(remappableType.toString())
-                                                            .withObfuscated(remappableType
-                                                                    .remap(type -> Optional.ofNullable(
-                                                                            mojToObfClassMap.get(type)
-                                                                    ))
-                                                                    .toString()
-                                                            )
-                                                            .build()
-                                            )
-                                            .build();
-                                })
-                                .collect(Collectors.toSet())
-                )
-                .build();
+                            return FieldMetadataBuilder.create(field)
+                                    .withDescriptor(NamedBuilder.create()
+                                            .withMojang(remappableType.toString())
+                                            .withObfuscated(remappableType.remap(type ->
+                                                    Optional.ofNullable(mojToObfClassMap.get(type))).toString())
+                                    );
+                        })
+                        .collect(Collectors.toSet()));
     }
 
     private static String stripComment(String line) {
