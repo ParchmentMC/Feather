@@ -40,7 +40,7 @@ public final class MetadataProguardParser {
 
         ClassMetadataBuilder classMetadataBuilder = null;
 
-        final List<String> linesContainingData = lines.stream().map(MetadataProguardParser::stripComment).filter(s -> !s.isEmpty()).collect(Collectors.toList());
+        final List<String> linesContainingData = lines.stream().map(MetadataProguardParser::stripCommentAndTrim).filter(s -> !s.isEmpty()).collect(Collectors.toList());
         for (final String line : linesContainingData) {
             String normalizedLine = line.replace(".", "/").trim();
             if (!normalizedLine.startsWith("    ") && normalizedLine.endsWith(":")) {
@@ -241,7 +241,13 @@ public final class MetadataProguardParser {
                         .collect(Collectors.toSet()));
     }
 
-    private static String stripComment(String line) {
+    /**
+     * Strips content after and including a pound symbol ({@code #}), and removes trailing spaces.
+     *
+     * @param line the input line
+     * @return the line with stripped comment and trailing spaces
+     */
+    private static String stripCommentAndTrim(String line) {
         int poundIndex = line.indexOf('#');
         if (poundIndex == 0) {
             return "";
