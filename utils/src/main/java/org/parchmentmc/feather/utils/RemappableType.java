@@ -1,14 +1,9 @@
 package org.parchmentmc.feather.utils;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.Optional;
 import java.util.function.Function;
 
 public final class RemappableType {
-
-    private static final Logger LOGGER = LogManager.getLogger();
 
     private final String type;
 
@@ -22,11 +17,6 @@ public final class RemappableType {
       final Function<String, Optional<String>> remappingFunction
     ) {
         final Optional<String> remappedTyped = remapType(getType(), remappingFunction);
-        if (!remappedTyped.isPresent())
-        {
-            LOGGER.debug("Could not remap: " + getType());
-        }
-
         return new RemappableType(remappedTyped.orElseGet(this::getType));
     }
 

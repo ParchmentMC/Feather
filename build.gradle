@@ -9,7 +9,6 @@ subprojects {
     apply plugin: 'maven-publish'
     apply plugin: 'java-library'
     apply plugin: 'org.parchmentmc.writtenbooks'
-    apply plugin: 'io.spring.dependency-management'
 
     group rootProject.group
 
@@ -20,16 +19,7 @@ subprojects {
         }
     }
 
-    dependencyManagement {
-        imports {
-            mavenBom 'org.apache.logging.log4j:log4j-bom:2.14.1'
-        }
-    }
-
     dependencies {
-        api 'org.apache.logging.log4j:log4j-api'
-        api 'org.apache.logging.log4j:log4j-core'
-
         testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
         testImplementation 'com.google.guava:guava:30.1.1-jre'
         testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'

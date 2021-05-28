@@ -1,8 +1,5 @@
 package org.parchmentmc.feather.utils;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +8,6 @@ import java.util.stream.Collectors;
 
 public final class RemappableDescriptor
 {
-    private static final Logger LOGGER = LogManager.getLogger();
 
     private final List<String> args;
     private final String       returnType;
