@@ -3,6 +3,7 @@ package org.parchmentmc.feather.io.proguard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.parchmentmc.feather.metadata.*;
+import org.parchmentmc.feather.named.Named;
 import org.parchmentmc.feather.named.NamedBuilder;
 
 import java.util.ArrayList;
@@ -72,11 +73,7 @@ class MetadataProguardParserTest {
                 lines,
                 SourceMetadataBuilder.create()
                         .addClass(ClassMetadataBuilder.create()
-                                .withName(NamedBuilder.create()
-                                        .withObfuscated("dnm")
-                                        .withMojang("com/mojang/blaze3d/DontObfuscate")
-                                        .build()
-                                )
+                                .withName(named("dnm", "com/mojang/blaze3d/DontObfuscate"))
                                 .build()
                         )
                         .build(),
@@ -94,19 +91,11 @@ class MetadataProguardParserTest {
                 lines,
                 SourceMetadataBuilder.create()
                         .addClass(ClassMetadataBuilder.create()
-                                .withName(NamedBuilder.create()
-                                        .withObfuscated("dnm")
-                                        .withMojang("com/mojang/blaze3d/DontObfuscate")
-                                        .build()
-                                )
+                                .withName(named("dnm", "com/mojang/blaze3d/DontObfuscate"))
                                 .build()
                         )
                         .addClass(ClassMetadataBuilder.create()
-                                .withName(NamedBuilder.create()
-                                        .withObfuscated("dnn")
-                                        .withMojang("com/mojang/blaze3d/FieldsAreNonnullByDefault")
-                                        .build()
-                                )
+                                .withName(named("dnn", "com/mojang/blaze3d/FieldsAreNonnullByDefault"))
                                 .build()
                         )
                         .build(),
@@ -124,24 +113,11 @@ class MetadataProguardParserTest {
                 lines,
                 SourceMetadataBuilder.create()
                         .addClass(ClassMetadataBuilder.create()
-                                .withName(NamedBuilder.create()
-                                        .withObfuscated("dnm")
-                                        .withMojang("com/mojang/blaze3d/DontObfuscate")
+                                .withName(named("dnm", "com/mojang/blaze3d/DontObfuscate"))
+                                .addInnerClass(ClassMetadataBuilder.create()
+                                        .withName(named("dnm$a", "com/mojang/blaze3d/DontObfuscate$Inner"))
+                                        .withOwner(named("dnm", "com/mojang/blaze3d/DontObfuscate"))
                                         .build()
-                                )
-                                .addInnerClass(
-                                        ClassMetadataBuilder.create()
-                                                .withName(NamedBuilder.create()
-                                                        .withObfuscated("dnm$a")
-                                                        .withMojang("com/mojang/blaze3d/DontObfuscate$Inner")
-                                                        .build()
-                                                )
-                                                .withOwner(NamedBuilder.create()
-                                                        .withObfuscated("dnm")
-                                                        .withMojang("com/mojang/blaze3d/DontObfuscate")
-                                                        .build()
-                                                )
-                                                .build()
                                 )
                                 .build()
                         )
@@ -159,35 +135,20 @@ class MetadataProguardParserTest {
         runTest(
                 lines,
                 SourceMetadataBuilder.create()
-                        .addClass(
-                                ClassMetadataBuilder.create()
-                                        .withName(NamedBuilder.create()
-                                                .withObfuscated("dnm")
-                                                .withMojang("com/mojang/blaze3d/DontObfuscate")
-                                                .build()
-                                        )
-                                        .addMethod(
-                                                MethodMetadataBuilder.create()
-                                                        .withOwner(NamedBuilder.create()
-                                                                .withObfuscated("dnm")
-                                                                .withMojang("com/mojang/blaze3d/DontObfuscate")
-                                                                .build()
-                                                        )
-                                                        .withName(NamedBuilder.create()
-                                                                .withObfuscated("a")
-                                                                .withMojang("process")
-                                                                .build()
-                                                        )
-                                                        .withStartLine(12)
-                                                        .withEndLine(13)
-                                                        .withDescriptor(NamedBuilder.create()
-                                                                .withObfuscated("(Lcom/mojang/blaze3d/pipeline/RenderPipeline;F)V")
-                                                                .withMojang("(Lcom/mojang/blaze3d/pipeline/RenderPipeline;F)V")
-                                                                .build()
-                                                        )
-                                                        .build()
-                                        )
+                        .addClass(ClassMetadataBuilder.create()
+                                .withName(named("dnm", "com/mojang/blaze3d/DontObfuscate"))
+                                .addMethod(MethodMetadataBuilder.create()
+                                        .withOwner(named("dnm", "com/mojang/blaze3d/DontObfuscate"))
+                                        .withName(named("a", "process"))
+                                        .withStartLine(12)
+                                        .withEndLine(13)
+                                        .withDescriptor(named(
+                                                "(Lcom/mojang/blaze3d/pipeline/RenderPipeline;F)V",
+                                                "(Lcom/mojang/blaze3d/pipeline/RenderPipeline;F)V"
+                                        ))
                                         .build()
+                                )
+                                .build()
                         )
                         .build(),
                 "Method is not parsed properly."
@@ -204,44 +165,24 @@ class MetadataProguardParserTest {
         runTest(
                 lines,
                 SourceMetadataBuilder.create()
-                        .addClass(
-                                ClassMetadataBuilder.create()
-                                        .withName(NamedBuilder.create()
-                                                .withObfuscated("a")
-                                                .withMojang("com/mojang/blaze3d/pipeline/RenderPipeline")
-                                                .build()
-                                        )
-                                        .build()
+                        .addClass(ClassMetadataBuilder.create()
+                                .withName(named("a", "com/mojang/blaze3d/pipeline/RenderPipeline"))
+                                .build()
                         )
-                        .addClass(
-                                ClassMetadataBuilder.create()
-                                        .withName(NamedBuilder.create()
-                                                .withObfuscated("dnm")
-                                                .withMojang("com/mojang/blaze3d/DontObfuscate")
-                                                .build()
-                                        )
-                                        .addMethod(
-                                                MethodMetadataBuilder.create()
-                                                        .withOwner(NamedBuilder.create()
-                                                                .withObfuscated("dnm")
-                                                                .withMojang("com/mojang/blaze3d/DontObfuscate")
-                                                                .build()
-                                                        )
-                                                        .withName(NamedBuilder.create()
-                                                                .withObfuscated("a")
-                                                                .withMojang("process")
-                                                                .build()
-                                                        )
-                                                        .withStartLine(12)
-                                                        .withEndLine(13)
-                                                        .withDescriptor(NamedBuilder.create()
-                                                                .withObfuscated("(La;F)V")
-                                                                .withMojang("(Lcom/mojang/blaze3d/pipeline/RenderPipeline;F)V")
-                                                                .build()
-                                                        )
-                                                        .build()
-                                        )
+                        .addClass(ClassMetadataBuilder.create()
+                                .withName(named("dnm", "com/mojang/blaze3d/DontObfuscate"))
+                                .addMethod(MethodMetadataBuilder.create()
+                                        .withOwner(named("dnm", "com/mojang/blaze3d/DontObfuscate"))
+                                        .withName(named("a", "process"))
+                                        .withStartLine(12)
+                                        .withEndLine(13)
+                                        .withDescriptor(named(
+                                                "(La;F)V",
+                                                "(Lcom/mojang/blaze3d/pipeline/RenderPipeline;F)V"
+                                        ))
                                         .build()
+                                )
+                                .build()
                         )
                         .build(),
                 "Method descriptors are not remapped."
@@ -258,44 +199,24 @@ class MetadataProguardParserTest {
         runTest(
                 lines,
                 SourceMetadataBuilder.create()
-                        .addClass(
-                                ClassMetadataBuilder.create()
-                                        .withName(NamedBuilder.create()
-                                                .withObfuscated("dnm")
-                                                .withMojang("com/mojang/blaze3d/DontObfuscate")
-                                                .build()
-                                        )
-                                        .addMethod(
-                                                MethodMetadataBuilder.create()
-                                                        .withOwner(NamedBuilder.create()
-                                                                .withObfuscated("dnm")
-                                                                .withMojang("com/mojang/blaze3d/DontObfuscate")
-                                                                .build()
-                                                        )
-                                                        .withName(NamedBuilder.create()
-                                                                .withObfuscated("a")
-                                                                .withMojang("process")
-                                                                .build()
-                                                        )
-                                                        .withStartLine(12)
-                                                        .withEndLine(13)
-                                                        .withDescriptor(NamedBuilder.create()
-                                                                .withObfuscated("(La;F)V")
-                                                                .withMojang("(Lcom/mojang/blaze3d/pipeline/RenderPipeline;F)V")
-                                                                .build()
-                                                        )
-                                                        .build()
-                                        )
+                        .addClass(ClassMetadataBuilder.create()
+                                .withName(named("dnm", "com/mojang/blaze3d/DontObfuscate"))
+                                .addMethod(MethodMetadataBuilder.create()
+                                        .withOwner(named("dnm", "com/mojang/blaze3d/DontObfuscate"))
+                                        .withName(named("a", "process"))
+                                        .withStartLine(12)
+                                        .withEndLine(13)
+                                        .withDescriptor(named(
+                                                "(La;F)V",
+                                                "(Lcom/mojang/blaze3d/pipeline/RenderPipeline;F)V"
+                                        ))
                                         .build()
+                                )
+                                .build()
                         )
-                        .addClass(
-                                ClassMetadataBuilder.create()
-                                        .withName(NamedBuilder.create()
-                                                .withObfuscated("a")
-                                                .withMojang("com/mojang/blaze3d/pipeline/RenderPipeline")
-                                                .build()
-                                        )
-                                        .build()
+                        .addClass(ClassMetadataBuilder.create()
+                                .withName(named("a", "com/mojang/blaze3d/pipeline/RenderPipeline"))
+                                .build()
                         )
                         .build(),
                 "Method descriptors are not remapped."
@@ -311,32 +232,18 @@ class MetadataProguardParserTest {
         runTest(
                 lines,
                 SourceMetadataBuilder.create()
-                        .addClass(
-                                ClassMetadataBuilder.create()
-                                        .withName(NamedBuilder.create()
-                                                .withObfuscated("dnm")
-                                                .withMojang("com/mojang/blaze3d/DontObfuscate")
-                                                .build()
-                                        )
-                                        .addField(FieldMetadataBuilder.create()
-                                                .withName(NamedBuilder.create()
-                                                        .withObfuscated("b")
-                                                        .withMojang("LOGGER")
-                                                        .build()
-                                                )
-                                                .withOwner(NamedBuilder.create()
-                                                        .withObfuscated("dnm")
-                                                        .withMojang("com/mojang/blaze3d/DontObfuscate")
-                                                        .build()
-                                                )
-                                                .withDescriptor(NamedBuilder.create()
-                                                        .withObfuscated("Lorg/apache/logging/log4j/Logger;")
-                                                        .withMojang("Lorg/apache/logging/log4j/Logger;")
-                                                        .build()
-                                                )
-                                                .build()
-                                        )
+                        .addClass(ClassMetadataBuilder.create()
+                                .withName(named("dnm", "com/mojang/blaze3d/DontObfuscate"))
+                                .addField(FieldMetadataBuilder.create()
+                                        .withName(named("b", "LOGGER"))
+                                        .withOwner(named("dnm", "com/mojang/blaze3d/DontObfuscate"))
+                                        .withDescriptor(named(
+                                                "Lorg/apache/logging/log4j/Logger;",
+                                                "Lorg/apache/logging/log4j/Logger;"
+                                        ))
                                         .build()
+                                )
+                                .build()
                         )
                         .build(),
                 "Fields are not parsed properly."
@@ -353,41 +260,22 @@ class MetadataProguardParserTest {
         runTest(
                 lines,
                 SourceMetadataBuilder.create()
-                        .addClass(
-                                ClassMetadataBuilder.create()
-                                        .withName(NamedBuilder.create()
-                                                .withObfuscated("dnm")
-                                                .withMojang("com/mojang/blaze3d/DontObfuscate")
-                                                .build()
-                                        )
-                                        .addField(FieldMetadataBuilder.create()
-                                                .withName(NamedBuilder.create()
-                                                        .withObfuscated("b")
-                                                        .withMojang("LOGGER")
-                                                        .build()
-                                                )
-                                                .withOwner(NamedBuilder.create()
-                                                        .withObfuscated("dnm")
-                                                        .withMojang("com/mojang/blaze3d/DontObfuscate")
-                                                        .build()
-                                                )
-                                                .withDescriptor(NamedBuilder.create()
-                                                        .withObfuscated("La;")
-                                                        .withMojang("Lorg/apache/logging/log4j/Logger;")
-                                                        .build()
-                                                )
-                                                .build()
-                                        )
+                        .addClass(ClassMetadataBuilder.create()
+                                .withName(named("dnm", "com/mojang/blaze3d/DontObfuscate"))
+                                .addField(FieldMetadataBuilder.create()
+                                        .withName(named("b", "LOGGER"))
+                                        .withOwner(named("dnm", "com/mojang/blaze3d/DontObfuscate"))
+                                        .withDescriptor(named(
+                                                "La;",
+                                                "Lorg/apache/logging/log4j/Logger;"
+                                        ))
                                         .build()
+                                )
+                                .build()
                         )
-                        .addClass(
-                                ClassMetadataBuilder.create()
-                                        .withName(NamedBuilder.create()
-                                                .withObfuscated("a")
-                                                .withMojang("org/apache/logging/log4j/Logger")
-                                                .build()
-                                        )
-                                        .build()
+                        .addClass(ClassMetadataBuilder.create()
+                                .withName(named("a", "org/apache/logging/log4j/Logger"))
+                                .build()
                         )
                         .build(),
                 "Fields are not parsed properly."
@@ -404,44 +292,32 @@ class MetadataProguardParserTest {
         runTest(
                 lines,
                 SourceMetadataBuilder.create()
-                        .addClass(
-                                ClassMetadataBuilder.create()
-                                        .withName(NamedBuilder.create()
-                                                .withObfuscated("a")
-                                                .withMojang("org/apache/logging/log4j/Logger")
-                                                .build()
-                                        )
-                                        .build()
+                        .addClass(ClassMetadataBuilder.create()
+                                .withName(named("a", "org/apache/logging/log4j/Logger"))
+                                .build()
                         )
-                        .addClass(
-                                ClassMetadataBuilder.create()
-                                        .withName(NamedBuilder.create()
-                                                .withObfuscated("dnm")
-                                                .withMojang("com/mojang/blaze3d/DontObfuscate")
-                                                .build()
-                                        )
-                                        .addField(FieldMetadataBuilder.create()
-                                                .withName(NamedBuilder.create()
-                                                        .withObfuscated("b")
-                                                        .withMojang("LOGGER")
-                                                        .build()
-                                                )
-                                                .withOwner(NamedBuilder.create()
-                                                        .withObfuscated("dnm")
-                                                        .withMojang("com/mojang/blaze3d/DontObfuscate")
-                                                        .build()
-                                                )
-                                                .withDescriptor(NamedBuilder.create()
-                                                        .withObfuscated("La;")
-                                                        .withMojang("Lorg/apache/logging/log4j/Logger;")
-                                                        .build()
-                                                )
-                                                .build()
-                                        )
+                        .addClass(ClassMetadataBuilder.create()
+                                .withName(named("dnm", "com/mojang/blaze3d/DontObfuscate"))
+                                .addField(FieldMetadataBuilder.create()
+                                        .withName(named("b", "LOGGER"))
+                                        .withOwner(named("dnm", "com/mojang/blaze3d/DontObfuscate"))
+                                        .withDescriptor(named(
+                                                "La;",
+                                                "Lorg/apache/logging/log4j/Logger;"
+                                        ))
                                         .build()
+                                )
+                                .build()
                         )
                         .build(),
                 "Fields are not parsed properly."
         );
+    }
+
+    static Named named(String obf, String mojang) {
+        return NamedBuilder.create()
+                .withObfuscated(obf)
+                .withMojang(mojang)
+                .build();
     }
 }
