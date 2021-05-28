@@ -3,8 +3,7 @@ package org.parchmentmc.feather.io.proguard;
 import org.parchmentmc.feather.metadata.*;
 import org.parchmentmc.feather.named.Named;
 import org.parchmentmc.feather.named.NamedBuilder;
-import org.parchmentmc.feather.utils.RemappableDescriptor;
-import org.parchmentmc.feather.utils.RemappableType;
+import org.parchmentmc.feather.utils.RemapHelper;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -215,27 +214,23 @@ public final class MetadataProguardParser {
                         .collect(Collectors.toSet()))
                 .withMethods(classMetadata.getMethods().stream()
                         .map(method -> {
-                            final RemappableDescriptor remappableDescriptor =
-                                    new RemappableDescriptor(method.getDescriptor().getMojangName().orElseThrow(() -> new IllegalStateException("Missing mojang descriptor")));
+                            final String mojangName = method.getDescriptor().getMojangName().orElseThrow(() -> new IllegalStateException("Missing mojang descriptor"));
 
                             return MethodMetadataBuilder.create(method)
                                     .withDescriptor(NamedBuilder.create()
-                                            .withMojang(remappableDescriptor.toString())
-                                            .withObfuscated(remappableDescriptor.remap(type ->
-                                                    Optional.ofNullable(mojToObfClassMap.get(type))).toString())
+                                            .withMojang(mojangName)
+                                            .withObfuscated(RemapHelper.remapMethodDescriptor(mojangName, mojToObfClassMap::get))
                                     );
                         })
                         .collect(Collectors.toSet()))
                 .withFields(classMetadata.getFields().stream()
                         .map(field -> {
-                            final RemappableType remappableType =
-                                    new RemappableType(field.getDescriptor().getMojangName().orElseThrow(() -> new IllegalStateException("Missing mojang type.")));
+                            final String mojangName = field.getDescriptor().getMojangName().orElseThrow(() -> new IllegalStateException("Missing mojang type."));
 
                             return FieldMetadataBuilder.create(field)
                                     .withDescriptor(NamedBuilder.create()
-                                            .withMojang(remappableType.toString())
-                                            .withObfuscated(remappableType.remap(type ->
-                                                    Optional.ofNullable(mojToObfClassMap.get(type))).toString())
+                                            .withMojang(mojangName)
+                                            .withObfuscated(RemapHelper.remapTypeDescriptor(mojangName, mojToObfClassMap::get))
                                     );
                         })
                         .collect(Collectors.toSet()));
