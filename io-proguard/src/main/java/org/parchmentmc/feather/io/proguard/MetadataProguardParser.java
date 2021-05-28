@@ -289,37 +289,30 @@ public final class MetadataProguardParser {
     }
 
     private static String convertTypeToJVMDescriptor(String type) {
-        if (type.endsWith("[]")) {
+        if (type.endsWith("[]")) { // one-dimension of an array
             return "[" + convertTypeToJVMDescriptor(type.substring(0, type.length() - 2));
         }
-        if (type.equals("int")) {
-            return "I";
+        switch (type) { // primitive type
+            case "void":
+                return "V";
+            case "boolean":
+                return "Z";
+            case "byte":
+                return "B";
+            case "char":
+                return "C";
+            case "short":
+                return "S";
+            case "int":
+                return "I";
+            case "float":
+                return "F";
+            case "long":
+                return "J";
+            case "double":
+                return "D";
         }
-        if (type.equals("void")) {
-            return "V";
-        }
-        if (type.equals("boolean")) {
-            return "Z";
-        }
-        if (type.equals("byte")) {
-            return "B";
-        }
-        if (type.equals("char")) {
-            return "C";
-        }
-        if (type.equals("short")) {
-            return "S";
-        }
-        if (type.equals("double")) {
-            return "D";
-        }
-        if (type.equals("float")) {
-            return "F";
-        }
-        if (type.equals("long")) {
-            return "J";
-        }
-        if (type.contains("/")) {
+        if (type.contains("/")) { // reference type
             return "L" + type + ";";
         }
         throw new RuntimeException("Invalid ProGuard Descriptor: " + type);
