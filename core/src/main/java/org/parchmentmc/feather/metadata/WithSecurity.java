@@ -5,8 +5,7 @@ import org.parchmentmc.feather.util.AccessFlag;
 /**
  * Represents an object which has JVM Access flags associated with it.
  */
-public interface WithSecurity
-{
+public interface WithSecurity {
     /**
      * Represents the ASM Bit field that specifies the access level to this object.
      *

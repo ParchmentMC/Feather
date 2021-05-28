@@ -21,13 +21,12 @@ public final class MethodReferenceBuilder implements MethodReference {
         return new MethodReferenceBuilder();
     }
 
-    public static MethodReferenceBuilder create(final MethodReference methodReference)
-    {
+    public static MethodReferenceBuilder create(final MethodReference methodReference) {
         return create()
-          .withOwner(methodReference.getOwner())
-          .withName(methodReference.getName())
-          .withDescriptor(methodReference.getDescriptor())
-          .withSignature(methodReference.getSignature());
+                .withOwner(methodReference.getOwner())
+                .withName(methodReference.getName())
+                .withDescriptor(methodReference.getDescriptor())
+                .withSignature(methodReference.getSignature());
     }
 
     public MethodReferenceBuilder withOwner(Named owner) {
@@ -50,23 +49,22 @@ public final class MethodReferenceBuilder implements MethodReference {
         return this;
     }
 
-    public MethodReferenceBuilder merge(@Nullable final MethodReference source)
-    {
+    public MethodReferenceBuilder merge(@Nullable final MethodReference source) {
         if (source == null)
             return this;
 
         this.owner = NamedBuilder.create(this.owner)
-          .merge(source.getOwner())
-          .build();
+                .merge(source.getOwner())
+                .build();
         this.name = NamedBuilder.create(this.name)
-          .merge(source.getName())
-          .build();
+                .merge(source.getName())
+                .build();
         this.descriptor = NamedBuilder.create(this.descriptor)
-          .merge(source.getDescriptor())
-          .build();
+                .merge(source.getDescriptor())
+                .build();
         this.signature = NamedBuilder.create(this.signature)
-          .merge(source.getSignature())
-          .build();
+                .merge(source.getSignature())
+                .build();
 
         return this;
     }
@@ -93,10 +91,10 @@ public final class MethodReferenceBuilder implements MethodReference {
 
     public ImmutableMethodReference build() {
         return new ImmutableMethodReference(
-          owner.toImmutable(),
-          name.toImmutable(),
-          descriptor.toImmutable(),
-          signature.toImmutable()
+                owner.toImmutable(),
+                name.toImmutable(),
+                descriptor.toImmutable(),
+                signature.toImmutable()
         );
     }
 
@@ -117,8 +115,7 @@ public final class MethodReferenceBuilder implements MethodReference {
     }
 
     @Override
-    public @NonNull MethodReference toImmutable()
-    {
+    public @NonNull MethodReference toImmutable() {
         return build();
     }
 }

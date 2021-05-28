@@ -1,10 +1,8 @@
 package org.parchmentmc.feather.util;
 
-public class Constants
-{
+public class Constants {
 
-    private Constants()
-    {
+    private Constants() {
         throw new IllegalStateException("Can not instantiate an instance of: Constants. This is a utility class");
     }
 

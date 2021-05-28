@@ -10,8 +10,7 @@ import java.util.Optional;
 /**
  * Represents a named object that potentially has names in different mapping types (also known as schemas)
  */
-public interface Named extends HasImmutable<Named>
-{
+public interface Named extends HasImmutable<Named> {
     /**
      * Returns all known schemas and their names for this named object.
      *

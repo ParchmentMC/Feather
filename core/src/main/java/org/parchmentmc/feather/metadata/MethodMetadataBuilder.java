@@ -31,19 +31,18 @@ public final class MethodMetadataBuilder implements MethodMetadata {
         return new MethodMetadataBuilder();
     }
 
-    public static MethodMetadataBuilder create(final MethodMetadata target)
-    {
+    public static MethodMetadataBuilder create(final MethodMetadata target) {
         return create()
-          .withOwner(target.getOwner())
-          .withLambda(target.isLambda())
-          .withBouncingTarget(target.getBouncingTarget())
-          .withOverrides(target.getOverrides())
-          .withName(target.getName())
-          .withSecuritySpecification(target.getSecuritySpecification())
-          .withDescriptor(target.getDescriptor())
-          .withSignature(target.getSignature())
-          .withStartLine(target.getStartLine().orElse(0))
-          .withEndLine(target.getEndLine().orElse(0));
+                .withOwner(target.getOwner())
+                .withLambda(target.isLambda())
+                .withBouncingTarget(target.getBouncingTarget())
+                .withOverrides(target.getOverrides())
+                .withName(target.getName())
+                .withSecuritySpecification(target.getSecuritySpecification())
+                .withDescriptor(target.getDescriptor())
+                .withSignature(target.getSignature())
+                .withStartLine(target.getStartLine().orElse(0))
+                .withEndLine(target.getEndLine().orElse(0));
     }
 
     public MethodMetadataBuilder withOwner(Named owner) {
@@ -96,115 +95,75 @@ public final class MethodMetadataBuilder implements MethodMetadata {
         return this;
     }
 
-    public MethodMetadataBuilder merge(final MethodMetadata source, final String schema)
-    {
+    public MethodMetadataBuilder merge(final MethodMetadata source, final String schema) {
         this.owner = NamedBuilder.create(this.owner)
-          .merge(source.getName())
-          .build();
+                .merge(source.getName())
+                .build();
         this.lambda = this.lambda || source.isLambda();
         this.bouncingTarget = MethodReferenceBuilder.create(this.bouncingTarget)
-          .merge(source.getBouncingTarget())
-          .build();
+                .merge(source.getBouncingTarget())
+                .build();
 
         final Map<MethodReference, MethodReference> schemadLocalOverrides =
-          this.overrides.stream().collect(
-            Collectors.toMap(
-              mr -> MethodReferenceBuilder.create()
-                      .withName(
-                        NamedBuilder.create()
-                            .with(
-                              schema,
-                              mr.getName().getName(schema).orElse("")
-                            )
-                      )
-                      .withOwner(
-                        NamedBuilder.create()
-                          .with(
-                            schema,
-                            mr.getOwner().getName(schema).orElse("")
-                          )
-                      )
-                      .withDescriptor(
-                        NamedBuilder.create()
-                          .with(
-                            schema,
-                            mr.getDescriptor().getName(schema).orElse("")
-                          )
-                      )
-                      .withSignature(
-                        NamedBuilder.create()
-                          .with(
-                            schema,
-                            mr.getSignature().getName(schema).orElse("")
-                          )
-                      )
-                      .build(),
-              Function.identity(),
-              (t, i) -> t
-            )
-          );
+                this.overrides.stream().collect(Collectors.toMap(
+                        mr -> MethodReferenceBuilder.create()
+                                .withName(NamedBuilder.create()
+                                        .with(schema, mr.getName().getName(schema).orElse(""))
+                                )
+                                .withOwner(NamedBuilder.create()
+                                        .with(schema, mr.getOwner().getName(schema).orElse(""))
+                                )
+                                .withDescriptor(NamedBuilder.create()
+                                        .with(schema, mr.getDescriptor().getName(schema).orElse(""))
+                                )
+                                .withSignature(NamedBuilder.create()
+                                        .with(schema, mr.getSignature().getName(schema).orElse(""))
+                                )
+                                .build(),
+                        Function.identity(),
+                        (t, i) -> t
+                ));
 
         final Map<MethodReference, MethodReference> schemadSoureOverrides =
-          source.getOverrides().stream().collect(
-            Collectors.toMap(
-              mr -> MethodReferenceBuilder.create()
-                      .withName(
-                        NamedBuilder.create()
-                          .with(
-                            schema,
-                            mr.getName().getName(schema).orElse("")
-                          )
-                      )
-                      .withOwner(
-                        NamedBuilder.create()
-                          .with(
-                            schema,
-                            mr.getOwner().getName(schema).orElse("")
-                          )
-                      )
-                      .withDescriptor(
-                        NamedBuilder.create()
-                          .with(
-                            schema,
-                            mr.getDescriptor().getName(schema).orElse("")
-                          )
-                      )
-                      .withSignature(
-                        NamedBuilder.create()
-                          .with(
-                            schema,
-                            mr.getSignature().getName(schema).orElse("")
-                          )
-                      )
-                      .build(),
-              Function.identity(),
-              (t, i) -> t
-            )
-          );
+                source.getOverrides().stream().collect(
+                        Collectors.toMap(
+                                mr -> MethodReferenceBuilder.create()
+                                        .withName(NamedBuilder.create()
+                                                .with(schema, mr.getName().getName(schema).orElse(""))
+                                        )
+                                        .withOwner(NamedBuilder.create()
+                                                .with(schema, mr.getOwner().getName(schema).orElse(""))
+                                        )
+                                        .withDescriptor(NamedBuilder.create()
+                                                .with(schema, mr.getDescriptor().getName(schema).orElse(""))
+                                        )
+                                        .withSignature(NamedBuilder.create()
+                                                .with(schema, mr.getSignature().getName(schema).orElse(""))
+                                        )
+                                        .build(),
+                                Function.identity(),
+                                (t, i) -> t
+                        ));
 
         this.overrides = new LinkedHashSet<>();
-        for (final MethodReference keyReference : schemadLocalOverrides.keySet())
-        {
-            if (!schemadSoureOverrides.containsKey(keyReference))
-            {
+        for (final MethodReference keyReference : schemadLocalOverrides.keySet()) {
+            if (!schemadSoureOverrides.containsKey(keyReference)) {
                 this.overrides.add(schemadLocalOverrides.get(keyReference));
-            }
-            else
-            {
+            } else {
                 this.overrides.add(
-                  MethodReferenceBuilder.create(schemadLocalOverrides.get(keyReference))
-                    .merge(schemadSoureOverrides.get(keyReference))
-                  .build()
+                        MethodReferenceBuilder.create(schemadLocalOverrides.get(keyReference))
+                                .merge(schemadSoureOverrides.get(keyReference))
+                                .build()
                 );
             }
         }
         schemadSoureOverrides.keySet().stream()
-          .filter(mr -> !schemadLocalOverrides.containsKey(mr))
-          .forEach(mr -> this.overrides.add(schemadSoureOverrides.get(mr)));
+                .filter(mr -> !schemadLocalOverrides.containsKey(mr))
+                .forEach(mr -> this.overrides.add(schemadSoureOverrides.get(mr)));
 
         this.name = NamedBuilder.create(this.name)
-          .merge(source.getName())
-          .build();
+                .merge(source.getName())
+                .build();
 
         final EnumSet<AccessFlag> thisAccessFlags = AccessFlag.getAccessFlags(this.securitySpecification);
         final EnumSet<AccessFlag> sourceAccessFlags = AccessFlag.getAccessFlags(source.getSecuritySpecification());
@@ -216,11 +175,11 @@ public final class MethodMetadataBuilder implements MethodMetadata {
         this.securitySpecification = AccessFlag.toSecuritySpecification(mergedFlags);
 
         this.descriptor = NamedBuilder.create(this.descriptor)
-                            .merge(source.getDescriptor())
-                            .build();
+                .merge(source.getDescriptor())
+                .build();
         this.signature = NamedBuilder.create(this.signature)
-                           .merge(source.getSignature())
-                           .build();
+                .merge(source.getSignature())
+                .build();
 
         this.startLine = source.getStartLine().orElse(this.startLine);
         this.endLine = source.getEndLine().orElse(this.endLine);
@@ -251,8 +210,7 @@ public final class MethodMetadataBuilder implements MethodMetadata {
     }
 
     @Override
-    public @NonNull Optional<Integer> getStartLine()
-    {
+    public @NonNull Optional<Integer> getStartLine() {
         if (startLine <= 0)
             return Optional.empty();
 
@@ -260,8 +218,7 @@ public final class MethodMetadataBuilder implements MethodMetadata {
     }
 
     @Override
-    public @NonNull Optional<Integer> getEndLine()
-    {
+    public @NonNull Optional<Integer> getEndLine() {
         if (endLine <= 0)
             return Optional.empty();
 
@@ -291,55 +248,56 @@ public final class MethodMetadataBuilder implements MethodMetadata {
 
     public ImmutableMethodMetadata build() {
         return new ImmutableMethodMetadata(
-          owner.toImmutable(),
-          lambda,
-          bouncingTarget == null ? null : bouncingTarget.toImmutable(),
-          overrides.stream().map(MethodReference::toImmutable).collect(Collectors.toCollection(LinkedHashSet::new)),
-          name.toImmutable(),
-          securitySpecification,
-          descriptor.toImmutable(),
-          signature.toImmutable(),
-          startLine,
-          endLine
+                owner.toImmutable(),
+                lambda,
+                bouncingTarget == null ? null : bouncingTarget.toImmutable(),
+                overrides.stream().map(MethodReference::toImmutable).collect(Collectors.toCollection(LinkedHashSet::new)),
+                name.toImmutable(),
+                securitySpecification,
+                descriptor.toImmutable(),
+                signature.toImmutable(),
+                startLine,
+                endLine
         );
     }
 
     @Override
-    public boolean equals(final Object o)
-    {
-        if (this == o)
-        {
+    public boolean equals(final Object o) {
+        if (this == o) {
             return true;
         }
-        if (!(o instanceof MethodMetadataBuilder))
-        {
+        if (!(o instanceof MethodMetadataBuilder)) {
             return false;
         }
         final MethodMetadataBuilder builder = (MethodMetadataBuilder) o;
-        return isLambda() == builder.isLambda() && getSecuritySpecification() == builder.getSecuritySpecification() && getStartLine() == builder.getStartLine()
-                 && getEndLine() == builder.getEndLine() && getOwner().equals(builder.getOwner()) && getBouncingTarget().equals(builder.getBouncingTarget())
-                 && getOverrides().equals(
-          builder.getOverrides()) && getName().equals(builder.getName()) && getDescriptor().equals(builder.getDescriptor()) && getSignature().equals(builder.getSignature());
+        return isLambda() == builder.isLambda()
+                && getSecuritySpecification() == builder.getSecuritySpecification()
+                && getStartLine() == builder.getStartLine()
+                && getEndLine() == builder.getEndLine()
+                && getOwner().equals(builder.getOwner())
+                && getBouncingTarget().equals(builder.getBouncingTarget())
+                && getOverrides().equals(builder.getOverrides())
+                && getName().equals(builder.getName())
+                && getDescriptor().equals(builder.getDescriptor())
+                && getSignature().equals(builder.getSignature());
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return Objects.hash(getOwner(),
-          isLambda(),
-          getBouncingTarget(),
-          getOverrides(),
-          getName(),
-          getSecuritySpecification(),
-          getDescriptor(),
-          getSignature(),
-          getStartLine(),
-          getEndLine());
+                isLambda(),
+                getBouncingTarget(),
+                getOverrides(),
+                getName(),
+                getSecuritySpecification(),
+                getDescriptor(),
+                getSignature(),
+                getStartLine(),
+                getEndLine());
     }
 
     @Override
-    public @NonNull MethodMetadata toImmutable()
-    {
+    public @NonNull MethodMetadata toImmutable() {
         return build();
     }
 }

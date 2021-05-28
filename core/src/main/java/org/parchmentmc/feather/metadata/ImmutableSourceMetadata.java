@@ -52,18 +52,16 @@ public class ImmutableSourceMetadata implements SourceMetadata {
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "ImmutableSourceMetadata{" +
-                 "specVersion=" + specVersion +
-                 ", minecraftVersion='" + minecraftVersion + '\'' +
-                 ", classes=" + classes +
-                 '}';
+                "specVersion=" + specVersion +
+                ", minecraftVersion='" + minecraftVersion + '\'' +
+                ", classes=" + classes +
+                '}';
     }
 
     @Override
-    public @NonNull SourceMetadata toImmutable()
-    {
+    public @NonNull SourceMetadata toImmutable() {
         return this;
     }
 }

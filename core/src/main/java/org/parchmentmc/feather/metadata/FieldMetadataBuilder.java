@@ -23,14 +23,13 @@ public final class FieldMetadataBuilder implements FieldMetadata {
         return new FieldMetadataBuilder();
     }
 
-    public static FieldMetadataBuilder create(final FieldMetadata target)
-    {
+    public static FieldMetadataBuilder create(final FieldMetadata target) {
         return create()
-          .withOwner(target.getOwner())
-          .withName(target.getName())
-          .withSecuritySpecification(target.getSecuritySpecification())
-          .withDescriptor(target.getDescriptor())
-          .withSignature(target.getSignature());
+                .withOwner(target.getOwner())
+                .withName(target.getName())
+                .withSecuritySpecification(target.getSecuritySpecification())
+                .withDescriptor(target.getDescriptor())
+                .withSignature(target.getSignature());
     }
 
     public FieldMetadataBuilder withOwner(Named owner) {
@@ -58,14 +57,13 @@ public final class FieldMetadataBuilder implements FieldMetadata {
         return this;
     }
 
-    public FieldMetadataBuilder merge(final FieldMetadata source)
-    {
+    public FieldMetadataBuilder merge(final FieldMetadata source) {
         this.owner = NamedBuilder.create(this.owner)
-          .merge(source.getOwner())
-          .build();
+                .merge(source.getOwner())
+                .build();
         this.name = NamedBuilder.create(this.name)
-          .merge(source.getName())
-          .build();
+                .merge(source.getName())
+                .build();
 
         final EnumSet<AccessFlag> thisAccessFlags = AccessFlag.getAccessFlags(this.securitySpecification);
         final EnumSet<AccessFlag> sourceAccessFlags = AccessFlag.getAccessFlags(source.getSecuritySpecification());
@@ -77,11 +75,11 @@ public final class FieldMetadataBuilder implements FieldMetadata {
         this.securitySpecification = AccessFlag.toSecuritySpecification(mergedFlags);
 
         this.descriptor = NamedBuilder.create(this.descriptor)
-          .merge(source.getDescriptor())
-          .build();
+                .merge(source.getDescriptor())
+                .build();
         this.signature = NamedBuilder.create(this.signature)
-          .merge(source.getSignature())
-          .build();
+                .merge(source.getSignature())
+                .build();
 
         return this;
     }
@@ -113,11 +111,11 @@ public final class FieldMetadataBuilder implements FieldMetadata {
 
     public FieldMetadata build() {
         return new ImmutableFieldMetadata(
-          owner.toImmutable(),
-          name.toImmutable(),
-          securitySpecification,
-          descriptor.toImmutable(),
-          signature.toImmutable()
+                owner.toImmutable(),
+                name.toImmutable(),
+                securitySpecification,
+                descriptor.toImmutable(),
+                signature.toImmutable()
         );
     }
 
@@ -139,8 +137,7 @@ public final class FieldMetadataBuilder implements FieldMetadata {
     }
 
     @Override
-    public @NonNull FieldMetadata toImmutable()
-    {
+    public @NonNull FieldMetadata toImmutable() {
         return build();
     }
 

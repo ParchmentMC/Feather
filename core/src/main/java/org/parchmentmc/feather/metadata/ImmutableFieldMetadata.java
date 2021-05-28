@@ -63,20 +63,18 @@ public class ImmutableFieldMetadata implements FieldMetadata {
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "ImmutableFieldMetadata{" +
-                 "owner=" + owner +
-                 ", name=" + name +
-                 ", securitySpecification=" + securitySpecification +
-                 ", descriptor=" + descriptor +
-                 ", signature=" + signature +
-                 '}';
+                "owner=" + owner +
+                ", name=" + name +
+                ", securitySpecification=" + securitySpecification +
+                ", descriptor=" + descriptor +
+                ", signature=" + signature +
+                '}';
     }
 
     @Override
-    public @NonNull FieldMetadata toImmutable()
-    {
+    public @NonNull FieldMetadata toImmutable() {
         return this;
     }
 }

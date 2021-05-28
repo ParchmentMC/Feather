@@ -7,8 +7,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
  *
  * @param <I> The type that implements this interface.
  */
-public interface HasImmutable<I extends HasImmutable<I>>
-{
+public interface HasImmutable<I extends HasImmutable<I>> {
 
     /**
      * Creates an immutable version of this object.

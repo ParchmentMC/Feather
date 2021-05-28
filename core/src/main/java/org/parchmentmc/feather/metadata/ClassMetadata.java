@@ -5,13 +5,11 @@ import org.parchmentmc.feather.named.Named;
 import org.parchmentmc.feather.util.HasImmutable;
 
 import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  * Represents the metadata that is extracted during static analysis from a given class.
  */
-public interface ClassMetadata extends WithSecurity, OwnedByClass, WithName, HasImmutable<ClassMetadata>
-{
+public interface ClassMetadata extends WithSecurity, OwnedByClass, WithName, HasImmutable<ClassMetadata> {
     /**
      * The name of the super class.
      *

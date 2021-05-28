@@ -12,29 +12,24 @@ public final class RemappableType {
 
     private final String type;
 
-    public RemappableType(final String type) {this.type = type;}
+    public RemappableType(final String type) {
+        this.type = type;
+    }
 
     public String getType() {
         return type;
     }
 
-    public RemappableType remap(
-      final Function<String, Optional<String>> remappingFunction
-    ) {
+    public RemappableType remap(final Function<String, Optional<String>> remappingFunction) {
         final Optional<String> remappedTyped = remapType(getType(), remappingFunction);
-        if (!remappedTyped.isPresent())
-        {
+        if (!remappedTyped.isPresent()) {
             LOGGER.debug("Could not remap: " + getType());
         }
 
         return new RemappableType(remappedTyped.orElseGet(this::getType));
     }
 
-    private static Optional<String> remapType(
-      final String clz,
-      Function<String, Optional<String>> remappingFunction
-    )
-    {
+    private static Optional<String> remapType(final String clz, Function<String, Optional<String>> remappingFunction) {
         if (clz.length() == 1)
             return Optional.of(clz); //Early bail out for primitives.
 
@@ -48,8 +43,7 @@ public final class RemappableType {
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return getType();
     }
 }

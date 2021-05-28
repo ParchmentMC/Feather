@@ -8,7 +8,6 @@ import org.parchmentmc.feather.util.SimpleVersion;
 
 import java.io.IOException;
 import java.util.LinkedHashSet;
-import java.util.HashSet;
 import java.util.Map;
 
 @SuppressWarnings("unused")

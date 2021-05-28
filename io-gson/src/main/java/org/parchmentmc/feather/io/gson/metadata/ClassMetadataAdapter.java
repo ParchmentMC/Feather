@@ -15,7 +15,6 @@ import org.parchmentmc.feather.named.ImmutableNamed;
 import org.parchmentmc.feather.named.Named;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 

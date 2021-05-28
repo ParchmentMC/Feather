@@ -12,7 +12,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public final class SourceMetadataBuilder implements SourceMetadata {
-    private SimpleVersion specVersion = SimpleVersion.of(1,0,0);
+    private SimpleVersion specVersion = SimpleVersion.of(1, 0, 0);
     private String minecraftVersion = "0.0.0";
     private LinkedHashSet<ClassMetadata> classes = new LinkedHashSet<>();
 
@@ -23,12 +23,11 @@ public final class SourceMetadataBuilder implements SourceMetadata {
         return new SourceMetadataBuilder();
     }
 
-    public static SourceMetadataBuilder create(final SourceMetadata target)
-    {
+    public static SourceMetadataBuilder create(final SourceMetadata target) {
         return create()
-          .withSpecVersion(target.getSpecificationVersion())
-          .withMinecraftVersion(target.getMinecraftVersion())
-          .withClasses(target.getClasses());
+                .withSpecVersion(target.getSpecificationVersion())
+                .withMinecraftVersion(target.getMinecraftVersion())
+                .withClasses(target.getClasses());
     }
 
     public SourceMetadataBuilder withSpecVersion(SimpleVersion specVersion) {
@@ -46,45 +45,36 @@ public final class SourceMetadataBuilder implements SourceMetadata {
         return this;
     }
 
-    public SourceMetadataBuilder merge(final SourceMetadata source, final String mergingSchema)
-    {
+    public SourceMetadataBuilder merge(final SourceMetadata source, final String mergingSchema) {
         final Map<Named, ClassMetadata> schemadLocalInnerClasses = this.classes
-                                                                     .stream().collect(
-            Collectors.toMap(
-              fm -> NamedBuilder.create()
-                      .with(mergingSchema, fm.getName().getName(mergingSchema).orElse(""))
-                      .build(),
-              Function.identity()
-            )
-          );
+                .stream().collect(Collectors.toMap(
+                        fm -> NamedBuilder.create()
+                                .with(mergingSchema, fm.getName().getName(mergingSchema).orElse(""))
+                                .build(),
+                        Function.identity()
+                ));
         final Map<Named, ClassMetadata> schemadSourceInnerClasses = source.getClasses()
-                                                                      .stream().collect(
-            Collectors.toMap(
-              fm -> NamedBuilder.create()
-                      .with(mergingSchema, fm.getName().getName(mergingSchema).orElse(""))
-                      .build(),
-              Function.identity()
-            )
-          );
+                .stream().collect(Collectors.toMap(
+                        fm -> NamedBuilder.create()
+                                .with(mergingSchema, fm.getName().getName(mergingSchema).orElse(""))
+                                .build(),
+                        Function.identity()
+                ));
         this.classes = new LinkedHashSet<>();
-        for (final Named keyReference : schemadLocalInnerClasses.keySet())
-        {
-            if (!schemadSourceInnerClasses.containsKey(keyReference))
-            {
+        for (final Named keyReference : schemadLocalInnerClasses.keySet()) {
+            if (!schemadSourceInnerClasses.containsKey(keyReference)) {
                 this.classes.add(schemadLocalInnerClasses.get(keyReference));
-            }
-            else
-            {
+            } else {
                 this.classes.add(
-                  ClassMetadataBuilder.create(schemadLocalInnerClasses.get(keyReference))
-                    .merge(schemadSourceInnerClasses.get(keyReference), mergingSchema)
-                    .build()
+                        ClassMetadataBuilder.create(schemadLocalInnerClasses.get(keyReference))
+                                .merge(schemadSourceInnerClasses.get(keyReference), mergingSchema)
+                                .build()
                 );
             }
         }
         schemadSourceInnerClasses.keySet().stream()
-          .filter(mr -> !schemadLocalInnerClasses.containsKey(mr))
-          .forEach(mr -> this.classes.add(schemadSourceInnerClasses.get(mr)));
+                .filter(mr -> !schemadLocalInnerClasses.containsKey(mr))
+                .forEach(mr -> this.classes.add(schemadSourceInnerClasses.get(mr)));
 
         return this;
     }
@@ -106,9 +96,9 @@ public final class SourceMetadataBuilder implements SourceMetadata {
 
     public ImmutableSourceMetadata build() {
         return new ImmutableSourceMetadata(
-          specVersion,
-          minecraftVersion,
-          classes.stream().map(ClassMetadata::toImmutable).collect(Collectors.toCollection(LinkedHashSet::new))
+                specVersion,
+                minecraftVersion,
+                classes.stream().map(ClassMetadata::toImmutable).collect(Collectors.toCollection(LinkedHashSet::new))
         );
     }
 
@@ -127,15 +117,13 @@ public final class SourceMetadataBuilder implements SourceMetadata {
         return Objects.hash(getSpecificationVersion(), getMinecraftVersion(), getClasses());
     }
 
-    public SourceMetadataBuilder addClass(final ClassMetadata build)
-    {
+    public SourceMetadataBuilder addClass(final ClassMetadata build) {
         this.classes.add(build);
         return this;
     }
 
     @Override
-    public @NonNull SourceMetadata toImmutable()
-    {
+    public @NonNull SourceMetadata toImmutable() {
         return build();
     }
 }
