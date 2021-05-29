@@ -10,23 +10,23 @@ import java.util.Optional;
 
 public class ImmutableMethodMetadata extends AbstractMethodReference implements MethodMetadata {
     private final boolean lambda;
-    private final MethodReference                bouncingTarget;
+    private final MethodReference bouncingTarget;
     private final LinkedHashSet<MethodReference> overrides;
-    private final int                            securitySpecification;
+    private final int securitySpecification;
     private final int startLine;
     private final int endLine;
 
     public ImmutableMethodMetadata(
-      final Named owner,
-      final boolean lambda,
-      final MethodReference bouncingTarget,
-      final LinkedHashSet<MethodReference> overrides,
-      final Named name,
-      final int securitySpecification,
-      final Named descriptor,
-      final Named signature,
-      final int startLine,
-      final int endLine) {
+            final Named owner,
+            final boolean lambda,
+            final MethodReference bouncingTarget,
+            final LinkedHashSet<MethodReference> overrides,
+            final Named name,
+            final int securitySpecification,
+            final Named descriptor,
+            final Named signature,
+            final int startLine,
+            final int endLine) {
         super(owner, name, descriptor, signature);
         this.lambda = lambda;
         this.bouncingTarget = bouncingTarget;
@@ -54,8 +54,7 @@ public class ImmutableMethodMetadata extends AbstractMethodReference implements 
     }
 
     @Override
-    public @NonNull Optional<Integer> getStartLine()
-    {
+    public @NonNull Optional<Integer> getStartLine() {
         if (startLine <= 0)
             return Optional.empty();
 
@@ -63,8 +62,7 @@ public class ImmutableMethodMetadata extends AbstractMethodReference implements 
     }
 
     @Override
-    public @NonNull Optional<Integer> getEndLine()
-    {
+    public @NonNull Optional<Integer> getEndLine() {
         if (endLine <= 0)
             return Optional.empty();
 
@@ -77,55 +75,48 @@ public class ImmutableMethodMetadata extends AbstractMethodReference implements 
     }
 
     @Override
-    public boolean equals(final Object o)
-    {
-        if (this == o)
-        {
+    public boolean equals(final Object o) {
+        if (this == o) {
             return true;
         }
-        if (!(o instanceof ImmutableMethodMetadata))
-        {
+        if (!(o instanceof ImmutableMethodMetadata)) {
             return false;
         }
-        if (!super.equals(o))
-        {
+        if (!super.equals(o)) {
             return false;
         }
         final ImmutableMethodMetadata that = (ImmutableMethodMetadata) o;
         return isLambda() == that.isLambda() &&
-                 getSecuritySpecification() == that.getSecuritySpecification() &&
-                 getStartLine().equals(that.getStartLine()) &&
-                 getEndLine().equals(that.getEndLine()) &&
-                 Objects.equals(getBouncingTarget(), that.getBouncingTarget()) &&
-                 Objects.equals(getOverrides(), that.getOverrides());
+                getSecuritySpecification() == that.getSecuritySpecification() &&
+                getStartLine().equals(that.getStartLine()) &&
+                getEndLine().equals(that.getEndLine()) &&
+                Objects.equals(getBouncingTarget(), that.getBouncingTarget()) &&
+                Objects.equals(getOverrides(), that.getOverrides());
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return Objects.hash(super.hashCode(), isLambda(), getBouncingTarget(), getOverrides(), getSecuritySpecification(), getStartLine(), getEndLine());
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "ImmutableMethodMetadata{" +
-                 "owner=" + owner +
-                 ", name=" + name +
-                 ", descriptor=" + descriptor +
-                 ", signature=" + signature +
-                 ", lambda=" + lambda +
-                 ", bouncingTarget=" + bouncingTarget +
-                 ", overrides=" + overrides +
-                 ", securitySpecification=" + securitySpecification +
-                 ", startLine=" + startLine +
-                 ", endLine=" + endLine +
-                 '}';
+                "owner=" + owner +
+                ", name=" + name +
+                ", descriptor=" + descriptor +
+                ", signature=" + signature +
+                ", lambda=" + lambda +
+                ", bouncingTarget=" + bouncingTarget +
+                ", overrides=" + overrides +
+                ", securitySpecification=" + securitySpecification +
+                ", startLine=" + startLine +
+                ", endLine=" + endLine +
+                '}';
     }
 
     @Override
-    public @NonNull MethodMetadata toImmutable()
-    {
+    public @NonNull MethodMetadata toImmutable() {
         return this;
     }
 }

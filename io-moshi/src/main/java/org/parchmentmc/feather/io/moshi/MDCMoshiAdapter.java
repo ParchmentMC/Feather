@@ -140,9 +140,9 @@ public class MDCMoshiAdapter {
 
     @FromJson
     VersionedMappingDataContainer containerToJson(JsonReader reader,
-                                         JsonAdapter<SimpleVersion> versionAdapter,
-                                         JsonAdapter<Collection<? extends MappingDataContainer.PackageData>> packageAdapter,
-                                         JsonAdapter<Collection<? extends MappingDataContainer.ClassData>> classAdapter) throws IOException {
+                                                  JsonAdapter<SimpleVersion> versionAdapter,
+                                                  JsonAdapter<Collection<? extends MappingDataContainer.PackageData>> packageAdapter,
+                                                  JsonAdapter<Collection<? extends MappingDataContainer.ClassData>> classAdapter) throws IOException {
 
         SimpleVersion version = null;
         Collection<? extends MappingDataContainer.PackageData> packages = null;

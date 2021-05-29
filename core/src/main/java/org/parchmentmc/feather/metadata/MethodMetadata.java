@@ -5,14 +5,12 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.parchmentmc.feather.util.HasImmutable;
 
 import java.util.LinkedHashSet;
-import java.util.Set;
 import java.util.Optional;
 
 /**
  * Represents the metadata of a given method.
  */
-public interface MethodMetadata extends BaseMethodReference, WithSecurity, HasImmutable<MethodMetadata>
-{
+public interface MethodMetadata extends BaseMethodReference, WithSecurity, HasImmutable<MethodMetadata> {
     /**
      * Indicates if this method is a lambda method.
      *

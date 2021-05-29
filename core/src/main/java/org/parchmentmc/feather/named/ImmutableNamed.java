@@ -35,20 +35,16 @@ public class ImmutableNamed implements Named {
     }
 
     @Override
-    public @NonNull Named toImmutable()
-    {
+    public @NonNull Named toImmutable() {
         return this;
     }
 
     @Override
-    public boolean equals(final Object o)
-    {
-        if (this == o)
-        {
+    public boolean equals(final Object o) {
+        if (this == o) {
             return true;
         }
-        if (!(o instanceof ImmutableNamed))
-        {
+        if (!(o instanceof ImmutableNamed)) {
             return false;
         }
         final ImmutableNamed that = (ImmutableNamed) o;
@@ -56,16 +52,14 @@ public class ImmutableNamed implements Named {
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return Objects.hash(getNames());
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "ImmutableNamed{" +
-                 "names=" + names +
-                 '}';
+                "names=" + names +
+                '}';
     }
 }

@@ -10,66 +10,42 @@ import java.util.Objects;
 /**
  * A mutable named object.
  */
-public class NamedBuilder implements Named
-{
+public class NamedBuilder implements Named {
     private final Map<String, String> names = Maps.newLinkedHashMap();
 
-    public static NamedBuilder create(
-      final String mappingName,
-      final String mappingValue
-    )
-    {
+    public static NamedBuilder create(final String mappingName, final String mappingValue) {
         return new NamedBuilder(mappingName, mappingValue);
     }
 
-    public static NamedBuilder create(
-      final Map<String, String> names
-    )
-    {
+    public static NamedBuilder create(final Map<String, String> names) {
         return new NamedBuilder(names);
     }
 
-    public static NamedBuilder create(
-      final Named named
-    )
-    {
+    public static NamedBuilder create(final Named named) {
         return new NamedBuilder(named);
     }
 
-    public static NamedBuilder create()
-    {
+    public static NamedBuilder create() {
         return new NamedBuilder();
     }
 
-    private NamedBuilder(
-      final String mappingName,
-      final String mappingValue
-    )
-    {
+    private NamedBuilder(final String mappingName, final String mappingValue) {
         this.names.put(mappingName, mappingValue);
     }
 
-    private NamedBuilder(
-      final Map<String, String> names
-    )
-    {
+    private NamedBuilder(final Map<String, String> names) {
         this.names.putAll(names);
     }
 
-    private NamedBuilder(
-      final Named named
-    )
-    {
+    private NamedBuilder(final Named named) {
         this.names.putAll(named.getNames());
     }
 
-    private NamedBuilder()
-    {
+    private NamedBuilder() {
     }
 
     @Override
-    public Map<String, String> getNames()
-    {
+    public Map<String, String> getNames() {
         return names;
     }
 
@@ -77,13 +53,10 @@ public class NamedBuilder implements Named
      * Adds a new name with the given schema and name to this named object.
      *
      * @param scheme The schema to add.
-     * @param name The name to add.
+     * @param name   The name to add.
      * @return This instance.
      */
-    public NamedBuilder with(
-      final String scheme,
-      final String name
-    ) {
+    public NamedBuilder with(final String scheme, final String name) {
         if (scheme.equals("") || name.equals(""))
             return this;
 
@@ -97,9 +70,7 @@ public class NamedBuilder implements Named
      * @param name The name to add.
      * @return This instance.
      */
-    public NamedBuilder withObfuscated(
-      final String name
-    ) {
+    public NamedBuilder withObfuscated(final String name) {
         return with(Constants.Names.OBFUSCATED, name);
     }
 
@@ -109,9 +80,7 @@ public class NamedBuilder implements Named
      * @param name The name to add.
      * @return This instance.
      */
-    public NamedBuilder withMojang(
-      final String name
-    ) {
+    public NamedBuilder withMojang(final String name) {
         return with(Constants.Names.MOJANG, name);
     }
 
@@ -121,8 +90,7 @@ public class NamedBuilder implements Named
      * @param source The named object to add all the schemas and names from.
      * @return The builder.
      */
-    public NamedBuilder merge(final Named source)
-    {
+    public NamedBuilder merge(final Named source) {
         this.names.putAll(source.getNames());
         return this;
     }
@@ -150,8 +118,7 @@ public class NamedBuilder implements Named
     }
 
     @Override
-    public @NonNull Named toImmutable()
-    {
+    public @NonNull Named toImmutable() {
         return build();
     }
 }

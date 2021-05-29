@@ -6,8 +6,7 @@ import org.parchmentmc.feather.named.Named;
 /**
  * Represents an object with an actual name in at least one mapping scheme.
  */
-public interface WithName
-{
+public interface WithName {
     /**
      * The name of the class.
      *

@@ -1,15 +1,8 @@
 package org.parchmentmc.feather.io.moshi;
 
-import com.squareup.moshi.JsonAdapter;
-import com.squareup.moshi.Moshi;
-import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 import org.parchmentmc.feather.manifests.MetadataTestConstants;
 import org.parchmentmc.feather.metadata.*;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-import java.util.Set;
 
 public class MetadataMoshiAdapterTest extends MoshiTest implements MetadataTestConstants {
     public MetadataMoshiAdapterTest() {

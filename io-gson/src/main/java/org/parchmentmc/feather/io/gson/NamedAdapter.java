@@ -22,8 +22,7 @@ public class NamedAdapter extends TypeAdapter<Named> {
         }
 
         out.beginObject();
-        for (final Map.Entry<String, String> schemaNameEntry : value.getNames().entrySet())
-        {
+        for (final Map.Entry<String, String> schemaNameEntry : value.getNames().entrySet()) {
             out.name(schemaNameEntry.getKey()).value(schemaNameEntry.getValue());
         }
         out.endObject();

@@ -14,10 +14,10 @@ import static org.parchmentmc.feather.named.ImmutableNamed.empty;
 
 public interface MetadataTestConstants {
     LinkedHashSet<MethodReference> METHOD_REFERENCES = Sets.newLinkedHashSet(of(
-      new ImmutableMethodReference(named("a"), named("<init>"),
-        named("()V"), named("()V")),
-      new ImmutableMethodReference(named("a"), named("ma"),
-        named("()Ljava/util/Set;"), named("()Ljava/util/Set<[I>;"))
+            new ImmutableMethodReference(named("a"), named("<init>"),
+                    named("()V"), named("()V")),
+            new ImmutableMethodReference(named("a"), named("ma"),
+                    named("()Ljava/util/Set;"), named("()Ljava/util/Set<[I>;"))
     ));
 
     LinkedHashSet<MethodMetadata> METHOD_METADATA = new LinkedHashSet<>(of(
@@ -26,7 +26,7 @@ public interface MetadataTestConstants {
             new ImmutableMethodMetadata(named("a"), true, null, METHOD_REFERENCES,
                     named("la"), Modifier.PROTECTED, named("()F"), named("()F"), 0, 0),
             new ImmutableMethodMetadata(named("a"), false, new ImmutableMethodReference(named("a"), named("<init>"),
-              named("()V"), named("()V")), new LinkedHashSet<>(),
+                    named("()V"), named("()V")), new LinkedHashSet<>(),
                     named("xa"), Modifier.PROTECTED, named("()V"), named("()V"), 0, 0)
     ));
 
