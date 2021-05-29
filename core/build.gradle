@@ -9,5 +9,9 @@ dependencies {
 publishing {
     publications.create("core", MavenPublication) {
         from components.java
+        pom {
+            name = "Feather"
+            description = "Library for common data objects used by ParchmentMC projects."
+        }
     }
 }

@@ -10,5 +10,9 @@ dependencies {
 publishing {
     publications.create("moshiIO", MavenPublication) {
         from components.java
+        pom {
+            name = "Feather IO - GSON"
+            description = "Additional IO library for serializing JSON data objects using Moshi."
+        }
     }
 }

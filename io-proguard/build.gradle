@@ -12,5 +12,9 @@ dependencies {
 publishing {
     publications.create("proguardIO", MavenPublication) {
         from components.java
+        pom {
+            name = "Feather IO - ProGuard"
+            description = "Additional IO library for parsing ProGuard mapping files."
+        }
     }
 }

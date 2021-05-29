@@ -34,4 +34,31 @@ subprojects {
         withJavadocJar()
         withSourcesJar()
     }
+
+    publishing {
+        publications.withType(MavenPublication).all {
+            pom {
+                url = "https://github.com/ParchmentMC/Feather"
+                organization {
+                    name = "ParchmentMC"
+                    url = "https://github.com/ParchmentMC"
+                }
+                scm {
+                    url = "https://github.com/ParchmentMC/Feather"
+                    connection = "scm:git:git://github.com/ParchmentMC/Feather.git"
+                    developerConnection = "scm:git:git@github.com/ParchmentMC/Feather.git"
+                }
+                issueManagement {
+                    system = "GitHub Issues"
+                    url = "https://github.com/ParchmentMC/Feather/issues"
+                }
+                licenses {
+                    license {
+                        name = "MIT"
+                        url = "https://opensource.org/licenses/MIT"
+                    }
+                }
+            }
+        }
+    }
 }
