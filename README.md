@@ -61,7 +61,7 @@ class UsingMoshi {
             // Required for `MappingDataContainer`s and `SourceMetadata`
             .add(new SimpleVersionAdapter())
             // Required for the metadata classes (`SourceMetadata`, `MethodReference`, etc.) and `Named`
-            .add(new MetadataMoshiAdapter())
+            .add(new MetadataMoshiAdapter()).add(LinkedHashSetMoshiAdapter.FACTORY)
             // Required for parsing manifests: `LauncherManifest`, `VersionManifest`, and their inner data classes
             .add(new OffsetDateTimeAdapter())
             .create();
