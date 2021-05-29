@@ -3,7 +3,10 @@ package org.parchmentmc.feather.metadata;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.parchmentmc.feather.named.ImmutableNamed;
 import org.parchmentmc.feather.named.Named;
+import org.parchmentmc.feather.named.NamedBuilder;
+import org.parchmentmc.feather.util.AccessFlag;
 
+import java.util.EnumSet;
 import java.util.Objects;
 
 public final class FieldMetadataBuilder implements FieldMetadata {
@@ -18,6 +21,15 @@ public final class FieldMetadataBuilder implements FieldMetadata {
 
     public static FieldMetadataBuilder create() {
         return new FieldMetadataBuilder();
+    }
+
+    public static FieldMetadataBuilder create(final FieldMetadata target) {
+        return create()
+                .withOwner(target.getOwner())
+                .withName(target.getName())
+                .withSecuritySpecification(target.getSecuritySpecification())
+                .withDescriptor(target.getDescriptor())
+                .withSignature(target.getSignature());
     }
 
     public FieldMetadataBuilder withOwner(Named owner) {
@@ -42,6 +54,33 @@ public final class FieldMetadataBuilder implements FieldMetadata {
 
     public FieldMetadataBuilder withSignature(Named signature) {
         this.signature = signature;
+        return this;
+    }
+
+    public FieldMetadataBuilder merge(final FieldMetadata source) {
+        this.owner = NamedBuilder.create(this.owner)
+                .merge(source.getOwner())
+                .build();
+        this.name = NamedBuilder.create(this.name)
+                .merge(source.getName())
+                .build();
+
+        final EnumSet<AccessFlag> thisAccessFlags = AccessFlag.getAccessFlags(this.securitySpecification);
+        final EnumSet<AccessFlag> sourceAccessFlags = AccessFlag.getAccessFlags(source.getSecuritySpecification());
+
+        final EnumSet<AccessFlag> mergedFlags = EnumSet.noneOf(AccessFlag.class);
+        mergedFlags.addAll(thisAccessFlags);
+        mergedFlags.addAll(sourceAccessFlags);
+
+        this.securitySpecification = AccessFlag.toSecuritySpecification(mergedFlags);
+
+        this.descriptor = NamedBuilder.create(this.descriptor)
+                .merge(source.getDescriptor())
+                .build();
+        this.signature = NamedBuilder.create(this.signature)
+                .merge(source.getSignature())
+                .build();
+
         return this;
     }
 
@@ -70,8 +109,14 @@ public final class FieldMetadataBuilder implements FieldMetadata {
         return signature;
     }
 
-    public ImmutableFieldMetadata build() {
-        return new ImmutableFieldMetadata(owner, name, securitySpecification, descriptor, signature);
+    public FieldMetadata build() {
+        return new ImmutableFieldMetadata(
+                owner.toImmutable(),
+                name.toImmutable(),
+                securitySpecification,
+                descriptor.toImmutable(),
+                signature.toImmutable()
+        );
     }
 
     @Override
@@ -90,4 +135,10 @@ public final class FieldMetadataBuilder implements FieldMetadata {
     public int hashCode() {
         return Objects.hash(getOwner(), getName(), getSecuritySpecification(), getDescriptor(), getSignature());
     }
+
+    @Override
+    public @NonNull FieldMetadata toImmutable() {
+        return build();
+    }
+
 }

@@ -6,7 +6,7 @@ import org.parchmentmc.feather.named.Named;
 /**
  * Represents an object which resides in a class.
  */
-public interface ClassOwnedObject {
+public interface OwnedByClass {
     /**
      * The name holder of the class that this object resides in.
      *

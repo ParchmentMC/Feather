@@ -15,8 +15,8 @@ import org.parchmentmc.feather.named.ImmutableNamed;
 import org.parchmentmc.feather.named.Named;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * GSON adapter for {@link ClassMetadata} objects.
@@ -24,13 +24,13 @@ import java.util.List;
  * <p>For internal use. Users should use {@link MetadataAdapterFactory} instead.</p>
  */
 class ClassMetadataAdapter extends TypeAdapter<ClassMetadata> {
-    private static final TypeToken<List<Named>> NAMED_LIST_TOKEN = new TypeToken<List<Named>>() {
+    private static final TypeToken<Set<Named>> NAMED_Set_TOKEN = new TypeToken<Set<Named>>() {
     };
-    private static final TypeToken<List<MethodMetadata>> METHOD_METADATA_LIST_TOKEN = new TypeToken<List<MethodMetadata>>() {
+    private static final TypeToken<Set<MethodMetadata>> METHOD_METADATA_Set_TOKEN = new TypeToken<Set<MethodMetadata>>() {
     };
-    private static final TypeToken<List<FieldMetadata>> FIELD_METADATA_LIST_TOKEN = new TypeToken<List<FieldMetadata>>() {
+    private static final TypeToken<Set<FieldMetadata>> FIELD_METADATA_Set_TOKEN = new TypeToken<Set<FieldMetadata>>() {
     };
-    private static final TypeToken<List<ClassMetadata>> CLASS_METADATA_LIST_TOKEN = new TypeToken<List<ClassMetadata>>() {
+    private static final TypeToken<Set<ClassMetadata>> CLASS_METADATA_Set_TOKEN = new TypeToken<Set<ClassMetadata>>() {
     };
 
     private final Gson gson;
@@ -55,13 +55,13 @@ class ClassMetadataAdapter extends TypeAdapter<ClassMetadata> {
         out.name("extends");
         gson.toJson(value.getSuperName(), Named.class, out);
         out.name("implements");
-        gson.toJson(value.getInterfaces(), NAMED_LIST_TOKEN.getType(), out);
+        gson.toJson(value.getInterfaces(), NAMED_Set_TOKEN.getType(), out);
         out.name("fields");
-        gson.toJson(value.getFields(), FIELD_METADATA_LIST_TOKEN.getType(), out);
+        gson.toJson(value.getFields(), FIELD_METADATA_Set_TOKEN.getType(), out);
         out.name("methods");
-        gson.toJson(value.getMethods(), METHOD_METADATA_LIST_TOKEN.getType(), out);
+        gson.toJson(value.getMethods(), METHOD_METADATA_Set_TOKEN.getType(), out);
         out.name("inner");
-        gson.toJson(value.getInnerClasses(), CLASS_METADATA_LIST_TOKEN.getType(), out);
+        gson.toJson(value.getInnerClasses(), CLASS_METADATA_Set_TOKEN.getType(), out);
         out.endObject();
     }
 
@@ -76,10 +76,10 @@ class ClassMetadataAdapter extends TypeAdapter<ClassMetadata> {
         Named owner = ImmutableNamed.empty();
         int security = -1;
         Named superName = ImmutableNamed.empty();
-        List<Named> interfaces = null;
-        List<FieldMetadata> fields = null;
-        List<MethodMetadata> methods = null;
-        List<ClassMetadata> innerClasses = null;
+        LinkedHashSet<Named> interfaces = null;
+        LinkedHashSet<FieldMetadata> fields = null;
+        LinkedHashSet<MethodMetadata> methods = null;
+        LinkedHashSet<ClassMetadata> innerClasses = null;
 
         in.beginObject();
         while (in.hasNext()) {
@@ -98,16 +98,16 @@ class ClassMetadataAdapter extends TypeAdapter<ClassMetadata> {
                     superName = gson.fromJson(in, Named.class);
                     break;
                 case "implements":
-                    interfaces = gson.fromJson(in, NAMED_LIST_TOKEN.getType());
+                    interfaces = gson.fromJson(in, NAMED_Set_TOKEN.getType());
                     break;
                 case "fields":
-                    fields = gson.fromJson(in, FIELD_METADATA_LIST_TOKEN.getType());
+                    fields = gson.fromJson(in, FIELD_METADATA_Set_TOKEN.getType());
                     break;
                 case "methods":
-                    methods = gson.fromJson(in, METHOD_METADATA_LIST_TOKEN.getType());
+                    methods = gson.fromJson(in, METHOD_METADATA_Set_TOKEN.getType());
                     break;
                 case "inner":
-                    innerClasses = gson.fromJson(in, CLASS_METADATA_LIST_TOKEN.getType());
+                    innerClasses = gson.fromJson(in, CLASS_METADATA_Set_TOKEN.getType());
                     break;
                 default:
                     in.skipValue();
@@ -119,10 +119,10 @@ class ClassMetadataAdapter extends TypeAdapter<ClassMetadata> {
         // owner can be empty
         if (security == -1) throw new JsonParseException("Class metadata security specification is not present");
         // superName can be empty
-        if (interfaces == null) methods = Collections.emptyList();
-        if (fields == null) methods = Collections.emptyList();
-        if (methods == null) methods = Collections.emptyList();
-        if (innerClasses == null) innerClasses = Collections.emptyList();
+        if (interfaces == null) methods = new LinkedHashSet<>();
+        if (fields == null) methods = new LinkedHashSet<>();
+        if (methods == null) methods = new LinkedHashSet<>();
+        if (innerClasses == null) innerClasses = new LinkedHashSet<>();
 
         return new ImmutableClassMetadata(superName, interfaces, methods, fields, innerClasses, owner, name, security);
     }

@@ -6,7 +6,7 @@ import org.parchmentmc.feather.metadata.*;
 
 public class MetadataMoshiAdapterTest extends MoshiTest implements MetadataTestConstants {
     public MetadataMoshiAdapterTest() {
-        super(b -> b.add(new SimpleVersionAdapter()).add(new MetadataMoshiAdapter()));
+        super(b -> b.add(new SimpleVersionAdapter()).add(new MetadataMoshiAdapter()).add(LinkedHashSetMoshiAdapter.FACTORY));
     }
 
     @Test

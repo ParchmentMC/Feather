@@ -1,5 +1,6 @@
 plugins {
-    id "org.parchmentmc.writtenbooks" version "0.+" apply false
+    id 'org.parchmentmc.writtenbooks' version '0.2.+' apply false
+    id 'io.spring.dependency-management' version '1.0.1.RELEASE' apply false
 }
 
 project.group 'org.parchmentmc.feather'
@@ -32,5 +33,32 @@ subprojects {
         toolchain.languageVersion = JavaLanguageVersion.of(8)
         withJavadocJar()
         withSourcesJar()
+    }
+
+    publishing {
+        publications.withType(MavenPublication).all {
+            pom {
+                url = "https://github.com/ParchmentMC/Feather"
+                organization {
+                    name = "ParchmentMC"
+                    url = "https://github.com/ParchmentMC"
+                }
+                scm {
+                    url = "https://github.com/ParchmentMC/Feather"
+                    connection = "scm:git:git://github.com/ParchmentMC/Feather.git"
+                    developerConnection = "scm:git:git@github.com/ParchmentMC/Feather.git"
+                }
+                issueManagement {
+                    system = "GitHub Issues"
+                    url = "https://github.com/ParchmentMC/Feather/issues"
+                }
+                licenses {
+                    license {
+                        name = "MIT"
+                        url = "https://opensource.org/licenses/MIT"
+                    }
+                }
+            }
+        }
     }
 }

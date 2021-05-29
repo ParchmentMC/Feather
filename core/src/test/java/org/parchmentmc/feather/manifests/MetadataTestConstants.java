@@ -1,33 +1,36 @@
 package org.parchmentmc.feather.manifests;
 
+import com.google.common.collect.Sets;
 import org.parchmentmc.feather.metadata.*;
 import org.parchmentmc.feather.util.SimpleVersion;
 
 import java.lang.reflect.Modifier;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-import static com.google.common.collect.ImmutableList.of;
+import static com.google.common.collect.ImmutableSet.of;
 import static org.parchmentmc.feather.manifests.TestConstantsHelper.named;
 import static org.parchmentmc.feather.named.ImmutableNamed.empty;
 
 public interface MetadataTestConstants {
-    List<MethodReference> METHOD_REFERENCES = of(
+    LinkedHashSet<MethodReference> METHOD_REFERENCES = Sets.newLinkedHashSet(of(
             new ImmutableMethodReference(named("a"), named("<init>"),
                     named("()V"), named("()V")),
             new ImmutableMethodReference(named("a"), named("ma"),
-                    named("()Ljava/util/List;"), named("()Ljava/util/List<[I>;"))
-    );
+                    named("()Ljava/util/Set;"), named("()Ljava/util/Set<[I>;"))
+    ));
 
-    List<MethodMetadata> METHOD_METADATA = of(
-            new ImmutableMethodMetadata(named("a"), false, null, of(),
-                    named("ma"), Modifier.PROTECTED, named("()Ljava/util/List;"), named("()Ljava/util/List<[I>;")),
+    LinkedHashSet<MethodMetadata> METHOD_METADATA = new LinkedHashSet<>(of(
+            new ImmutableMethodMetadata(named("a"), false, null, new LinkedHashSet<>(),
+                    named("ma"), Modifier.PROTECTED, named("()Ljava/util/Set;"), named("()Ljava/util/Set<[I>;"), 0, 0),
             new ImmutableMethodMetadata(named("a"), true, null, METHOD_REFERENCES,
-                    named("la"), Modifier.PROTECTED, named("()F"), named("()F")),
-            new ImmutableMethodMetadata(named("a"), false, METHOD_REFERENCES.get(0), of(),
-                    named("xa"), Modifier.PROTECTED, named("()V"), named("()V"))
-    );
+                    named("la"), Modifier.PROTECTED, named("()F"), named("()F"), 0, 0),
+            new ImmutableMethodMetadata(named("a"), false, new ImmutableMethodReference(named("a"), named("<init>"),
+                    named("()V"), named("()V")), new LinkedHashSet<>(),
+                    named("xa"), Modifier.PROTECTED, named("()V"), named("()V"), 0, 0)
+    ));
 
-    List<FieldMetadata> FIELD_METADATA = of(
+    LinkedHashSet<FieldMetadata> FIELD_METADATA = new LinkedHashSet<>(of(
             new ImmutableFieldMetadata(
                     named("a"),
                     named("aa", "testField"),
@@ -39,44 +42,44 @@ public interface MetadataTestConstants {
                     named("a"),
                     named("bb"),
                     Modifier.PUBLIC,
-                    named("Ljava/util/List;", "Ljava/util/List;"),
-                    named("Ljava/util/List<[I>;", "Ljava/util/List<[I>;")
+                    named("Ljava/util/Set;", "Ljava/util/Set;"),
+                    named("Ljava/util/Set<[I>;", "Ljava/util/Set<[I>;")
             )
-    );
+    ));
 
-    List<ClassMetadata> INNER_CLASSES = of(
+    LinkedHashSet<ClassMetadata> INNER_CLASSES = new LinkedHashSet<>(of(
             new ImmutableClassMetadata(named("a"),
-                    of(named("b"), named("c", "IInterface")),
-                    METHOD_METADATA, FIELD_METADATA, of(),
+                    new LinkedHashSet<>(of(named("b"), named("c", "IInterface"))),
+                    METHOD_METADATA, FIELD_METADATA, new LinkedHashSet<>(),
                     empty(), named("d"),
                     Modifier.PUBLIC | Modifier.FINAL
             ),
             new ImmutableClassMetadata(empty(),
-                    of(),
-                    METHOD_METADATA, FIELD_METADATA, of(),
+                    new LinkedHashSet<>(),
+                    METHOD_METADATA, FIELD_METADATA, new LinkedHashSet<>(),
                     empty(), named("e"),
                     Modifier.PUBLIC | Modifier.FINAL
             )
-    );
+    ));
 
-    List<ClassMetadata> CLASS_METADATA = of(
+    LinkedHashSet<ClassMetadata> CLASS_METADATA = new LinkedHashSet<>(of(
             new ImmutableClassMetadata(named("f"),
-                    of(named("h"), named("c", "IInterface")),
+                    new LinkedHashSet<>(of(named("h"), named("c", "IInterface"))),
                     METHOD_METADATA, FIELD_METADATA, INNER_CLASSES,
                     empty(), named("g"),
                     Modifier.PUBLIC
             ),
             new ImmutableClassMetadata(empty(),
-                    of(),
-                    METHOD_METADATA, FIELD_METADATA, of(),
+                    new LinkedHashSet<>(),
+                    METHOD_METADATA, FIELD_METADATA, new LinkedHashSet<>(),
                     empty(), named("h"),
                     Modifier.PUBLIC
             )
-    );
+    ));
 
-    List<SourceMetadata> SOURCE_METADATA = of(
+    Set<SourceMetadata> SOURCE_METADATA = of(
             new ImmutableSourceMetadata(SimpleVersion.of(1, 0, 0), "1.16.5", CLASS_METADATA),
-            new ImmutableSourceMetadata(SimpleVersion.of("1.0.0"), "21w01a", of())
+            new ImmutableSourceMetadata(SimpleVersion.of("1.0.0"), "21w01a", new LinkedHashSet<>())
     );
 }
 

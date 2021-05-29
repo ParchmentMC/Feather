@@ -2,13 +2,14 @@ package org.parchmentmc.feather.metadata;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.parchmentmc.feather.named.Named;
+import org.parchmentmc.feather.util.HasImmutable;
 
-import java.util.List;
+import java.util.LinkedHashSet;
 
 /**
  * Represents the metadata that is extracted during static analysis from a given class.
  */
-public interface ClassMetadata extends SecuredObject, ClassOwnedObject, NamedObject {
+public interface ClassMetadata extends WithSecurity, OwnedByClass, WithName, HasImmutable<ClassMetadata> {
     /**
      * The name of the super class.
      *
@@ -18,34 +19,34 @@ public interface ClassMetadata extends SecuredObject, ClassOwnedObject, NamedObj
     Named getSuperName();
 
     /**
-     * A list of all names of interfaces that this class implements.
+     * A Set of all names of interfaces that this class implements.
      *
      * @return The name holders of all implemented interfaces.
      */
     @NonNull
-    List<Named> getInterfaces();
+    LinkedHashSet<Named> getInterfaces();
 
     /**
-     * A list of all methods that reside in the current class.
+     * A Set of all methods that reside in the current class.
      *
      * @return All methods of the current class.
      */
     @NonNull
-    List<MethodMetadata> getMethods();
+    LinkedHashSet<MethodMetadata> getMethods();
 
     /**
-     * A list of all fields that reside in the current class.
+     * A Set of all fields that reside in the current class.
      *
      * @return All fields of the current class.
      */
     @NonNull
-    List<FieldMetadata> getFields();
+    LinkedHashSet<FieldMetadata> getFields();
 
     /**
-     * A list of all inner classes that reside in the current class.
+     * A Set of all inner classes that reside in the current class.
      *
      * @return All inner class of the current class.
      */
     @NonNull
-    List<ClassMetadata> getInnerClasses();
+    LinkedHashSet<ClassMetadata> getInnerClasses();
 }

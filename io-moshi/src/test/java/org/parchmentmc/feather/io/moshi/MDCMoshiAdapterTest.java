@@ -2,7 +2,6 @@ package org.parchmentmc.feather.io.moshi;
 
 import org.junit.jupiter.api.Test;
 import org.parchmentmc.feather.manifests.MDCTestConstants;
-import org.parchmentmc.feather.mapping.MappingDataContainer;
 import org.parchmentmc.feather.mapping.MappingDataContainer.ClassData;
 import org.parchmentmc.feather.mapping.MappingDataContainer.FieldData;
 import org.parchmentmc.feather.mapping.MappingDataContainer.MethodData;

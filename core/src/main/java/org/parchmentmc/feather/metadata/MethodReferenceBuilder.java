@@ -1,8 +1,10 @@
 package org.parchmentmc.feather.metadata;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.parchmentmc.feather.named.ImmutableNamed;
 import org.parchmentmc.feather.named.Named;
+import org.parchmentmc.feather.named.NamedBuilder;
 
 import java.util.Objects;
 
@@ -17,6 +19,14 @@ public final class MethodReferenceBuilder implements MethodReference {
 
     public static MethodReferenceBuilder create() {
         return new MethodReferenceBuilder();
+    }
+
+    public static MethodReferenceBuilder create(final MethodReference methodReference) {
+        return create()
+                .withOwner(methodReference.getOwner())
+                .withName(methodReference.getName())
+                .withDescriptor(methodReference.getDescriptor())
+                .withSignature(methodReference.getSignature());
     }
 
     public MethodReferenceBuilder withOwner(Named owner) {
@@ -39,6 +49,25 @@ public final class MethodReferenceBuilder implements MethodReference {
         return this;
     }
 
+    public MethodReferenceBuilder merge(@Nullable final MethodReference source) {
+        if (source == null)
+            return this;
+
+        this.owner = NamedBuilder.create(this.owner)
+                .merge(source.getOwner())
+                .build();
+        this.name = NamedBuilder.create(this.name)
+                .merge(source.getName())
+                .build();
+        this.descriptor = NamedBuilder.create(this.descriptor)
+                .merge(source.getDescriptor())
+                .build();
+        this.signature = NamedBuilder.create(this.signature)
+                .merge(source.getSignature())
+                .build();
+
+        return this;
+    }
 
     @Override
     public @NonNull Named getOwner() {
@@ -61,7 +90,12 @@ public final class MethodReferenceBuilder implements MethodReference {
     }
 
     public ImmutableMethodReference build() {
-        return new ImmutableMethodReference(owner, name, descriptor, signature);
+        return new ImmutableMethodReference(
+                owner.toImmutable(),
+                name.toImmutable(),
+                descriptor.toImmutable(),
+                signature.toImmutable()
+        );
     }
 
     @Override
@@ -78,5 +112,10 @@ public final class MethodReferenceBuilder implements MethodReference {
     @Override
     public int hashCode() {
         return Objects.hash(getOwner(), getName(), getDescriptor(), getSignature());
+    }
+
+    @Override
+    public @NonNull MethodReference toImmutable() {
+        return build();
     }
 }

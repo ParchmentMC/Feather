@@ -1,25 +1,24 @@
 package org.parchmentmc.feather.metadata;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.parchmentmc.feather.util.SimpleVersion;
 
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 
 public class ImmutableSourceMetadata implements SourceMetadata {
     private final SimpleVersion specVersion;
     private final String minecraftVersion;
-    private final List<ClassMetadata> classes;
+    private final LinkedHashSet<ClassMetadata> classes;
 
-    public ImmutableSourceMetadata(final SimpleVersion specVersion, final String minecraftVersion, final List<ClassMetadata> classes) {
+    public ImmutableSourceMetadata(final SimpleVersion specVersion, final String minecraftVersion, final LinkedHashSet<ClassMetadata> classes) {
         this.specVersion = specVersion;
         this.minecraftVersion = minecraftVersion;
-        this.classes = ImmutableList.copyOf(classes);
+        this.classes = new LinkedHashSet<>(classes);
     }
 
     ImmutableSourceMetadata() {
-        this(SimpleVersion.of("1.0.0"), "1.0.0", Lists.newArrayList());
+        this(SimpleVersion.of("1.0.0"), "1.0.0", new LinkedHashSet<>());
     }
 
     @Override
@@ -33,7 +32,7 @@ public class ImmutableSourceMetadata implements SourceMetadata {
     }
 
     @Override
-    public List<ClassMetadata> getClasses() {
+    public LinkedHashSet<ClassMetadata> getClasses() {
         return classes;
     }
 
@@ -50,5 +49,19 @@ public class ImmutableSourceMetadata implements SourceMetadata {
     @Override
     public int hashCode() {
         return Objects.hash(getSpecificationVersion(), getMinecraftVersion(), getClasses());
+    }
+
+    @Override
+    public String toString() {
+        return "ImmutableSourceMetadata{" +
+                "specVersion=" + specVersion +
+                ", minecraftVersion='" + minecraftVersion + '\'' +
+                ", classes=" + classes +
+                '}';
+    }
+
+    @Override
+    public @NonNull SourceMetadata toImmutable() {
+        return this;
     }
 }
