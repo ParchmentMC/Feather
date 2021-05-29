@@ -110,6 +110,7 @@ public interface Named extends HasImmutable<Named> {
     /**
      * Indicates if this named object has a name with a given scheme or not.
      *
+     * @param scheme The schema for the name to look for.
      * @return {@code true} when a name with a given scheme is present.
      */
     default boolean hasName(final String scheme) {
