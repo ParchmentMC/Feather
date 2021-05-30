@@ -9,6 +9,7 @@ import org.parchmentmc.feather.util.SimpleVersion;
 import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Optional;
 
 @SuppressWarnings("unused")
 public class MetadataMoshiAdapter {
@@ -104,6 +105,7 @@ public class MetadataMoshiAdapter {
                       MethodMetadata methodMetadata,
                       JsonAdapter<Named> namedAdapter,
                       JsonAdapter<MethodReference> methodReferenceAdapter,
+                      JsonAdapter<BouncingTargetMetadata> bouncingTargetMetadataAdapter,
                       JsonAdapter<LinkedHashSet<? extends MethodReference>> methodReferenceLinkedHashSetAdapter
     ) throws IOException {
         if (methodMetadata == null) {
@@ -119,8 +121,18 @@ public class MetadataMoshiAdapter {
         writer.name("signature").jsonValue(namedAdapter.toJsonValue(methodMetadata.getSignature()));
         writer.name("security").jsonValue(methodMetadata.getSecuritySpecification());
         writer.name("lambda").jsonValue(methodMetadata.isLambda());
-        writer.name("bouncingTarget").jsonValue(methodReferenceAdapter.toJsonValue(methodMetadata.getBouncingTarget()));
-        writer.name("overrides").jsonValue(methodReferenceLinkedHashSetAdapter.toJsonValue(methodMetadata.getOverrides()));
+        if (methodMetadata.getBouncingTarget().isPresent())
+        {
+            writer.name("bouncingTarget").jsonValue(bouncingTargetMetadataAdapter.toJsonValue(methodMetadata.getBouncingTarget().get()));
+        }
+        if (methodMetadata.getParent().isPresent())
+        {
+            writer.name("parent").jsonValue(methodReferenceAdapter.toJsonValue(methodMetadata.getParent().get()));
+        }
+        if (!methodMetadata.getOverrides().isEmpty())
+        {
+            writer.name("overrides").jsonValue(methodReferenceLinkedHashSetAdapter.toJsonValue(methodMetadata.getOverrides()));
+        }
 
         writer.endObject();
     }
@@ -142,6 +154,26 @@ public class MetadataMoshiAdapter {
         writer.name("descriptor").jsonValue(namedAdapter.toJsonValue(fieldMetadata.getDescriptor()));
         writer.name("signature").jsonValue(namedAdapter.toJsonValue(fieldMetadata.getSignature()));
         writer.name("security").jsonValue(fieldMetadata.getSecuritySpecification());
+
+        writer.endObject();
+    }
+
+    @ToJson
+    void bouncingTargetToJson(JsonWriter writer,
+      BouncingTargetMetadata bouncingTargetMetadata,
+      JsonAdapter<MethodReference> methodReferenceAdapter
+    ) throws IOException {
+        if (bouncingTargetMetadata == null) {
+            writer.nullValue();
+            return;
+        }
+
+        writer.beginObject();
+
+        if (bouncingTargetMetadata.getTarget().isPresent())
+            writer.name("target").jsonValue(methodReferenceAdapter.toJsonValue(bouncingTargetMetadata.getTarget().get()));
+        if (bouncingTargetMetadata.getOwner().isPresent())
+            writer.name("owner").jsonValue(methodReferenceAdapter.toJsonValue(bouncingTargetMetadata.getOwner().get()));
 
         writer.endObject();
     }
@@ -299,6 +331,7 @@ public class MetadataMoshiAdapter {
     MethodMetadata methodFromJson(JsonReader reader,
                                   JsonAdapter<Named> namedAdapter,
                                   JsonAdapter<MethodReference> methodReferenceAdapter,
+                                  JsonAdapter<BouncingTargetMetadata> bouncingTargetMetadataAdapter,
                                   JsonAdapter<LinkedHashSet<? extends MethodReference>> methodReferenceLinkedHashSetAdapter) throws IOException {
         if (reader.peek() == JsonReader.Token.NULL) {
             return reader.nextNull();
@@ -330,11 +363,14 @@ public class MetadataMoshiAdapter {
                     builder.withLambda(reader.nextBoolean());
                     break;
                 case "bouncingTarget":
-                    builder.withBouncingTarget(methodReferenceAdapter.fromJson(reader));
+                    builder.withBouncingTarget(bouncingTargetMetadataAdapter.fromJson(reader));
                     break;
                 case "overrides":
                     final LinkedHashSet<? extends MethodReference> overrides = methodReferenceLinkedHashSetAdapter.fromJson(reader);
                     builder.withOverrides(overrides == null ? new LinkedHashSet<>() : new LinkedHashSet<>(overrides));
+                    break;
+                case "parent":
+                    builder.withParent(methodReferenceAdapter.fromJson(reader));
                     break;
                 default:
                     reader.skipValue();
@@ -375,6 +411,37 @@ public class MetadataMoshiAdapter {
                     break;
                 case "security":
                     builder.withSecuritySpecification(reader.nextInt());
+                    break;
+                default:
+                    reader.skipValue();
+                    break;
+            }
+        }
+
+        reader.endObject();
+
+        return builder.build();
+    }
+
+    @FromJson
+    BouncingTargetMetadata BouncingMetadataFromJson(JsonReader reader,
+      JsonAdapter<MethodReference> methodReferenceJsonAdapter) throws IOException {
+        if (reader.peek() == JsonReader.Token.NULL) {
+            return reader.nextNull();
+        }
+
+        reader.beginObject();
+
+        final BouncingTargetMetadataBuilder builder = BouncingTargetMetadataBuilder.create();
+
+        while (reader.hasNext()) {
+            final String paramName = reader.nextName();
+            switch (paramName) {
+                case "owner":
+                    builder.withOwner(methodReferenceJsonAdapter.fromJson(reader));
+                    break;
+                case "target":
+                    builder.withTarget(methodReferenceJsonAdapter.fromJson(reader));
                     break;
                 default:
                     reader.skipValue();

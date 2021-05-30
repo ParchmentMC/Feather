@@ -19,6 +19,7 @@ import java.lang.reflect.WildcardType;
  * @see MethodMetadata
  * @see MethodReference
  * @see FieldMetadata
+ * @see BouncingTargetMetadata
  */
 public class MetadataAdapterFactory implements TypeAdapterFactory {
     @SuppressWarnings("unchecked")
@@ -44,6 +45,8 @@ public class MetadataAdapterFactory implements TypeAdapterFactory {
             return (TypeAdapter<T>) new MethodMetadataAdapter(gson);
         } else if (type.equals(MethodReference.class)) {
             return (TypeAdapter<T>) new MethodReferenceAdapter(gson);
+        } else if (type.equals(BouncingTargetMetadata.class)) {
+            return (TypeAdapter<T>) new BouncingTargetMetadataAdapter(gson);
         }
 
         return null;

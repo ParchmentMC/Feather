@@ -1,7 +1,6 @@
-package org.parchmentmc.feather.manifests;
+package org.parchmentmc.feather.metadata;
 
 import com.google.common.collect.Sets;
-import org.parchmentmc.feather.metadata.*;
 import org.parchmentmc.feather.util.SimpleVersion;
 
 import java.lang.reflect.Modifier;
@@ -9,8 +8,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static com.google.common.collect.ImmutableSet.of;
-import static org.parchmentmc.feather.manifests.TestConstantsHelper.named;
-import static org.parchmentmc.feather.named.ImmutableNamed.empty;
+import static org.parchmentmc.feather.named.Named.empty;
+import static org.parchmentmc.feather.util.TestConstantsHelper.named;
 
 public interface MetadataTestConstants {
     LinkedHashSet<MethodReference> METHOD_REFERENCES = Sets.newLinkedHashSet(of(
@@ -21,12 +20,14 @@ public interface MetadataTestConstants {
     ));
 
     LinkedHashSet<MethodMetadata> METHOD_METADATA = new LinkedHashSet<>(of(
-            new ImmutableMethodMetadata(named("a"), false, null, new LinkedHashSet<>(),
+            new ImmutableMethodMetadata(named("a"), false, null, null, new LinkedHashSet<>(),
                     named("ma"), Modifier.PROTECTED, named("()Ljava/util/Set;"), named("()Ljava/util/Set<[I>;"), 0, 0),
-            new ImmutableMethodMetadata(named("a"), true, null, METHOD_REFERENCES,
+            new ImmutableMethodMetadata(named("a"), true, null, new ImmutableMethodReference(named("a"), named("<init>"),
+              named("()V"), named("()V")), METHOD_REFERENCES,
                     named("la"), Modifier.PROTECTED, named("()F"), named("()F"), 0, 0),
-            new ImmutableMethodMetadata(named("a"), false, new ImmutableMethodReference(named("a"), named("<init>"),
-                    named("()V"), named("()V")), new LinkedHashSet<>(),
+            new ImmutableMethodMetadata(named("a"), false, new ImmutableBouncingTargetMetadata( new ImmutableMethodReference(named("a"), named("<init>"),
+              named("()V"), named("()V")),  new ImmutableMethodReference(named("a"), named("<init>"),
+              named("()V"), named("()V"))), null, new LinkedHashSet<>(),
                     named("xa"), Modifier.PROTECTED, named("()V"), named("()V"), 0, 0)
     ));
 

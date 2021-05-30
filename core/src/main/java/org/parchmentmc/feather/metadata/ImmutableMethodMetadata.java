@@ -8,28 +8,30 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Optional;
 
-public class ImmutableMethodMetadata extends AbstractMethodReference implements MethodMetadata {
+final class ImmutableMethodMetadata extends AbstractMethodReference implements MethodMetadata {
     private final boolean lambda;
-    private final MethodReference bouncingTarget;
+    private final BouncingTargetMetadata bouncingTarget;
     private final LinkedHashSet<MethodReference> overrides;
     private final int securitySpecification;
     private final int startLine;
     private final int endLine;
+    private final MethodReference parent;
 
     public ImmutableMethodMetadata(
-            final Named owner,
-            final boolean lambda,
-            final MethodReference bouncingTarget,
-            final LinkedHashSet<MethodReference> overrides,
-            final Named name,
-            final int securitySpecification,
-            final Named descriptor,
-            final Named signature,
-            final int startLine,
-            final int endLine) {
+      final Named owner,
+      final boolean lambda,
+      final BouncingTargetMetadata bouncingTarget,
+      final MethodReference parent, final LinkedHashSet<MethodReference> overrides,
+      final Named name,
+      final int securitySpecification,
+      final Named descriptor,
+      final Named signature,
+      final int startLine,
+      final int endLine) {
         super(owner, name, descriptor, signature);
         this.lambda = lambda;
         this.bouncingTarget = bouncingTarget;
+        this.parent = parent;
         this.overrides = new LinkedHashSet<>(overrides);
         this.securitySpecification = securitySpecification;
         this.startLine = startLine;
@@ -42,9 +44,14 @@ public class ImmutableMethodMetadata extends AbstractMethodReference implements 
     }
 
     @Override
-    @Nullable
-    public MethodReference getBouncingTarget() {
-        return bouncingTarget;
+    public Optional<BouncingTargetMetadata> getBouncingTarget() {
+        return Optional.ofNullable(bouncingTarget);
+    }
+
+    @Override
+    public Optional<MethodReference> getParent()
+    {
+        return Optional.ofNullable(parent);
     }
 
     @Override

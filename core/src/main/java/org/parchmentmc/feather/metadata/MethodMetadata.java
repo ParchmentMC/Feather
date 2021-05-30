@@ -24,8 +24,15 @@ public interface MethodMetadata extends BaseMethodReference, WithSecurity, HasIm
      *
      * @return The bouncer target.
      */
-    @Nullable
-    MethodReference getBouncingTarget();
+    Optional<BouncingTargetMetadata> getBouncingTarget();
+
+    /**
+     * Indicates the direct override parent of this method.
+     * The method reference in the optional should be in {@link #getOverrides()}.
+     *
+     * @return The direct overridden parent method.
+     */
+    Optional<MethodReference> getParent();
 
     /**
      * The methods this method overrides in super classes that the owner either extends or inherits from.

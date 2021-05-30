@@ -8,15 +8,13 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import org.parchmentmc.feather.metadata.ClassMetadata;
+import org.parchmentmc.feather.metadata.ClassMetadataBuilder;
 import org.parchmentmc.feather.metadata.FieldMetadata;
-import org.parchmentmc.feather.metadata.ImmutableClassMetadata;
 import org.parchmentmc.feather.metadata.MethodMetadata;
-import org.parchmentmc.feather.named.ImmutableNamed;
 import org.parchmentmc.feather.named.Named;
 
 import java.io.IOException;
 import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  * GSON adapter for {@link ClassMetadata} objects.
@@ -24,13 +22,13 @@ import java.util.Set;
  * <p>For internal use. Users should use {@link MetadataAdapterFactory} instead.</p>
  */
 class ClassMetadataAdapter extends TypeAdapter<ClassMetadata> {
-    private static final TypeToken<Set<Named>> NAMED_Set_TOKEN = new TypeToken<Set<Named>>() {
+    private static final TypeToken<LinkedHashSet<Named>> NAMED_Set_TOKEN = new TypeToken<LinkedHashSet<Named>>() {
     };
-    private static final TypeToken<Set<MethodMetadata>> METHOD_METADATA_Set_TOKEN = new TypeToken<Set<MethodMetadata>>() {
+    private static final TypeToken<LinkedHashSet<MethodMetadata>> METHOD_METADATA_Set_TOKEN = new TypeToken<LinkedHashSet<MethodMetadata>>() {
     };
-    private static final TypeToken<Set<FieldMetadata>> FIELD_METADATA_Set_TOKEN = new TypeToken<Set<FieldMetadata>>() {
+    private static final TypeToken<LinkedHashSet<FieldMetadata>> FIELD_METADATA_Set_TOKEN = new TypeToken<LinkedHashSet<FieldMetadata>>() {
     };
-    private static final TypeToken<Set<ClassMetadata>> CLASS_METADATA_Set_TOKEN = new TypeToken<Set<ClassMetadata>>() {
+    private static final TypeToken<LinkedHashSet<ClassMetadata>> CLASS_METADATA_Set_TOKEN = new TypeToken<LinkedHashSet<ClassMetadata>>() {
     };
 
     private final Gson gson;
@@ -72,10 +70,10 @@ class ClassMetadataAdapter extends TypeAdapter<ClassMetadata> {
             return null;
         }
 
-        Named name = ImmutableNamed.empty();
-        Named owner = ImmutableNamed.empty();
+        Named name = Named.empty();
+        Named owner = Named.empty();
         int security = -1;
-        Named superName = ImmutableNamed.empty();
+        Named superName = Named.empty();
         LinkedHashSet<Named> interfaces = null;
         LinkedHashSet<FieldMetadata> fields = null;
         LinkedHashSet<MethodMetadata> methods = null;
@@ -124,6 +122,15 @@ class ClassMetadataAdapter extends TypeAdapter<ClassMetadata> {
         if (methods == null) methods = new LinkedHashSet<>();
         if (innerClasses == null) innerClasses = new LinkedHashSet<>();
 
-        return new ImmutableClassMetadata(superName, interfaces, methods, fields, innerClasses, owner, name, security);
+        return ClassMetadataBuilder.create()
+          .withSuperName(superName)
+          .withInterfaces(interfaces)
+          .withOwner(owner)
+          .withMethods(methods)
+          .withFields(fields)
+          .withInnerClasses(innerClasses)
+          .withName(name)
+          .withSecuritySpecifications(security)
+          .build();
     }
 }

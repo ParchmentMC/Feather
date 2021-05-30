@@ -11,6 +11,16 @@ import java.util.Optional;
  * Represents a named object that potentially has names in different mapping types (also known as schemas)
  */
 public interface Named extends HasImmutable<Named> {
+
+    /**
+     * The empty named object.
+     *
+     * @return The empty named object.
+     */
+    static Named empty() {
+        return ImmutableNamed.empty();
+    }
+
     /**
      * Returns all known schemas and their names for this named object.
      *

@@ -5,7 +5,7 @@ import org.parchmentmc.feather.named.Named;
 
 import java.util.Objects;
 
-public class ImmutableFieldMetadata implements FieldMetadata {
+final class ImmutableFieldMetadata implements FieldMetadata {
     private final Named owner;
     private final Named name;
     private final int securitySpecification;

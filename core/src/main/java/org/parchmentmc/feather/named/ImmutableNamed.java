@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class ImmutableNamed implements Named {
+final class ImmutableNamed implements Named {
     // A shared empty immutable singleton.
     private static final ImmutableNamed EMPTY = new ImmutableNamed(ImmutableMap.of());
 

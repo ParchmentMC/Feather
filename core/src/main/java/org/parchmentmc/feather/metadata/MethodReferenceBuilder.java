@@ -2,17 +2,16 @@ package org.parchmentmc.feather.metadata;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.parchmentmc.feather.named.ImmutableNamed;
 import org.parchmentmc.feather.named.Named;
 import org.parchmentmc.feather.named.NamedBuilder;
 
 import java.util.Objects;
 
 public final class MethodReferenceBuilder implements MethodReference {
-    protected Named owner = ImmutableNamed.empty();
-    protected Named name = ImmutableNamed.empty();
-    protected Named descriptor = ImmutableNamed.empty();
-    protected Named signature = ImmutableNamed.empty();
+    protected Named owner = Named.empty();
+    protected Named name = Named.empty();
+    protected Named descriptor = Named.empty();
+    protected Named signature = Named.empty();
 
     private MethodReferenceBuilder() {
     }

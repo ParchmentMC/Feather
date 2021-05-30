@@ -8,13 +8,12 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import org.parchmentmc.feather.metadata.ClassMetadata;
-import org.parchmentmc.feather.metadata.ImmutableSourceMetadata;
 import org.parchmentmc.feather.metadata.SourceMetadata;
+import org.parchmentmc.feather.metadata.SourceMetadataBuilder;
 import org.parchmentmc.feather.util.SimpleVersion;
 
 import java.io.IOException;
 import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  * GSON adapter for {@link SourceMetadata} objects.
@@ -22,7 +21,7 @@ import java.util.Set;
  * <p>For internal use. Users should use {@link MetadataAdapterFactory} instead.</p>
  */
 class SourceMetadataAdapter extends TypeAdapter<SourceMetadata> {
-    private static final TypeToken<Set<ClassMetadata>> CLASS_METADATA_Set_TOKEN = new TypeToken<Set<ClassMetadata>>() {
+    private static final TypeToken<LinkedHashSet<ClassMetadata>> CLASS_METADATA_Set_TOKEN = new TypeToken<LinkedHashSet<ClassMetadata>>() {
     };
 
     private final Gson gson;
@@ -81,6 +80,10 @@ class SourceMetadataAdapter extends TypeAdapter<SourceMetadata> {
         if (minecraftVersion == null) throw new JsonParseException("Minecraft version is not present");
         if (classes == null) throw new JsonParseException("Classes Set is not present");
 
-        return new ImmutableSourceMetadata(specVersion, minecraftVersion, classes);
+        return SourceMetadataBuilder.create()
+          .withMinecraftVersion(minecraftVersion)
+          .withSpecVersion(specVersion)
+          .withClasses(classes)
+          .build();
     }
 }

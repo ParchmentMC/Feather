@@ -2,7 +2,6 @@ package org.parchmentmc.feather.metadata;
 
 import com.google.common.collect.Sets;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.parchmentmc.feather.named.ImmutableNamed;
 import org.parchmentmc.feather.named.Named;
 import org.parchmentmc.feather.named.NamedBuilder;
 import org.parchmentmc.feather.util.AccessFlag;
@@ -12,13 +11,13 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public final class ClassMetadataBuilder implements ClassMetadata {
-    private Named superName = ImmutableNamed.empty();
+    private Named superName = Named.empty();
     private LinkedHashSet<Named> interfaces = Sets.newLinkedHashSet();
     private LinkedHashSet<MethodMetadata> methods = Sets.newLinkedHashSet();
     private LinkedHashSet<FieldMetadata> fields = Sets.newLinkedHashSet();
     private LinkedHashSet<ClassMetadata> innerClasses = Sets.newLinkedHashSet();
-    private Named owner = ImmutableNamed.empty();
-    private Named name = ImmutableNamed.empty();
+    private Named owner = Named.empty();
+    private Named name = Named.empty();
     private int securitySpecifications = 0;
 
     private ClassMetadataBuilder() {
@@ -273,7 +272,7 @@ public final class ClassMetadataBuilder implements ClassMetadata {
     }
 
     @NonNull
-    public ImmutableClassMetadata build() {
+    public ClassMetadata build() {
         return new ImmutableClassMetadata(
                 superName.toImmutable(),
                 interfaces.stream().map(Named::toImmutable).collect(Collectors.toCollection(LinkedHashSet::new)),

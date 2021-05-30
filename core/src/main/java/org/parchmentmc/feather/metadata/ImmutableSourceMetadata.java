@@ -6,7 +6,7 @@ import org.parchmentmc.feather.util.SimpleVersion;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 
-public class ImmutableSourceMetadata implements SourceMetadata {
+final class ImmutableSourceMetadata implements SourceMetadata {
     private final SimpleVersion specVersion;
     private final String minecraftVersion;
     private final LinkedHashSet<ClassMetadata> classes;

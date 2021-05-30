@@ -6,9 +6,8 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import org.parchmentmc.feather.metadata.ImmutableMethodReference;
 import org.parchmentmc.feather.metadata.MethodReference;
-import org.parchmentmc.feather.named.ImmutableNamed;
+import org.parchmentmc.feather.metadata.MethodReferenceBuilder;
 import org.parchmentmc.feather.named.Named;
 
 import java.io.IOException;
@@ -51,10 +50,10 @@ class MethodReferenceAdapter extends TypeAdapter<MethodReference> {
             return null;
         }
 
-        Named name = ImmutableNamed.empty();
-        Named owner = ImmutableNamed.empty();
-        Named descriptor = ImmutableNamed.empty();
-        Named signature = ImmutableNamed.empty();
+        Named name = Named.empty();
+        Named owner = Named.empty();
+        Named descriptor = Named.empty();
+        Named signature = Named.empty();
 
         in.beginObject();
         while (in.hasNext()) {
@@ -83,6 +82,11 @@ class MethodReferenceAdapter extends TypeAdapter<MethodReference> {
         if (descriptor.isEmpty()) throw new JsonParseException("Method reference descriptor is not present");
         if (signature.isEmpty()) throw new JsonParseException("Method reference signature is not present");
 
-        return new ImmutableMethodReference(owner, name, descriptor, signature);
+        return MethodReferenceBuilder.create()
+          .withOwner(owner)
+          .withName(name)
+          .withSignature(signature)
+          .withDescriptor(descriptor)
+          .build();
     }
 }

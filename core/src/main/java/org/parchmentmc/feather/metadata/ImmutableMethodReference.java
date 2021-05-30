@@ -3,7 +3,7 @@ package org.parchmentmc.feather.metadata;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.parchmentmc.feather.named.Named;
 
-public class ImmutableMethodReference extends AbstractMethodReference implements MethodReference {
+final class ImmutableMethodReference extends AbstractMethodReference implements MethodReference {
 
     public ImmutableMethodReference(final Named owner, final Named name, final Named descriptor, final Named signature) {
         super(owner, name, descriptor, signature);

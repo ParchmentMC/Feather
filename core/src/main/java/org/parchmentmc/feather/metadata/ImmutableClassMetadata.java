@@ -6,7 +6,7 @@ import org.parchmentmc.feather.named.Named;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 
-public class ImmutableClassMetadata implements ClassMetadata {
+final class ImmutableClassMetadata implements ClassMetadata {
     private final Named superName;
     private final LinkedHashSet<Named> interfaces;
     private final LinkedHashSet<MethodMetadata> methods;

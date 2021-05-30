@@ -1,7 +1,6 @@
 package org.parchmentmc.feather.metadata;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.parchmentmc.feather.named.ImmutableNamed;
 import org.parchmentmc.feather.named.Named;
 import org.parchmentmc.feather.named.NamedBuilder;
 import org.parchmentmc.feather.util.AccessFlag;
@@ -10,11 +9,11 @@ import java.util.EnumSet;
 import java.util.Objects;
 
 public final class FieldMetadataBuilder implements FieldMetadata {
-    private Named owner = ImmutableNamed.empty();
-    private Named name = ImmutableNamed.empty();
+    private Named owner = Named.empty();
+    private Named name = Named.empty();
     private int securitySpecification = 0;
-    private Named descriptor = ImmutableNamed.empty();
-    private Named signature = ImmutableNamed.empty();
+    private Named descriptor = Named.empty();
+    private Named signature = Named.empty();
 
     private FieldMetadataBuilder() {
     }

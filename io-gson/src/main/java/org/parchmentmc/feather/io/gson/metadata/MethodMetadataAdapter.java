@@ -7,15 +7,11 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import org.parchmentmc.feather.metadata.ImmutableMethodMetadata;
-import org.parchmentmc.feather.metadata.MethodMetadata;
-import org.parchmentmc.feather.metadata.MethodReference;
-import org.parchmentmc.feather.named.ImmutableNamed;
+import org.parchmentmc.feather.metadata.*;
 import org.parchmentmc.feather.named.Named;
 
 import java.io.IOException;
 import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  * GSON adapter for {@link MethodMetadata} objects.
@@ -23,7 +19,7 @@ import java.util.Set;
  * <p>For internal use. Users should use {@link MetadataAdapterFactory} instead.</p>
  */
 class MethodMetadataAdapter extends TypeAdapter<MethodMetadata> {
-    private static final TypeToken<Set<MethodReference>> METHOD_REFERENCE_Set_TOKEN = new TypeToken<Set<MethodReference>>() {
+    private static final TypeToken<LinkedHashSet<MethodReference>> METHOD_REFERENCE_Set_TOKEN = new TypeToken<LinkedHashSet<MethodReference>>() {
     };
     private final Gson gson;
 
@@ -49,10 +45,18 @@ class MethodMetadataAdapter extends TypeAdapter<MethodMetadata> {
         out.name("signature");
         gson.toJson(value.getSignature(), Named.class, out);
         out.name("lambda").value(value.isLambda());
-        out.name("bouncingTarget");
-        gson.toJson(value.getBouncingTarget(), MethodReference.class, out);
-        out.name("overrides");
-        gson.toJson(value.getOverrides(), METHOD_REFERENCE_Set_TOKEN.getType(), out);
+        if (value.getBouncingTarget().isPresent()) {
+            out.name("bouncingTarget");
+            gson.toJson(value.getBouncingTarget().get(), BouncingTargetMetadata.class, out);
+        }
+        if (value.getParent().isPresent()) {
+            out.name("parent");
+            gson.toJson(value.getParent().get(), MethodReference.class, out);
+        }
+        if (!value.getOverrides().isEmpty()) {
+            out.name("overrides");
+            gson.toJson(value.getOverrides(), METHOD_REFERENCE_Set_TOKEN.getType(), out);
+        }
         out.endObject();
     }
 
@@ -63,16 +67,17 @@ class MethodMetadataAdapter extends TypeAdapter<MethodMetadata> {
             return null;
         }
 
-        Named name = ImmutableNamed.empty();
-        Named owner = ImmutableNamed.empty();
+        Named name = Named.empty();
+        Named owner = Named.empty();
         int security = -1;
-        Named descriptor = ImmutableNamed.empty();
-        Named signature = ImmutableNamed.empty();
+        Named descriptor = Named.empty();
+        Named signature = Named.empty();
         boolean lambda = false;
-        MethodReference bouncingTarget = null;
+        BouncingTargetMetadata bouncingTarget = null;
         LinkedHashSet<MethodReference> overrides = null;
         int startLine = 0;
         int endLine = 0;
+        MethodReference parent = null;
 
         in.beginObject();
         while (in.hasNext()) {
@@ -97,7 +102,10 @@ class MethodMetadataAdapter extends TypeAdapter<MethodMetadata> {
                     lambda = in.nextBoolean();
                     break;
                 case "bouncingTarget":
-                    bouncingTarget = gson.fromJson(in, MethodReference.class);
+                    bouncingTarget = gson.fromJson(in, BouncingTargetMetadata.class);
+                    break;
+                case "parent":
+                    parent = gson.fromJson(in, MethodReference.class);
                     break;
                 case "overrides":
                     overrides = gson.fromJson(in, METHOD_REFERENCE_Set_TOKEN.getType());
@@ -126,6 +134,18 @@ class MethodMetadataAdapter extends TypeAdapter<MethodMetadata> {
         if (endLine < 0) throw new JsonParseException("Method metadata contains negative end line");
         if (endLine < startLine) throw new JsonParseException("Method metadata contains end before start");
 
-        return new ImmutableMethodMetadata(owner, lambda, bouncingTarget, overrides, name, security, descriptor, signature, startLine, endLine);
+        return MethodMetadataBuilder.create()
+          .withBouncingTarget(bouncingTarget)
+          .withName(name)
+          .withOwner(owner)
+          .withDescriptor(descriptor)
+          .withSignature(signature)
+          .withSecuritySpecification(security)
+          .withParent(parent)
+          .withOverrides(overrides)
+          .withStartLine(startLine)
+          .withEndLine(endLine)
+          .withLambda(lambda)
+          .build();
     }
 }
