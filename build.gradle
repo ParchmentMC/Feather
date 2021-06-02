@@ -1,5 +1,5 @@
 plugins {
-    id 'org.parchmentmc.writtenbooks' version '0.2.+' apply false
+    id 'org.parchmentmc.writtenbooks' version '0.4.0' apply false
     id 'io.spring.dependency-management' version '1.0.1.RELEASE' apply false
 }
 

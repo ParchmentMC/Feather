@@ -15,16 +15,17 @@ final class ImmutableClassMetadata implements ClassMetadata {
     private final Named owner;
     private final Named name;
     private final int securitySpecifications;
+    private final Named signature;
 
     public ImmutableClassMetadata(
-            final Named superName,
-            final LinkedHashSet<Named> interfaces,
-            final LinkedHashSet<MethodMetadata> methods,
-            final LinkedHashSet<FieldMetadata> fields,
-            final LinkedHashSet<ClassMetadata> innerClasses,
-            final Named owner,
-            final Named name,
-            final int securitySpecifications) {
+      final Named superName,
+      final LinkedHashSet<Named> interfaces,
+      final LinkedHashSet<MethodMetadata> methods,
+      final LinkedHashSet<FieldMetadata> fields,
+      final LinkedHashSet<ClassMetadata> innerClasses,
+      final Named owner,
+      final Named name,
+      final int securitySpecifications, final Named signature) {
         this.superName = superName;
         this.interfaces = new LinkedHashSet<>(interfaces);
         this.methods = new LinkedHashSet<>(methods);
@@ -33,6 +34,7 @@ final class ImmutableClassMetadata implements ClassMetadata {
         this.owner = owner;
         this.name = name;
         this.securitySpecifications = securitySpecifications;
+        this.signature = signature;
     }
 
     @Override
@@ -88,6 +90,12 @@ final class ImmutableClassMetadata implements ClassMetadata {
     @Override
     public @NonNull LinkedHashSet<ClassMetadata> getInnerClasses() {
         return innerClasses;
+    }
+
+    @Override
+    public @NonNull Named getSignature()
+    {
+        return signature;
     }
 
     @Override

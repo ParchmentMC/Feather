@@ -96,6 +96,7 @@ public class MetadataMoshiAdapter {
         writer.name("fields").jsonValue(fieldLinkedHashSetAdapter.toJsonValue(classMetadata.getFields()));
         writer.name("methods").jsonValue(methodLinkedHashSetAdapter.toJsonValue(classMetadata.getMethods()));
         writer.name("inner").jsonValue(classLinkedHashSetAdapter.toJsonValue(classMetadata.getInnerClasses()));
+        writer.name("signature").jsonValue(namedAdapter.toJsonValue(classMetadata.getSignature()));
 
         writer.endObject();
     }
@@ -316,6 +317,9 @@ public class MetadataMoshiAdapter {
                 case "inner":
                     final LinkedHashSet<? extends ClassMetadata> inner = classLinkedHashSetAdapter.fromJson(reader);
                     builder.withInnerClasses(inner == null ? new LinkedHashSet<>() : new LinkedHashSet<>(inner));
+                    break;
+                case "signature":
+                    builder.withSignature(namedAdapter.fromJson(reader));
                     break;
                 default:
                     reader.skipValue();

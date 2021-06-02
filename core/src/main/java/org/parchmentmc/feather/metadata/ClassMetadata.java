@@ -49,4 +49,12 @@ public interface ClassMetadata extends WithSecurity, OwnedByClass, WithName, Has
      */
     @NonNull
     LinkedHashSet<ClassMetadata> getInnerClasses();
+
+    /**
+     * The generic signature of the class if present.
+     *
+     * @return The generic signature.
+     */
+    @NonNull
+    Named getSignature();
 }

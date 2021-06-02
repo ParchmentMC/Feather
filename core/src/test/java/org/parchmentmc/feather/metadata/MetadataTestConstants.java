@@ -1,6 +1,8 @@
 package org.parchmentmc.feather.metadata;
 
 import com.google.common.collect.Sets;
+import org.parchmentmc.feather.named.Named;
+import org.parchmentmc.feather.named.NamedBuilder;
 import org.parchmentmc.feather.util.SimpleVersion;
 
 import java.lang.reflect.Modifier;
@@ -53,14 +55,14 @@ public interface MetadataTestConstants {
                     new LinkedHashSet<>(of(named("b"), named("c", "IInterface"))),
                     METHOD_METADATA, FIELD_METADATA, new LinkedHashSet<>(),
                     empty(), named("d"),
-                    Modifier.PUBLIC | Modifier.FINAL
-            ),
+                    Modifier.PUBLIC | Modifier.FINAL,
+              Named.empty()),
             new ImmutableClassMetadata(empty(),
                     new LinkedHashSet<>(),
                     METHOD_METADATA, FIELD_METADATA, new LinkedHashSet<>(),
                     empty(), named("e"),
-                    Modifier.PUBLIC | Modifier.FINAL
-            )
+                    Modifier.PUBLIC | Modifier.FINAL,
+              NamedBuilder.create().withObfuscated("<T>").build())
     ));
 
     LinkedHashSet<ClassMetadata> CLASS_METADATA = new LinkedHashSet<>(of(
@@ -68,14 +70,14 @@ public interface MetadataTestConstants {
                     new LinkedHashSet<>(of(named("h"), named("c", "IInterface"))),
                     METHOD_METADATA, FIELD_METADATA, INNER_CLASSES,
                     empty(), named("g"),
-                    Modifier.PUBLIC
-            ),
+                    Modifier.PUBLIC,
+                    Named.empty()),
             new ImmutableClassMetadata(empty(),
                     new LinkedHashSet<>(),
                     METHOD_METADATA, FIELD_METADATA, new LinkedHashSet<>(),
                     empty(), named("h"),
-                    Modifier.PUBLIC
-            )
+                    Modifier.PUBLIC,
+              NamedBuilder.create().withObfuscated("<T>").build())
     ));
 
     Set<SourceMetadata> SOURCE_METADATA = of(

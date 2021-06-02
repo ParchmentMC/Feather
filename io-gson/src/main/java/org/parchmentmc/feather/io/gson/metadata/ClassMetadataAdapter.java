@@ -60,6 +60,8 @@ class ClassMetadataAdapter extends TypeAdapter<ClassMetadata> {
         gson.toJson(value.getMethods(), METHOD_METADATA_Set_TOKEN.getType(), out);
         out.name("inner");
         gson.toJson(value.getInnerClasses(), CLASS_METADATA_Set_TOKEN.getType(), out);
+        out.name("signature");
+        gson.toJson(value.getSignature(), Named.class, out);
         out.endObject();
     }
 
@@ -78,6 +80,7 @@ class ClassMetadataAdapter extends TypeAdapter<ClassMetadata> {
         LinkedHashSet<FieldMetadata> fields = null;
         LinkedHashSet<MethodMetadata> methods = null;
         LinkedHashSet<ClassMetadata> innerClasses = null;
+        Named signature = Named.empty();
 
         in.beginObject();
         while (in.hasNext()) {
@@ -107,6 +110,9 @@ class ClassMetadataAdapter extends TypeAdapter<ClassMetadata> {
                 case "inner":
                     innerClasses = gson.fromJson(in, CLASS_METADATA_Set_TOKEN.getType());
                     break;
+                case "signature":
+                    signature = gson.fromJson(in, Named.class);
+                    break;
                 default:
                     in.skipValue();
             }
@@ -131,6 +137,7 @@ class ClassMetadataAdapter extends TypeAdapter<ClassMetadata> {
           .withInnerClasses(innerClasses)
           .withName(name)
           .withSecuritySpecifications(security)
+          .withSignature(signature)
           .build();
     }
 }

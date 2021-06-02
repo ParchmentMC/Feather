@@ -19,6 +19,7 @@ public final class ClassMetadataBuilder implements ClassMetadata {
     private Named owner = Named.empty();
     private Named name = Named.empty();
     private int securitySpecifications = 0;
+    private Named signature = Named.empty();
 
     private ClassMetadataBuilder() {
     }
@@ -91,6 +92,11 @@ public final class ClassMetadataBuilder implements ClassMetadata {
 
     public ClassMetadataBuilder withSecuritySpecifications(int securitySpecifications) {
         this.securitySpecifications = securitySpecifications;
+        return this;
+    }
+
+    public ClassMetadataBuilder withSignature(final Named signature) {
+        this.signature = signature;
         return this;
     }
 
@@ -228,6 +234,8 @@ public final class ClassMetadataBuilder implements ClassMetadata {
                 .filter(mr -> !schemadLocalInnerClasses.containsKey(mr))
                 .forEach(mr -> this.innerClasses.add(schemadSourceInnerClasses.get(mr)));
 
+        this.signature = NamedBuilder.create(this.signature).merge(source.getSignature()).build();
+
         return this;
     }
 
@@ -257,6 +265,12 @@ public final class ClassMetadataBuilder implements ClassMetadata {
     }
 
     @Override
+    public @NonNull Named getSignature()
+    {
+        return signature;
+    }
+
+    @Override
     public @NonNull Named getOwner() {
         return owner;
     }
@@ -281,7 +295,8 @@ public final class ClassMetadataBuilder implements ClassMetadata {
                 innerClasses.stream().map(ClassMetadata::toImmutable).collect(Collectors.toCollection(LinkedHashSet::new)),
                 owner.toImmutable(),
                 name.toImmutable(),
-                securitySpecifications);
+                securitySpecifications,
+          signature);
     }
 
     @Override
