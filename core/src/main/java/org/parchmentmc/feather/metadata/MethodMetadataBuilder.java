@@ -341,7 +341,7 @@ public final class MethodMetadataBuilder implements MethodMetadata
         return build();
     }
 
-    public ImmutableMethodMetadata build()
+    public MethodMetadata build()
     {
         return new ImmutableMethodMetadata(
           owner.toImmutable(),
