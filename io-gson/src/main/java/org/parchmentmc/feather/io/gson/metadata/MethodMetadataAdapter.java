@@ -57,6 +57,14 @@ class MethodMetadataAdapter extends TypeAdapter<MethodMetadata> {
             out.name("overrides");
             gson.toJson(value.getOverrides(), METHOD_REFERENCE_Set_TOKEN.getType(), out);
         }
+        if (value.getStartLine().isPresent()) {
+            out.name("startLine");
+            out.value(value.getStartLine().orElse(0));
+        }
+        if (value.getEndLine().isPresent()) {
+            out.name("endLine");
+            out.value(value.getEndLine().orElse(0));
+        }
         out.endObject();
     }
 
@@ -125,7 +133,6 @@ class MethodMetadataAdapter extends TypeAdapter<MethodMetadata> {
         if (name.isEmpty()) throw new JsonParseException("Method metadata name is not present or empty");
         if (owner.isEmpty()) throw new JsonParseException("Method metadata owner is not present or empty");
         if (descriptor.isEmpty()) throw new JsonParseException("Method metadata descriptor is not present or empty");
-        if (signature.isEmpty()) throw new JsonParseException("Method metadata signature is not present or empty");
         if (security == -1) throw new JsonParseException("Method metadata security specification is not present");
         // lambda is a primitive
         // bouncingTarget can be null

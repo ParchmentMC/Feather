@@ -80,7 +80,6 @@ class MethodReferenceAdapter extends TypeAdapter<MethodReference> {
         if (name.isEmpty()) throw new JsonParseException("Method reference name is not present");
         if (owner.isEmpty()) throw new JsonParseException("Method reference owner is not present");
         if (descriptor.isEmpty()) throw new JsonParseException("Method reference descriptor is not present");
-        if (signature.isEmpty()) throw new JsonParseException("Method reference signature is not present");
 
         return MethodReferenceBuilder.create()
           .withOwner(owner)

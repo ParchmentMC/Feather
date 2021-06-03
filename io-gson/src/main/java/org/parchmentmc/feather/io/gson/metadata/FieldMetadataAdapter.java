@@ -86,7 +86,6 @@ class FieldMetadataAdapter extends TypeAdapter<FieldMetadata> {
         if (owner.isEmpty()) throw new JsonParseException("Field owner is not present or empty");
         if (security == -1) throw new JsonParseException("Field security specification is not present");
         if (descriptor.isEmpty()) throw new JsonParseException("Field descriptor is not present or empty");
-        if (signature.isEmpty()) throw new JsonParseException("Field signature is not present or empty");
 
         return FieldMetadataBuilder.create()
           .withOwner(owner)
