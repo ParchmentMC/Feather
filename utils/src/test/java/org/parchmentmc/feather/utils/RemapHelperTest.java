@@ -61,4 +61,25 @@ public class RemapHelperTest {
         assertEquals("([[Lcom/example/Remapped;[Lcom/example/Target;Z)[[[C",
                 remapMethodDescriptor("([[La;[Lcom/example/Original;Z)[[[C", REMAPS::get));
     }
+
+    @Test
+    void remap_class_signatures() {
+        assertEquals("Lcom/example/Remapped<*>;", remapTypeDescriptor("La<*>;", REMAPS::get));
+        assertEquals("Lcom/example/Remapped<-Lcom/example/Remapped;>;", remapTypeDescriptor("La<-La;>;", REMAPS::get));
+        assertEquals("Lcom/example/Remapped<-Lcom/example/Remapped;+Lcom/example/Remapped;>;", remapTypeDescriptor("La<-La;+La;>;", REMAPS::get));
+        assertEquals("Lcom/example/Remapped<-Lcom/example/Remapped<*>;>;", remapTypeDescriptor("La<-La<*>;>;", REMAPS::get));
+        assertEquals("Lcom/example/Remapped<-Lcom/example/Remapped<+Lcom/example/Remapped;>;>;", remapTypeDescriptor("La<-La<+La;>;>;", REMAPS::get));
+    }
+
+    @Test
+    void remap_method_signatures() {
+        assertEquals("()V", remapMethodDescriptor("()V", s -> null));
+        assertEquals("(III)J", remapMethodDescriptor("(III)J", s -> null));
+        assertEquals("(II[Z)La;", remapMethodDescriptor("(II[Z)La;", s -> null));
+        assertEquals("(II[Z)Lcom/example/Remapped<*>;", remapMethodDescriptor("(II[Z)La<*>;", REMAPS::get));
+        assertEquals("([[Lcom/example/Remapped;[Lcom/example/Target<*>;Z)[[[C",
+          remapMethodDescriptor("([[La;[Lcom/example/Original<*>;Z)[[[C", REMAPS::get));
+        assertEquals("([[Lcom/example/Remapped;[Lcom/example/Target<Lcom/example/Remapped;>;Z)[[[C",
+          remapMethodDescriptor("([[La;[Lcom/example/Original<La;>;Z)[[[C", REMAPS::get));
+    }
 }

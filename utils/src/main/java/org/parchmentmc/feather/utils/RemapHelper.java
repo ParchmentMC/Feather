@@ -1,5 +1,6 @@
 package org.parchmentmc.feather.utils;
 
+import java.util.Arrays;
 import java.util.function.UnaryOperator;
 
 /**
@@ -23,8 +24,18 @@ public final class RemapHelper {
      *                                  reference type descriptor (with optional array dimensions)
      */
     public static String remapTypeDescriptor(String typeDescriptor, UnaryOperator<String> remappingFunction) {
+        if (typeDescriptor.equals("*"))
+            return "*";
+
         if (typeDescriptor.length() == 1 && PRIMITIVE_TYPE_DESCRIPTORS.contains(typeDescriptor)) {
             return typeDescriptor; // Primitive type descriptor
+        }
+
+        if (typeDescriptor.startsWith("-") || typeDescriptor.startsWith("+")) {
+            return typeDescriptor.charAt(0) + remapTypeDescriptor(
+              typeDescriptor.substring(1),
+              remappingFunction
+            );
         }
 
         if (typeDescriptor.startsWith("[")) { // Dimension of an array;
@@ -32,6 +43,45 @@ public final class RemapHelper {
         }
 
         if (typeDescriptor.startsWith("L")) { // Reference type descriptor
+            if (typeDescriptor.contains("<") && typeDescriptor.contains(">")) {
+                final String remappedTypeName = remappingFunction.apply(typeDescriptor.substring(1, typeDescriptor.indexOf("<")));
+                final String genericArguments = typeDescriptor.substring(
+                  typeDescriptor.indexOf("<") + 1,
+                  typeDescriptor.lastIndexOf(">")
+                );
+
+                StringBuilder remappedGenericArgument = new StringBuilder().append('<');
+
+                for (int charIndex = 0; charIndex < genericArguments.length(); charIndex++)
+                {
+                    char c = genericArguments.charAt(charIndex);
+                    if (PRIMITIVE_TYPE_DESCRIPTORS.indexOf(c) > -1 || c == '[' || c == '*' || c == '-' || c == '+') {
+                        remappedGenericArgument.append(c);
+                    } else if (c == 'L') {
+                        StringBuilder refType = new StringBuilder();
+                        int openBrackets = 0;
+                        do {
+                            refType.append(c);
+                            if (c == '<') {
+                                openBrackets++;
+                            }else if (c == '>') {
+                                openBrackets--;
+                            }
+
+                            c = genericArguments.charAt(++charIndex);
+                        } while (c != ';' || openBrackets > 0);
+
+                        remappedGenericArgument.append(remapTypeDescriptor(refType.append(';').toString(), remappingFunction));
+                    } else {
+                        throw new IllegalArgumentException("Unknown descriptor " + c + " in generic descriptor: " + typeDescriptor);
+                    }
+                }
+
+                remappedGenericArgument.append(">");
+
+                return "L" + remappedTypeName + remappedGenericArgument + ";";
+            }
+
             final String remapped = remappingFunction.apply(typeDescriptor.substring(1, typeDescriptor.length() - 1));
             if (remapped != null) {
                 return "L" + remapped + ";";
@@ -68,10 +118,17 @@ public final class RemapHelper {
                 remappedOutput.append(c);
             } else if (c == 'L') {
                 StringBuilder refType = new StringBuilder();
+                int openBrackets = 0;
                 do {
                     refType.append(c);
+                    if (c == '<') {
+                        openBrackets++;
+                    }else if (c == '>') {
+                        openBrackets--;
+                    }
+
                     c = methodDescriptor.charAt(cursor++);
-                } while (c != ';');
+                } while (c != ';' || openBrackets > 0);
                 remappedOutput.append(remapTypeDescriptor(refType.append(';').toString(), remappingFunction));
             } else {
                 throw new IllegalArgumentException("Unknown descriptor " + c + " in method descriptor: " + methodDescriptor);
