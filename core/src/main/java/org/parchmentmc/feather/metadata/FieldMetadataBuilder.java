@@ -23,6 +23,9 @@ public final class FieldMetadataBuilder implements FieldMetadata {
     }
 
     public static FieldMetadataBuilder create(final FieldMetadata target) {
+        if (target == null)
+            return create();
+
         return create()
                 .withOwner(target.getOwner())
                 .withName(target.getName())
@@ -57,6 +60,9 @@ public final class FieldMetadataBuilder implements FieldMetadata {
     }
 
     public FieldMetadataBuilder merge(final FieldMetadata source) {
+        if (source == null)
+            return this;
+
         this.owner = NamedBuilder.create(this.owner)
                 .merge(source.getOwner())
                 .build();

@@ -13,6 +13,9 @@ public class BouncingTargetMetadataBuilder implements BouncingTargetMetadata
     }
 
     public static BouncingTargetMetadataBuilder create(final BouncingTargetMetadata bouncingTargetMetadata) {
+        if (bouncingTargetMetadata == null)
+            return create();
+
         return new BouncingTargetMetadataBuilder(
           bouncingTargetMetadata.getTarget().orElse(null),
           bouncingTargetMetadata.getOwner().orElse(null)

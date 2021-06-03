@@ -31,6 +31,9 @@ public final class MethodMetadataBuilder implements MethodMetadata
 
     public static MethodMetadataBuilder create(final MethodMetadata target)
     {
+        if (target == null)
+            return create();
+
         return create()
                  .withOwner(target.getOwner())
                  .withLambda(target.isLambda())
@@ -118,6 +121,9 @@ public final class MethodMetadataBuilder implements MethodMetadata
 
     public MethodMetadataBuilder merge(final MethodMetadata source, final String schema)
     {
+        if (source == null)
+            return this;
+
         this.owner = NamedBuilder.create(this.owner)
                        .merge(source.getName())
                        .build();

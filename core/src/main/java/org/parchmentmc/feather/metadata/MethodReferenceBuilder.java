@@ -21,6 +21,9 @@ public final class MethodReferenceBuilder implements MethodReference {
     }
 
     public static MethodReferenceBuilder create(final MethodReference methodReference) {
+        if (methodReference == null)
+            return create();
+
         return create()
                 .withOwner(methodReference.getOwner())
                 .withName(methodReference.getName())

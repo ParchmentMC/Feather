@@ -29,6 +29,9 @@ public final class ClassMetadataBuilder implements ClassMetadata {
     }
 
     public static ClassMetadataBuilder create(final ClassMetadata classMetadata) {
+        if(classMetadata == null)
+            return create();
+
         return create()
                 .withSuperName(classMetadata.getSuperName())
                 .withInterfaces(classMetadata.getInterfaces())
@@ -101,6 +104,9 @@ public final class ClassMetadataBuilder implements ClassMetadata {
     }
 
     public ClassMetadataBuilder merge(final ClassMetadata source, final String mergingScheme) {
+        if (source == null)
+            return this;
+
         this.name = NamedBuilder.create(this.name)
                 .merge(source.getName())
                 .build();

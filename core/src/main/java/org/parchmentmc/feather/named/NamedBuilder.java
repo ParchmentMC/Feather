@@ -14,14 +14,23 @@ public class NamedBuilder implements Named {
     private final Map<String, String> names = Maps.newLinkedHashMap();
 
     public static NamedBuilder create(final String mappingName, final String mappingValue) {
+        if (mappingName == null || mappingValue == null)
+            return create();
+
         return new NamedBuilder(mappingName, mappingValue);
     }
 
     public static NamedBuilder create(final Map<String, String> names) {
+        if (names == null)
+            return create();
+
         return new NamedBuilder(names);
     }
 
     public static NamedBuilder create(final Named named) {
+        if (named == null)
+            return create();
+
         return new NamedBuilder(named);
     }
 
@@ -91,6 +100,9 @@ public class NamedBuilder implements Named {
      * @return The builder.
      */
     public NamedBuilder merge(final Named source) {
+        if (source == null)
+            return this;
+
         this.names.putAll(source.getNames());
         return this;
     }

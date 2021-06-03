@@ -24,6 +24,9 @@ public final class SourceMetadataBuilder implements SourceMetadata {
     }
 
     public static SourceMetadataBuilder create(final SourceMetadata target) {
+        if (target == null)
+            return create();
+
         return create()
                 .withSpecVersion(target.getSpecificationVersion())
                 .withMinecraftVersion(target.getMinecraftVersion())
@@ -46,6 +49,9 @@ public final class SourceMetadataBuilder implements SourceMetadata {
     }
 
     public SourceMetadataBuilder merge(final SourceMetadata source, final String mergingSchema) {
+        if (source == null)
+            return this;
+
         final Map<Named, ClassMetadata> schemadLocalInnerClasses = this.classes
                 .stream().collect(Collectors.toMap(
                         fm -> NamedBuilder.create()
