@@ -168,7 +168,23 @@ public final class RemapHelper {
                 final StringBuilder refType = result.getResult();
                 cursor = result.getCursor();
                 remappedOutput.append(remapTypeDescriptor(refType.append(';').toString(), remappingFunction));
-            } else {
+            } else if (c == 'T') {
+                //Generic type reference. Don't remap.
+                StringBuilder refType = new StringBuilder();
+                int openBrackets = 0;
+                do {
+                    refType.append(c);
+                    if (c == '<') {
+                        openBrackets++;
+                    }else if (c == '>') {
+                        openBrackets--;
+                    }
+
+                    c = methodDescriptor.charAt(cursor++);
+                } while (c != ';' || openBrackets > 0);
+
+                remappedOutput.append(refType.append(';'));
+            }else {
                 throw new IllegalArgumentException("Unknown descriptor " + c + " in method descriptor: " + methodDescriptor);
             }
         }

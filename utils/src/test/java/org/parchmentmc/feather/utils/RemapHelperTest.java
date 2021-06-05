@@ -101,5 +101,7 @@ public class RemapHelperTest
         assertEquals("<K:Lcom/example/WithView<+Lcom/package/GoodWidth<*>;>;V:Lgr<*>;>(Lcom/mojang/serialization/codecs/UnboundedMapCodec<TK;TV;>;)Lcom/mojang/serialization/Codec<Lgx$b;>;",
           remapMethodDescriptor("<K:Lwv<+Lgw<*>;>;V:Lgr<*>;>(Lcom/mojang/serialization/codecs/UnboundedMapCodec<TK;TV;>;)Lcom/mojang/serialization/Codec<Lgx$b;>;", REMAPS::get));
 
+        assertEquals("(TT;)Lcom/package/GoodWidth;",
+          remapMethodDescriptor("(TT;)Lgw;", REMAPS::get));
     }
 }
