@@ -97,5 +97,9 @@ public class RemapHelperTest
 
         assertEquals("<E:Ljava/lang/Object;>(Lcom/google/common/collect/ImmutableMap$Builder<Lcom/example/WithView<+Lcom/package/GoodWidth<*>;>;Lgx$a<*>;>;Lcom/example/WithView<+Lcom/package/GoodWidth<TE;>;>;Lcom/mojang/serialization/Codec<TE;>;Lcom/mojang/serialization/Codec<TE;>;)V",
           remapMethodDescriptor("<E:Ljava/lang/Object;>(Lcom/google/common/collect/ImmutableMap$Builder<Lwv<+Lgw<*>;>;Lgx$a<*>;>;Lwv<+Lgw<TE;>;>;Lcom/mojang/serialization/Codec<TE;>;Lcom/mojang/serialization/Codec<TE;>;)V", REMAPS::get));
+
+        assertEquals("<K:Lcom/example/WithView<+Lcom/package/GoodWidth<*>;>;V:Lgr<*>;>(Lcom/mojang/serialization/codecs/UnboundedMapCodec<TK;TV;>;)Lcom/mojang/serialization/Codec<Lgx$b;>;",
+          remapMethodDescriptor("<K:Lwv<+Lgw<*>;>;V:Lgr<*>;>(Lcom/mojang/serialization/codecs/UnboundedMapCodec<TK;TV;>;)Lcom/mojang/serialization/Codec<Lgx$b;>;", REMAPS::get));
+
     }
 }

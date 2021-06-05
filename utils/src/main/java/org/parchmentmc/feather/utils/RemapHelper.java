@@ -142,6 +142,8 @@ public final class RemapHelper {
                 final ExtractionResult genericSectionRes = extractTypeName(refType.toString(), genericCursor, genericC);
                 final StringBuilder genericSection = genericSectionRes.getResult();
                 genericCursor = genericSectionRes.getCursor();
+                if (genericCursor < refType.length())
+                    genericC = refType.charAt(genericCursor++);
 
                 if (genericSection.charAt(1) == ':') {
                     remappedOutput.append(genericSection.charAt(0));
