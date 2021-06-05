@@ -109,6 +109,9 @@ public final class RemapHelper {
             return typeDescriptor;
         }
 
+        if (typeDescriptor.startsWith("T"))
+            return typeDescriptor;
+
         throw new IllegalArgumentException("Unrecognizable type descriptor: " + typeDescriptor);
     }
 

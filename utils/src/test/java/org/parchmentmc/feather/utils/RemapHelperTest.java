@@ -103,5 +103,8 @@ public class RemapHelperTest
 
         assertEquals("(TT;)Lcom/package/GoodWidth;",
           remapMethodDescriptor("(TT;)Lgw;", REMAPS::get));
+
+        assertEquals("(Ljava/util/Random;)TT;",
+          remapMethodDescriptor("(Ljava/util/Random;)TT;", REMAPS::get));
     }
 }
