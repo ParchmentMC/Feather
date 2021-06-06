@@ -10,19 +10,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.parchmentmc.feather.utils.RemapHelper.remapMethodDescriptor;
 import static org.parchmentmc.feather.utils.RemapHelper.remapTypeDescriptor;
 
-public class RemapHelperTest
-{
-    static final Map<String, String> REMAPS = ImmutableMap.of(
-      "a", "com/example/Remapped",
-      "com/example/Original", "com/example/Target",
-      "com/mojang/serialization/Codec", "com/mojang/serialization/Codec",
-      "wv", "com/example/WithView",
-      "gw", "com/package/GoodWidth"
-    );
-
+public class RemapHelperTest {
     @Test
-    void throw_on_illegal_descriptors()
-    {
+    void throw_on_illegal_descriptors() {
         assertThrows(IllegalArgumentException.class, () -> remapTypeDescriptor("Qtest;", s -> null));
         assertThrows(IllegalArgumentException.class, () -> remapTypeDescriptor("Y", s -> null));
         assertThrows(IllegalArgumentException.class, () -> remapTypeDescriptor("$", s -> null));
@@ -34,8 +24,7 @@ public class RemapHelperTest
     }
 
     @Test
-    void shortcut_for_primitive_type_descriptors()
-    {
+    void shortcut_for_primitive_type_descriptors() {
         assertEquals("V", remapTypeDescriptor("V", s -> null));
         assertEquals("Z", remapTypeDescriptor("Z", s -> null));
         assertEquals("B", remapTypeDescriptor("B", s -> null));
@@ -47,9 +36,13 @@ public class RemapHelperTest
         assertEquals("D", remapTypeDescriptor("D", s -> null));
     }
 
+    static final Map<String, String> REMAPS = ImmutableMap.of(
+      "a", "com/example/Remapped",
+      "com/example/Original", "com/example/Target"
+    );
+
     @Test
-    void remap_reference_type_descriptors()
-    {
+    void remap_reference_type_descriptors() {
         assertEquals("La;", remapTypeDescriptor("La;", s -> null));
         assertEquals("Lcom/example/Remapped;", remapTypeDescriptor("La;", REMAPS::get));
         assertEquals("[Lcom/example/Remapped;", remapTypeDescriptor("[La;", REMAPS::get));
@@ -60,51 +53,12 @@ public class RemapHelperTest
     }
 
     @Test
-    void remap_method_descriptors()
-    {
+    void remap_method_descriptors() {
         assertEquals("()V", remapMethodDescriptor("()V", s -> null));
         assertEquals("(III)J", remapMethodDescriptor("(III)J", s -> null));
         assertEquals("(II[Z)La;", remapMethodDescriptor("(II[Z)La;", s -> null));
         assertEquals("(II[Z)Lcom/example/Remapped;", remapMethodDescriptor("(II[Z)La;", REMAPS::get));
         assertEquals("([[Lcom/example/Remapped;[Lcom/example/Target;Z)[[[C",
           remapMethodDescriptor("([[La;[Lcom/example/Original;Z)[[[C", REMAPS::get));
-    }
-
-    @Test
-    void remap_class_signatures()
-    {
-        assertEquals("Lcom/example/Remapped<*>;", remapTypeDescriptor("La<*>;", REMAPS::get));
-        assertEquals("Lcom/example/Remapped<-Lcom/example/Remapped;>;", remapTypeDescriptor("La<-La;>;", REMAPS::get));
-        assertEquals("Lcom/example/Remapped<-Lcom/example/Remapped;+Lcom/example/Remapped;>;", remapTypeDescriptor("La<-La;+La;>;", REMAPS::get));
-        assertEquals("Lcom/example/Remapped<-Lcom/example/Remapped<*>;>;", remapTypeDescriptor("La<-La<*>;>;", REMAPS::get));
-        assertEquals("Lcom/example/Remapped<-Lcom/example/Remapped<+Lcom/example/Remapped;>;>;", remapTypeDescriptor("La<-La<+La;>;>;", REMAPS::get));
-    }
-
-    @Test
-    void remap_method_signatures()
-    {
-        assertEquals("()V", remapMethodDescriptor("()V", s -> null));
-        assertEquals("(III)J", remapMethodDescriptor("(III)J", s -> null));
-        assertEquals("(II[Z)La;", remapMethodDescriptor("(II[Z)La;", s -> null));
-        assertEquals("(II[Z)Lcom/example/Remapped<*>;", remapMethodDescriptor("(II[Z)La<*>;", REMAPS::get));
-        assertEquals("([[Lcom/example/Remapped;[Lcom/example/Target<*>;Z)[[[C",
-          remapMethodDescriptor("([[La;[Lcom/example/Original<*>;Z)[[[C", REMAPS::get));
-        assertEquals("([[Lcom/example/Remapped;[Lcom/example/Target<Lcom/example/Remapped;>;Z)[[[C",
-          remapMethodDescriptor("([[La;[Lcom/example/Original<La;>;Z)[[[C", REMAPS::get));
-
-        assertEquals("<E:Ljava/lang/Object;>()Lcom/mojang/serialization/Codec<Lcom/example/Remapped;>;",
-          remapMethodDescriptor("<E:Ljava/lang/Object;>()Lcom/mojang/serialization/Codec<La;>;", REMAPS::get));
-
-        assertEquals("<E:Ljava/lang/Object;>(Lcom/google/common/collect/ImmutableMap$Builder<Lcom/example/WithView<+Lcom/package/GoodWidth<*>;>;Lgx$a<*>;>;Lcom/example/WithView<+Lcom/package/GoodWidth<TE;>;>;Lcom/mojang/serialization/Codec<TE;>;Lcom/mojang/serialization/Codec<TE;>;)V",
-          remapMethodDescriptor("<E:Ljava/lang/Object;>(Lcom/google/common/collect/ImmutableMap$Builder<Lwv<+Lgw<*>;>;Lgx$a<*>;>;Lwv<+Lgw<TE;>;>;Lcom/mojang/serialization/Codec<TE;>;Lcom/mojang/serialization/Codec<TE;>;)V", REMAPS::get));
-
-        assertEquals("<K:Lcom/example/WithView<+Lcom/package/GoodWidth<*>;>;V:Lgr<*>;>(Lcom/mojang/serialization/codecs/UnboundedMapCodec<TK;TV;>;)Lcom/mojang/serialization/Codec<Lgx$b;>;",
-          remapMethodDescriptor("<K:Lwv<+Lgw<*>;>;V:Lgr<*>;>(Lcom/mojang/serialization/codecs/UnboundedMapCodec<TK;TV;>;)Lcom/mojang/serialization/Codec<Lgx$b;>;", REMAPS::get));
-
-        assertEquals("(TT;)Lcom/package/GoodWidth;",
-          remapMethodDescriptor("(TT;)Lgw;", REMAPS::get));
-
-        assertEquals("(Ljava/util/Random;)TT;",
-          remapMethodDescriptor("(Ljava/util/Random;)TT;", REMAPS::get));
     }
 }

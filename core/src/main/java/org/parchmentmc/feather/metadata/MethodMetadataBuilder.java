@@ -125,7 +125,7 @@ public final class MethodMetadataBuilder implements MethodMetadata
             return this;
 
         this.owner = NamedBuilder.create(this.owner)
-                       .merge(source.getName())
+                       .merge(source.getOwner())
                        .build();
         this.lambda = this.lambda || source.isLambda();
         this.bouncingTarget = BouncingTargetMetadataBuilder.create(this.bouncingTarget)
