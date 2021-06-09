@@ -84,7 +84,8 @@ public final class MappingUtil {
 
                 method.getParameters().forEach(param -> {
                     ParameterData newParam = newMethod != null ? newMethod.getParameter(param.getIndex()) : null;
-                    methodData.createParameter(param.getIndex()).setName(param.getName())
+                    methodData.createParameter(param.getIndex())
+                            .setName(newParam != null ? newParam.getName() : param.getName())
                             .setJavadoc(newParam != null ? newParam.getJavadoc() : param.getJavadoc());
                 });
                 if (newMethod != null) {
