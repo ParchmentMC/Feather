@@ -50,7 +50,7 @@
             "required": [ "descriptor", "name", "owner", "security", "signature" ],
             "title": "Field Metadata"
         },
-        "MethodMetadata": {
+        "MethodBase": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -63,18 +63,30 @@
                 "startLine": { "type": "integer", "minimum": 0 },
                 "endLine": { "type": "integer", "minimum": 0 },
                 "bouncingTarget": { "$ref": "#/definitions/BouncingTargetMetadata" },
-                "parent": { "$ref": "#/definitions/MethodMetadata" },
-                "overrides": { "type": "array", "items": { "$ref": "#/definitions/MethodMetadata" } }
-            },
-            "required": [ "descriptor", "name", "owner", "signature" ],
+                "parent": { "$ref": "#/definitions/MethodReference" },
+                "overrides": { "type": "array", "items": { "$ref": "#/definitions/MethodReference" } }
+            }
+        },
+        "MethodReference": {
+            "allOf": [
+                { "$ref": "#/definitions/MethodBase" },
+                { "type": "object", "required": [ "descriptor", "name", "owner", "signature" ] }
+            ],
+            "title": "Method Metadata"
+        },
+        "MethodMetadata": {
+            "allOf": [
+                { "$ref": "#/definitions/MethodBase" },
+                { "type": "object", "required": [ "descriptor", "name", "owner", "signature", "security" ] }
+            ],
             "title": "Method Metadata"
         },
         "BouncingTargetMetadata": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "target": { "$ref": "#/definitions/MethodMetadata" },
-                "owner": { "$ref": "#/definitions/MethodMetadata" }
+                "target": { "$ref": "#/definitions/MethodReference" },
+                "owner": { "$ref": "#/definitions/MethodReference" }
             },
             "required": [],
             "title": "Bouncing Target"
