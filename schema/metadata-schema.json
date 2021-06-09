@@ -19,61 +19,93 @@
             "required": [],
             "title": "Mapped Name"
         },
-        "ClassMetadata": {
+        "WithName": {
             "type": "object",
             "properties": {
-                "name": { "$ref": "#/definitions/Named" },
-                "owner": { "$ref": "#/definitions/Named" },
-                "security": { "type": "integer", "minimum": 0, "maximum": 65535 },
-                "extends": { "$ref": "#/definitions/Named" },
-                "implements": { "type": "array", "items": { "$ref": "#/definitions/Named" } },
-                "fields": { "type": "array", "items": { "$ref": "#/definitions/FieldMetadata" } },
-                "methods": { "type": "array", "items": { "$ref": "#/definitions/MethodMetadata" } },
-                "inner": { "type": "array", "items": { "$ref": "#/definitions/ClassMetadata" } },
+                "name": { "$ref": "#/definitions/Named" }
+            },
+            "required": [ "name" ]
+        },
+        "WithSecurity": {
+            "type": "object",
+            "properties": {
+                "security": { "type": "integer", "minimum": 0, "maximum": 65535 }
+            },
+            "required": [ "security" ]
+        },
+        "WithType": {
+            "type": "object",
+            "properties": {
+                "descriptor": { "$ref": "#/definitions/Named" },
                 "signature": { "$ref": "#/definitions/Named" }
             },
-            "required": [ "extends", "fields", "implements", "inner", "methods", "name", "owner", "security", "signature" ],
+            "required": [ "descriptor", "signature" ]
+        },
+        "OwnedByClass": {
+            "type": "object",
+            "properties": {
+                "owner": { "$ref": "#/definitions/Named" }
+            },
+            "required": [ "owner" ]
+        },
+        "ClassMetadata": {
+            "allOf":[
+                { "$ref": "#/definitions/WithName"},
+                { "$ref": "#/definitions/WithSecurity"},
+                { "$ref": "#/definitions/OwnedByClass"},
+                {
+                    "type": "object",
+                    "properties": {
+                        "extends": { "$ref": "#/definitions/Named" },
+                        "implements": { "type": "array", "items": { "$ref": "#/definitions/Named" } },
+                        "fields": { "type": "array", "items": { "$ref": "#/definitions/FieldMetadata" } },
+                        "methods": { "type": "array", "items": { "$ref": "#/definitions/MethodMetadata" } },
+                        "inner": { "type": "array", "items": { "$ref": "#/definitions/ClassMetadata" } },
+                        "signature": { "$ref": "#/definitions/Named" }
+                    },
+                    "required": [ "extends", "fields", "implements", "inner", "methods", "signature" ]
+                }
+            ],
             "title": "Class Metadata"
         },
         "FieldMetadata": {
-            "type": "object",
-            "properties": {
-                "name": { "$ref": "#/definitions/Named" },
-                "owner": { "$ref": "#/definitions/Named" },
-                "security": { "type": "integer", "minimum": 0, "maximum": 65535 },
-                "descriptor": { "$ref": "#/definitions/Named" },
-                "signature": { "$ref": "#/definitions/Named" }
-            },
-            "required": [ "descriptor", "name", "owner", "security", "signature" ],
+            "allOf":[
+                { "$ref": "#/definitions/WithName"},
+                { "$ref": "#/definitions/WithSecurity"},
+                { "$ref": "#/definitions/WithType"},
+                { "$ref": "#/definitions/OwnedByClass"}
+            ],
             "title": "Field Metadata"
         },
-        "MethodBase": {
-            "type": "object",
-            "properties": {
-                "name": { "$ref": "#/definitions/Named" },
-                "owner": { "$ref": "#/definitions/Named" },
-                "security": { "type": "integer", "minimum": 0, "maximum": 65535 },
-                "descriptor": { "$ref": "#/definitions/Named" },
-                "signature": { "$ref": "#/definitions/Named" },
-                "lambda": { "type": "boolean" },
-                "startLine": { "type": "integer", "minimum": 0 },
-                "endLine": { "type": "integer", "minimum": 0 },
-                "bouncingTarget": { "$ref": "#/definitions/BouncingTargetMetadata" },
-                "parent": { "$ref": "#/definitions/MethodReference" },
-                "overrides": { "type": "array", "items": { "$ref": "#/definitions/MethodReference" } }
-            }
+        "MethodReferenceBase": {
+            "allOf":[
+                { "$ref": "#/definitions/WithName"},
+                { "$ref": "#/definitions/WithType"},
+                { "$ref": "#/definitions/OwnedByClass"}
+            ]
         },
         "MethodReference": {
             "allOf": [
-                { "$ref": "#/definitions/MethodBase" },
+                { "$ref": "#/definitions/MethodReferenceBase" },
                 { "type": "object", "required": [ "descriptor", "name", "owner", "signature" ] }
             ],
             "title": "Method Reference"
         },
         "MethodMetadata": {
             "allOf": [
-                { "$ref": "#/definitions/MethodBase" },
-                { "type": "object", "required": [ "descriptor", "lambda", "name", "owner", "security", "signature" ] }
+                { "$ref": "#/definitions/MethodReferenceBase" },
+                { 
+                    "type": "object",
+                    "properties": {
+                        "lambda": { "type": "boolean" },
+                        "startLine": { "type": "integer", "minimum": 0 },
+                        "endLine": { "type": "integer", "minimum": 0 },
+                        "bouncingTarget": { "$ref": "#/definitions/BouncingTargetMetadata" },
+                        "parent": { "$ref": "#/definitions/MethodReference" },
+                        "overrides": { "type": "array", "items": { "$ref": "#/definitions/MethodReference" } }
+                    },
+                    "required": [ "descriptor", "lambda", "name", "owner", "security", "signature" ] 
+                }
             ],
             "title": "Method Metadata"
         },
