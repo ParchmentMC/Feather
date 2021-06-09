@@ -4,7 +4,6 @@
     "definitions": {
         "Document": {
             "type": "object",
-            "additionalProperties": false,
             "properties": {
                 "specVersion": { "type": "string" },
                 "minecraftVersion": { "type": "string" },
@@ -15,14 +14,13 @@
         },
         "Named": {
             "type": "object",
-            "additionalProperties": { "type": "string"},
+            "additionalProperties": { "type": "string" },
             "properties": {},
             "required": [],
             "title": "Mapped Name"
         },
         "ClassMetadata": {
             "type": "object",
-            "additionalProperties": false,
             "properties": {
                 "name": { "$ref": "#/definitions/Named" },
                 "owner": { "$ref": "#/definitions/Named" },
@@ -39,7 +37,6 @@
         },
         "FieldMetadata": {
             "type": "object",
-            "additionalProperties": false,
             "properties": {
                 "name": { "$ref": "#/definitions/Named" },
                 "owner": { "$ref": "#/definitions/Named" },
@@ -52,7 +49,6 @@
         },
         "MethodBase": {
             "type": "object",
-            "additionalProperties": false,
             "properties": {
                 "name": { "$ref": "#/definitions/Named" },
                 "owner": { "$ref": "#/definitions/Named" },
@@ -72,18 +68,17 @@
                 { "$ref": "#/definitions/MethodBase" },
                 { "type": "object", "required": [ "descriptor", "name", "owner", "signature" ] }
             ],
-            "title": "Method Metadata"
+            "title": "Method Reference"
         },
         "MethodMetadata": {
             "allOf": [
                 { "$ref": "#/definitions/MethodBase" },
-                { "type": "object", "required": [ "descriptor", "name", "owner", "signature", "security" ] }
+                { "type": "object", "required": [ "descriptor", "lambda", "name", "owner", "security", "signature" ] }
             ],
             "title": "Method Metadata"
         },
         "BouncingTargetMetadata": {
             "type": "object",
-            "additionalProperties": false,
             "properties": {
                 "target": { "$ref": "#/definitions/MethodReference" },
                 "owner": { "$ref": "#/definitions/MethodReference" }
