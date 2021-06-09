@@ -86,8 +86,7 @@
         },
         "MethodReference": {
             "allOf": [
-                { "$ref": "#/definitions/MethodReferenceBase" },
-                { "type": "object", "required": [ "descriptor", "name", "owner", "signature" ] }
+                { "$ref": "#/definitions/MethodReferenceBase" }
             ],
             "title": "Method Reference"
         },
