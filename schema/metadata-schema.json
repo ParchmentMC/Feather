@@ -103,7 +103,7 @@
                         "parent": { "$ref": "#/definitions/MethodReference" },
                         "overrides": { "type": "array", "items": { "$ref": "#/definitions/MethodReference" } }
                     },
-                    "required": [ "descriptor", "lambda", "name", "owner", "security", "signature" ] 
+                    "required": [ "lambda" ] 
                 }
             ],
             "title": "Method Metadata"
