@@ -49,10 +49,10 @@
             "required": [ "owner" ]
         },
         "ClassMetadata": {
-            "allOf":[
-                { "$ref": "#/definitions/WithName"},
-                { "$ref": "#/definitions/WithSecurity"},
-                { "$ref": "#/definitions/OwnedByClass"},
+            "allOf": [
+                { "$ref": "#/definitions/WithName" },
+                { "$ref": "#/definitions/WithSecurity" },
+                { "$ref": "#/definitions/OwnedByClass" },
                 {
                     "type": "object",
                     "properties": {
@@ -69,19 +69,19 @@
             "title": "Class Metadata"
         },
         "FieldMetadata": {
-            "allOf":[
-                { "$ref": "#/definitions/WithName"},
-                { "$ref": "#/definitions/WithSecurity"},
-                { "$ref": "#/definitions/WithType"},
-                { "$ref": "#/definitions/OwnedByClass"}
+            "allOf": [
+                { "$ref": "#/definitions/WithName" },
+                { "$ref": "#/definitions/WithSecurity" },
+                { "$ref": "#/definitions/WithType" },
+                { "$ref": "#/definitions/OwnedByClass" }
             ],
             "title": "Field Metadata"
         },
         "MethodReferenceBase": {
-            "allOf":[
-                { "$ref": "#/definitions/WithName"},
-                { "$ref": "#/definitions/WithType"},
-                { "$ref": "#/definitions/OwnedByClass"}
+            "allOf": [
+                { "$ref": "#/definitions/WithName" },
+                { "$ref": "#/definitions/WithType" },
+                { "$ref": "#/definitions/OwnedByClass" }
             ]
         },
         "MethodReference": {
