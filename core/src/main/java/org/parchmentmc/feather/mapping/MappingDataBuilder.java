@@ -107,6 +107,8 @@ public class MappingDataBuilder implements MappingDataContainer {
         }
 
         T addJavadoc(Collection<? extends String> lines);
+
+        T clearJavadoc();
     }
 
     public static class MutablePackageData implements MappingDataContainer.PackageData, MutableHasJavadoc<MutablePackageData> {
@@ -128,8 +130,15 @@ public class MappingDataBuilder implements MappingDataContainer {
             return javadocView;
         }
 
+        @Override
         public MutablePackageData addJavadoc(Collection<? extends String> lines) {
             javadoc.addAll(lines);
+            return this;
+        }
+
+        @Override
+        public MutablePackageData clearJavadoc() {
+            javadoc.clear();
             return this;
         }
 
@@ -175,11 +184,13 @@ public class MappingDataBuilder implements MappingDataContainer {
             return javadocView;
         }
 
+        @Override
         public MutableClassData addJavadoc(Collection<? extends String> lines) {
             javadoc.addAll(lines);
             return this;
         }
 
+        @Override
         public MutableClassData clearJavadoc() {
             javadoc.clear();
             return this;
@@ -296,11 +307,13 @@ public class MappingDataBuilder implements MappingDataContainer {
             return javadocView;
         }
 
+        @Override
         public MutableFieldData addJavadoc(Collection<? extends String> lines) {
             javadoc.addAll(lines);
             return this;
         }
 
+        @Override
         public MutableFieldData clearJavadoc() {
             javadoc.clear();
             return this;
@@ -350,11 +363,13 @@ public class MappingDataBuilder implements MappingDataContainer {
             return javadocView;
         }
 
+        @Override
         public MutableMethodData addJavadoc(Collection<? extends String> lines) {
             javadoc.addAll(lines);
             return this;
         }
 
+        @Override
         public MutableMethodData clearJavadoc() {
             javadoc.clear();
             return this;
@@ -462,6 +477,12 @@ public class MappingDataBuilder implements MappingDataContainer {
         @Override
         public MutableParameterData addJavadoc(Collection<? extends String> lines) {
             this.javadoc = lines.stream().findFirst().orElse(null);
+            return this;
+        }
+
+        @Override
+        public MutableParameterData clearJavadoc() {
+            this.javadoc = null;
             return this;
         }
     }
