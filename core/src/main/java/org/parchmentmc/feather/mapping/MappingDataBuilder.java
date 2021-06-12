@@ -361,13 +361,13 @@ public class MappingDataBuilder implements MappingDataContainer {
         }
 
         @Override
-        public Collection<? extends ParameterData> getParameters() {
+        public Collection<MutableParameterData> getParameters() {
             return parametersView;
         }
 
         @Override
         @Nullable
-        public ParameterData getParameter(byte index) {
+        public MutableParameterData getParameter(byte index) {
             return parametersMap.get(index);
         }
 
