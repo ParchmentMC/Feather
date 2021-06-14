@@ -1,0 +1,13 @@
+group = 'org.parchmentmc.feather'
+archivesBaseName = 'io-tests'
+
+dependencies {
+    implementation project(':feather')
+    implementation project(':feather').sourceSets.test.output
+
+    implementation project(':io-gson')
+    implementation project(':io-gson').sourceSets.test.output
+
+    implementation project(':io-moshi')
+    implementation project(':io-moshi').sourceSets.test.output
+}
