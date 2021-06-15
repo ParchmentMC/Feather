@@ -16,7 +16,7 @@ public class RoundRobinTest {
     private static final ServiceLoader<IOAdapterFactory> CONVERTERS = ServiceLoader.load(IOAdapterFactory.class);
 
     /**
-     * Tests the given object using the adapter for the given class.
+     * Tests the given object using combinations of IO adapters for the given class.
      *
      * @param typeClass The class of the object under test
      * @param original  The original object
@@ -32,14 +32,14 @@ public class RoundRobinTest {
      *
      * <p>This method performs assertions based on the given pair of adapters and object, and asserts that:</p>
      * <ol>
-     *     <li>The adapter A {@linkplain Assertions#assertDoesNotThrow(ThrowingSupplier) do not throw an exception}
+     *     <li>Adapter A {@linkplain Assertions#assertDoesNotThrow(ThrowingSupplier) does not throw an exception}
      *     while serializing the original object.</li>
-     *     <li>The adapter B {@linkplain Assertions#assertDoesNotThrow(ThrowingSupplier) do not throw an exception}
+     *     <li>Adapter B {@linkplain Assertions#assertDoesNotThrow(ThrowingSupplier) does not throw an exception}
      *     while serializing the original object.</li>
-     *     <li>The adapter A does not throw an exception while deserializing the resulting JSON from adapter B</li>
-     *     <li>The adapter B does not throw an exception while deserializing the resulting JSON from adapter A</li>
-     *     <li>The adapter A does not throw an exception while serializing the resulting object from adapter B</li>
-     *     <li>The adapter B does not throw an exception while serializing the resulting object from adapter A</li>
+     *     <li>Adapter A does not throw an exception while deserializing the resulting JSON from adapter B.</li>
+     *     <li>Adapter B does not throw an exception while deserializing the resulting JSON from adapter A.</li>
+     *     <li>Adapter A does not throw an exception while serializing the resulting object from adapter B.</li>
+     *     <li>Adapter B does not throw an exception while serializing the resulting object from adapter A.</li>
      *     <li>The original object and the resulting object from assertion #3 {@linkplain
      *     Assertions#assertEquals(Object, Object) are equal}.</li>
      *     <li>The resulting objects from assertions #3 and #4 are equal.</li>
@@ -51,8 +51,8 @@ public class RoundRobinTest {
      *     <li>The resulting JSONs from adapter B for assertions #2 and #6 are equal.</li>
      * </ol>
      *
-     * @param adapterA The adapter for the object under test
-     * @param adapterB The adapter for the object under test
+     * @param adapterA The first adapter for the object under test
+     * @param adapterB The second adapter for the object under test
      * @param original The original object
      * @param <T>      The type of the object under test
      */
