@@ -27,7 +27,6 @@ public class RoundRobinTest {
         Combinations.pairs(CONVERTERS.iterator(), (l, r) -> test(l.create(typeClass), r.create(typeClass), original));
     }
 
-
     /**
      * Tests the given pair of adapters using the given object.
      *
@@ -78,7 +77,5 @@ public class RoundRobinTest {
         assertEquals(originalJsonA, versionAJson);
         assertEquals(originalJsonB, versionBJson);
     }
-
-
 
 }

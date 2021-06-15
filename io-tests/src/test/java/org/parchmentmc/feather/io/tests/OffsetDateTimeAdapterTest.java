@@ -16,4 +16,5 @@ public class OffsetDateTimeAdapterTest extends RoundRobinTest {
         test(OffsetDateTime.class, OffsetDateTime.MAX);
         test(OffsetDateTime.class, OffsetDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC));
     }
+
 }

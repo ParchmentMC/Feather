@@ -12,4 +12,5 @@ public class SimpleVersionAdapterTest extends RoundRobinTest {
         test(SimpleVersion.class, SimpleVersion.of(1, 2, 3));
         test(SimpleVersion.class, SimpleVersion.of("1.4"));
     }
+
 }

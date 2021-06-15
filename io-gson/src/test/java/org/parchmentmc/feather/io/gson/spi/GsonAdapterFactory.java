@@ -13,6 +13,7 @@ import org.parchmentmc.feather.spi.IOAdapterFactory;
 import org.parchmentmc.feather.util.SimpleVersion;
 
 public class GsonAdapterFactory implements IOAdapterFactory {
+
     private static final Gson gson = new GsonBuilder()
         .registerTypeAdapterFactory(new MDCGsonAdapterFactory())
         .registerTypeAdapterFactory(new MetadataAdapterFactory())

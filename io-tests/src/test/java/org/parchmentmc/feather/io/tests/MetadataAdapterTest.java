@@ -38,4 +38,5 @@ public class MetadataAdapterTest extends RoundRobinTest implements MetadataTestC
     public void testSourceMetadata() {
         SOURCE_METADATA.forEach(data -> test(SourceMetadata.class, data));
     }
+
 }

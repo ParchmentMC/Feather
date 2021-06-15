@@ -18,7 +18,7 @@ public class Combinations {
     }
 
     public static <E> void pairs(Iterator<E> input, BiConsumer<E, E> output) {
-        Set<E> set = new HashSet<E>();
+        Set<E> set = new HashSet<>();
         input.forEachRemaining(set::add);
 
         Iterator<E> iterator = set.iterator();
@@ -29,7 +29,5 @@ public class Combinations {
             set.forEach(other -> output.accept(element, other));
         }
     }
-
-
 
 }
