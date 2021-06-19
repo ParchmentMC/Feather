@@ -49,6 +49,13 @@ public class MappingDataBuilder implements MappingDataContainer {
         return pkg;
     }
 
+    public boolean removePackage(String packageName) {
+        MutablePackageData data = packagesMap.remove(packageName);
+        if (data == null) return false;
+        packages.remove(data);
+        return true;
+    }
+
     public MappingDataBuilder clearPackages() {
         packages.clear();
         packagesMap.clear();
@@ -80,6 +87,13 @@ public class MappingDataBuilder implements MappingDataContainer {
         MutableClassData cls = new MutableClassData(className);
         classes.add(cls);
         return cls;
+    }
+
+    public boolean removeClass(String className) {
+        MutableClassData data = classesMap.remove(className);
+        if (data == null) return false;
+        classes.remove(data);
+        return true;
     }
 
     public MappingDataBuilder clearClasses() {
@@ -223,6 +237,13 @@ public class MappingDataBuilder implements MappingDataContainer {
             return field;
         }
 
+        public boolean removeField(String fieldName) {
+            MutableFieldData data = fieldsMap.remove(fieldName);
+            if (data == null) return false;
+            fields.remove(data);
+            return true;
+        }
+
         public MutableClassData clearFields() {
             fields.clear();
             fieldsMap.clear();
@@ -254,6 +275,13 @@ public class MappingDataBuilder implements MappingDataContainer {
             MutableMethodData method = new MutableMethodData(methodName, descriptor);
             methods.add(method);
             return method;
+        }
+
+        public boolean removeMethod(String methodName, String descriptor) {
+            MutableMethodData data = methodsMap.remove(key(methodName, descriptor));
+            if (data == null) return false;
+            methods.remove(data);
+            return true;
         }
 
         public MutableClassData clearMethods() {
@@ -400,6 +428,13 @@ public class MappingDataBuilder implements MappingDataContainer {
             MutableParameterData param = new MutableParameterData(index);
             parameters.add(param);
             return param;
+        }
+
+        public boolean removeParameter(byte index) {
+            MutableParameterData data = parametersMap.remove(index);
+            if (data == null) return false;
+            parameters.remove(data);
+            return true;
         }
 
         public MutableMethodData clearParameters() {
