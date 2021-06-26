@@ -19,6 +19,10 @@ subprojects {
         mavenCentral()
     }
 
+    writtenbooks {
+        githubRepo = 'ParchmentMC/Feather'
+    }
+
     dependencies {
         testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
         testImplementation 'com.google.guava:guava:30.1.1-jre'
@@ -36,21 +40,11 @@ subprojects {
     }
 
     publishing {
-        publications.withType(MavenPublication).all {
+        publications.withType(MavenPublication).configureEach {
             pom {
-                url = "https://github.com/ParchmentMC/Feather"
                 organization {
                     name = "ParchmentMC"
                     url = "https://github.com/ParchmentMC"
-                }
-                scm {
-                    url = "https://github.com/ParchmentMC/Feather"
-                    connection = "scm:git:git://github.com/ParchmentMC/Feather.git"
-                    developerConnection = "scm:git:git@github.com/ParchmentMC/Feather.git"
-                }
-                issueManagement {
-                    system = "GitHub Issues"
-                    url = "https://github.com/ParchmentMC/Feather/issues"
                 }
                 licenses {
                     license {
