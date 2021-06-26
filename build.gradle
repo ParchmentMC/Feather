@@ -8,14 +8,14 @@ project.group 'org.parchmentmc.feather'
 subprojects {
     apply plugin: 'maven-publish'
     apply plugin: 'java-library'
-    apply plugin: 'org.parchmentmc.writtenbooks'
+    apply plugin:  'org.parchmentmc.writtenbooks'
 
     group rootProject.group
 
     repositories {
         maven {
             name 'ParchmentMC'
-            url 'https://ldtteam.jfrog.io/artifactory/parchmentmc/'
+            url 'https://maven.parchmentmc.org/'
         }
     }
 

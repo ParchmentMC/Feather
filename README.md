@@ -20,7 +20,7 @@ Add this to your Gradle buildscript (replacing `${feather_version}` with the act
 repositories {
     maven {
         name 'ParchmentMC'
-        url 'https://ldtteam.jfrog.io/artifactory/parchmentmc/'
+        url 'https://maven.parchmentmc.org/'
     }
 }
 
