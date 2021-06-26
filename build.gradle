@@ -1,6 +1,5 @@
 plugins {
-    id 'org.parchmentmc.writtenbooks' version '0.4.0' apply false
-    id 'io.spring.dependency-management' version '1.0.1.RELEASE' apply false
+    id 'org.parchmentmc.writtenbooks' version '0.5.1' apply false
 }
 
 project.group 'org.parchmentmc.feather'
@@ -8,7 +7,7 @@ project.group 'org.parchmentmc.feather'
 subprojects {
     apply plugin: 'maven-publish'
     apply plugin: 'java-library'
-    apply plugin:  'org.parchmentmc.writtenbooks'
+    apply plugin: 'org.parchmentmc.writtenbooks'
 
     group rootProject.group
 
