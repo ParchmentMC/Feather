@@ -107,8 +107,7 @@ public final class MethodReferenceBuilder implements MethodReference {
         MethodReference that = (MethodReference) o;
         return Objects.equals(getOwner(), that.getOwner())
                 && getName().equals(that.getName())
-                && getDescriptor().equals(that.getDescriptor())
-                && Objects.equals(getSignature(), that.getSignature());
+                && getDescriptor().equals(that.getDescriptor());
     }
 
     @Override
