@@ -49,8 +49,7 @@ public class AbstractMethodReference implements BaseMethodReference {
         AbstractMethodReference that = (AbstractMethodReference) o;
         return Objects.equals(getOwner(), that.getOwner())
                 && getName().equals(that.getName())
-                && getDescriptor().equals(that.getDescriptor())
-                && Objects.equals(getSignature(), that.getSignature());
+                && getDescriptor().equals(that.getDescriptor());
     }
 
     @Override

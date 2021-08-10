@@ -138,9 +138,6 @@ public final class ClassMetadataBuilder implements ClassMetadata {
                                 .withDescriptor(NamedBuilder.create()
                                         .with(mergingScheme, mm.getDescriptor().getName(mergingScheme).orElse(""))
                                 )
-                                .withSignature(NamedBuilder.create()
-                                        .with(mergingScheme, mm.getSignature().getName(mergingScheme).orElse(""))
-                                )
                                 .build(),
                         Function.identity()
                 ));
@@ -156,9 +153,6 @@ public final class ClassMetadataBuilder implements ClassMetadata {
                                 )
                                 .withDescriptor(NamedBuilder.create()
                                         .with(mergingScheme, mm.getDescriptor().getName(mergingScheme).orElse(""))
-                                )
-                                .withSignature(NamedBuilder.create()
-                                        .with(mergingScheme, mm.getSignature().getName(mergingScheme).orElse(""))
                                 )
                                 .build(),
                         Function.identity()
