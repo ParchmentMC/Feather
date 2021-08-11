@@ -14,9 +14,8 @@ subprojects {
     repositories {
         maven {
             name 'ParchmentMC'
-            url 'https://maven.parchmentmc.org/'
+            url 'https://ldtteam.jfrog.io/artifactory/parchmentmc/'
         }
-        mavenCentral()
     }
 
     writtenbooks {
