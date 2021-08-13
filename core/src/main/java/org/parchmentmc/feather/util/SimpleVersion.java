@@ -46,7 +46,7 @@ public final class SimpleVersion implements Serializable, Comparable<SimpleVersi
     /**
      * Returns the major version number.
      *
-     * <p>The major version number is incremented for any backwards-compatible changes, such as removals in the public
+     * <p>The major version number is incremented for any backwards-incompatible changes, such as removals in the public
      * API or specification.</p>
      *
      * @return the major version number
