@@ -1,5 +1,9 @@
 Feather
 =======
+![Latest release version badge](https://img.shields.io/maven-metadata/v?color=forestgreen&label=release&logo=star&metadataUrl=https%3A%2F%2Fldtteam.jfrog.io%2Fartifactory%2Fparchmentmc-internal%2Forg%2Fparchmentmc%2Ffeather%2Fmaven-metadata.xml)
+![Latest snapshot version badge](https://img.shields.io/maven-metadata/v?color=tomato&label=snapshot&logo=star&metadataUrl=https%3A%2F%2Fldtteam.jfrog.io%2Fartifactory%2Fparchmentmc-snapshots%2Forg%2Fparchmentmc%2Ffeather%2Fmaven-metadata.xml)
+![CI release build status](https://img.shields.io/teamcity/build/s/ParchmentMC_Feather_BuildAndPublishMainBranches?label=release%20build&logo=teamcity&server=https%3A%2F%2Fbuildsystem.ldtteam.com)
+![CI snapshot build status](https://img.shields.io/teamcity/build/s/ParchmentMC_Feather_BuildAndPublishSnapshotBranches?label=snapshot%20build&logo=teamcity&server=https%3A%2F%2Fbuildsystem.ldtteam.com)
 
 A library for common data objects and parsing, used across ParchmentMC's projects.
 
