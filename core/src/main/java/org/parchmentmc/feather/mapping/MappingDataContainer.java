@@ -104,7 +104,7 @@ public interface MappingDataContainer {
          * are separated by ASCII forward slashes instead, to be equal to binary names of classes within {@code class}
          * file structures, as defined by &sect;4.2.1 <em>"Binary Class and Interface Names"</em> of the JVMS 8.</p>
          *
-         * @return the name of this package
+         * @return the name of this class
          * @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-3.8">The Java&reg; Language
          * Specification, Java SE 8 Edition, &sect;3.8 "Identifiers"</a>
          * @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-6.html#jls-6.5">The Java&reg; Language
@@ -225,7 +225,7 @@ public interface MappingDataContainer {
          *
          * <p>The two special method names are defined by &sect;2.9 <em>"Special Methods"</em> of the JVMS 8.</p>
          *
-         * @return the name of this field
+         * @return the name of this method
          * @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-3.8">The Java&reg; Language
          * Specification, Java SE 8 Edition, &sect;3.8 "Identifiers"</a>
          * @see <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.9">The Java&reg; Virtual
@@ -249,7 +249,7 @@ public interface MappingDataContainer {
          * language: by definition (&sect;8.8 <em>"Constructor Declarations"</em> of the JLS 8) it must not return a value,
          * which means that the return descriptor must be void ({@code V}).</p>
          *
-         * @return the field descriptor
+         * @return the method descriptor
          * @see <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.3">The Java&reg; Virtual
          * Machine Specification, Java SE 8 Edition, &sect;4.3.3 "Method Descriptors"</a>
          * @see <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.9">The Java&reg; Virtual
@@ -321,7 +321,7 @@ public interface MappingDataContainer {
          *
          * <p>A parameter name is an identifier, as defined by &sect;3.8 <em>"Identifiers"</em> of the JLS 8.</p>
          *
-         * @return the name of this field
+         * @return the name of this parameter
          * @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-3.8">The Java&reg; Language
          * Specification, Java SE 8 Edition, &sect;3.8 "Identifiers"</a>
          */
