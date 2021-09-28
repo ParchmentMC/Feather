@@ -55,7 +55,7 @@ class UsingGson {
             .registerTypeAdapter(Named.class, new NamedAdapter())
             // Required for parsing manifests: `LauncherManifest`, `VersionManifest`, and their inner data classes
             .registerTypeAdapter(OffsetDateTime.class, new OffsetDateTimeAdapter())
-            .build();
+            .create();
 } 
 
 class UsingMoshi {
