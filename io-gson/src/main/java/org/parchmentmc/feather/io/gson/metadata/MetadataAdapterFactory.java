@@ -17,9 +17,10 @@ import java.lang.reflect.WildcardType;
  * @see SourceMetadata
  * @see ClassMetadata
  * @see MethodMetadata
- * @see MethodReference
+ * @see Reference
  * @see FieldMetadata
  * @see BouncingTargetMetadata
+ * @see RecordMetadata
  */
 public class MetadataAdapterFactory implements TypeAdapterFactory {
     @SuppressWarnings("unchecked")
@@ -43,10 +44,12 @@ public class MetadataAdapterFactory implements TypeAdapterFactory {
             return (TypeAdapter<T>) new FieldMetadataAdapter(gson);
         } else if (type.equals(MethodMetadata.class)) {
             return (TypeAdapter<T>) new MethodMetadataAdapter(gson);
-        } else if (type.equals(MethodReference.class)) {
-            return (TypeAdapter<T>) new MethodReferenceAdapter(gson);
+        } else if (type.equals(Reference.class)) {
+            return (TypeAdapter<T>) new ReferenceAdapter(gson);
         } else if (type.equals(BouncingTargetMetadata.class)) {
             return (TypeAdapter<T>) new BouncingTargetMetadataAdapter(gson);
+        }else if (type.equals(RecordMetadata.class)) {
+            return (TypeAdapter<T>) new RecordMetadataAdapter(gson);
         }
 
         return null;

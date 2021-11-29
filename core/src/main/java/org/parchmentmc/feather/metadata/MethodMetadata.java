@@ -1,7 +1,6 @@
 package org.parchmentmc.feather.metadata;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.parchmentmc.feather.util.HasImmutable;
 
 import java.util.LinkedHashSet;
@@ -10,7 +9,7 @@ import java.util.Optional;
 /**
  * Represents the metadata of a given method.
  */
-public interface MethodMetadata extends BaseMethodReference, WithSecurity, HasImmutable<MethodMetadata> {
+public interface MethodMetadata extends BaseReference, WithSecurity, HasImmutable<MethodMetadata> {
     /**
      * Indicates if this method is a lambda method.
      *
@@ -32,7 +31,7 @@ public interface MethodMetadata extends BaseMethodReference, WithSecurity, HasIm
      *
      * @return The direct overridden parent method.
      */
-    Optional<MethodReference> getParent();
+    Optional<Reference> getParent();
 
     /**
      * The methods this method overrides in super classes that the owner either extends or inherits from.
@@ -40,7 +39,7 @@ public interface MethodMetadata extends BaseMethodReference, WithSecurity, HasIm
      * @return The methods this method overrides.
      */
     @NonNull
-    LinkedHashSet<MethodReference> getOverrides();
+    LinkedHashSet<Reference> getOverrides();
 
     /**
      * Indicates the line where this method starts in the obfuscated none patched none updated none remapped jar.

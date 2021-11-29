@@ -11,30 +11,35 @@ final class ImmutableClassMetadata implements ClassMetadata {
     private final LinkedHashSet<Named> interfaces;
     private final LinkedHashSet<MethodMetadata> methods;
     private final LinkedHashSet<FieldMetadata> fields;
+    private final LinkedHashSet<RecordMetadata> records;
     private final LinkedHashSet<ClassMetadata> innerClasses;
+
     private final Named owner;
     private final Named name;
     private final int securitySpecifications;
-    private final Named signature;
+    private final Named                   signature;
+    private final boolean isRecord;
 
     public ImmutableClassMetadata(
       final Named superName,
       final LinkedHashSet<Named> interfaces,
       final LinkedHashSet<MethodMetadata> methods,
       final LinkedHashSet<FieldMetadata> fields,
-      final LinkedHashSet<ClassMetadata> innerClasses,
+      final LinkedHashSet<RecordMetadata> records, final LinkedHashSet<ClassMetadata> innerClasses,
       final Named owner,
       final Named name,
-      final int securitySpecifications, final Named signature) {
+      final int securitySpecifications, final Named signature, final boolean isRecord) {
         this.superName = superName;
         this.interfaces = new LinkedHashSet<>(interfaces);
         this.methods = new LinkedHashSet<>(methods);
         this.fields = new LinkedHashSet<>(fields);
+        this.records = records;
         this.innerClasses = new LinkedHashSet<>(innerClasses);
         this.owner = owner;
         this.name = name;
         this.securitySpecifications = securitySpecifications;
         this.signature = signature;
+        this.isRecord = isRecord;
     }
 
     @Override
@@ -88,6 +93,12 @@ final class ImmutableClassMetadata implements ClassMetadata {
     }
 
     @Override
+    public @NonNull LinkedHashSet<RecordMetadata> getRecords()
+    {
+        return records;
+    }
+
+    @Override
     public @NonNull LinkedHashSet<ClassMetadata> getInnerClasses() {
         return innerClasses;
     }
@@ -96,6 +107,12 @@ final class ImmutableClassMetadata implements ClassMetadata {
     public @NonNull Named getSignature()
     {
         return signature;
+    }
+
+    @Override
+    public boolean isRecord()
+    {
+        return isRecord;
     }
 
     @Override

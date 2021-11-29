@@ -2,7 +2,6 @@ package org.parchmentmc.feather.metadata;
 
 import com.google.common.collect.Sets;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.parchmentmc.feather.named.Named;
 import org.parchmentmc.feather.named.NamedBuilder;
 import org.parchmentmc.feather.util.AccessFlag;
@@ -15,15 +14,15 @@ public final class MethodMetadataBuilder implements MethodMetadata
 {
     private Named                          owner                 = Named.empty();
     private boolean                        lambda                = false;
-    private BouncingTargetMetadata         bouncingTarget        = null;
-    private LinkedHashSet<MethodReference> overrides             = Sets.newLinkedHashSet();
-    private Named                          name                  = Named.empty();
+    private BouncingTargetMetadata   bouncingTarget = null;
+    private LinkedHashSet<Reference> overrides      = Sets.newLinkedHashSet();
+    private Named                    name           = Named.empty();
     private int                            securitySpecification = 0;
     private Named                          descriptor            = Named.empty();
     private Named                          signature             = Named.empty();
     private int                            startLine             = 0;
-    private int                            endLine               = 0;
-    private MethodReference                parent                = null;
+    private int                      endLine        = 0;
+    private Reference                parent         = null;
 
     private MethodMetadataBuilder()
     {
@@ -84,13 +83,13 @@ public final class MethodMetadataBuilder implements MethodMetadata
         return this;
     }
 
-    public MethodMetadataBuilder withOverrides(LinkedHashSet<MethodReference> overrides)
+    public MethodMetadataBuilder withOverrides(LinkedHashSet<Reference> overrides)
     {
         this.overrides = overrides;
         return this;
     }
 
-    public MethodMetadataBuilder withParent(final MethodReference parent)
+    public MethodMetadataBuilder withParent(final Reference parent)
     {
         this.parent = parent;
         return this;
@@ -132,9 +131,9 @@ public final class MethodMetadataBuilder implements MethodMetadata
                                 .merge(source.getBouncingTarget().orElse(null))
                                 .build();
 
-        final Map<MethodReference, MethodReference> schemadLocalOverrides =
+        final Map<Reference, Reference> schemadLocalOverrides =
           this.overrides.stream().collect(Collectors.toMap(
-            mr -> MethodReferenceBuilder.create()
+            mr -> ReferenceBuilder.create()
                     .withName(NamedBuilder.create()
                                 .with(schema, mr.getName().getName(schema).orElse(""))
                     )
@@ -152,10 +151,10 @@ public final class MethodMetadataBuilder implements MethodMetadata
             (t, i) -> t
           ));
 
-        final Map<MethodReference, MethodReference> schemadSoureOverrides =
+        final Map<Reference, Reference> schemadSoureOverrides =
           source.getOverrides().stream().collect(
             Collectors.toMap(
-              mr -> MethodReferenceBuilder.create()
+              mr -> ReferenceBuilder.create()
                       .withName(NamedBuilder.create()
                                   .with(schema, mr.getName().getName(schema).orElse(""))
                       )
@@ -174,7 +173,7 @@ public final class MethodMetadataBuilder implements MethodMetadata
             ));
 
         this.overrides = new LinkedHashSet<>();
-        for (final MethodReference keyReference : schemadLocalOverrides.keySet())
+        for (final Reference keyReference : schemadLocalOverrides.keySet())
         {
             if (!schemadSoureOverrides.containsKey(keyReference))
             {
@@ -183,7 +182,7 @@ public final class MethodMetadataBuilder implements MethodMetadata
             else
             {
                 this.overrides.add(
-                  MethodReferenceBuilder.create(schemadLocalOverrides.get(keyReference))
+                  ReferenceBuilder.create(schemadLocalOverrides.get(keyReference))
                     .merge(schemadSoureOverrides.get(keyReference))
                     .build()
                 );
@@ -277,14 +276,14 @@ public final class MethodMetadataBuilder implements MethodMetadata
     }
 
     @Override
-    public Optional<MethodReference> getParent()
+    public Optional<Reference> getParent()
     {
         return Optional.ofNullable(parent);
     }
 
     @Override
     @NonNull
-    public LinkedHashSet<MethodReference> getOverrides()
+    public LinkedHashSet<Reference> getOverrides()
     {
         return overrides;
     }
@@ -348,7 +347,7 @@ public final class MethodMetadataBuilder implements MethodMetadata
           lambda,
           bouncingTarget == null ? null : bouncingTarget.toImmutable(),
           parent,
-          overrides.stream().map(MethodReference::toImmutable).collect(Collectors.toCollection(LinkedHashSet::new)),
+          overrides.stream().map(Reference::toImmutable).collect(Collectors.toCollection(LinkedHashSet::new)),
           name.toImmutable(),
           securitySpecification,
           descriptor.toImmutable(),

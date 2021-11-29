@@ -7,7 +7,7 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import org.parchmentmc.feather.metadata.BouncingTargetMetadata;
 import org.parchmentmc.feather.metadata.BouncingTargetMetadataBuilder;
-import org.parchmentmc.feather.metadata.MethodReference;
+import org.parchmentmc.feather.metadata.Reference;
 
 import java.io.IOException;
 
@@ -36,12 +36,12 @@ class BouncingTargetMetadataAdapter extends TypeAdapter<BouncingTargetMetadata>
         out.beginObject();
         if (value.getTarget().isPresent()) {
             out.name("target");
-            gson.toJson(value.getTarget().get(), MethodReference.class, out);
+            gson.toJson(value.getTarget().get(), Reference.class, out);
         }
 
         if (value.getOwner().isPresent()) {
             out.name("owner");
-            gson.toJson(value.getOwner().get(), MethodReference.class, out);
+            gson.toJson(value.getOwner().get(), Reference.class, out);
         }
         out.endObject();
     }
@@ -61,12 +61,12 @@ class BouncingTargetMetadataAdapter extends TypeAdapter<BouncingTargetMetadata>
             switch (propertyName) {
                 case "target":
                     builder.withTarget(
-                      gson.fromJson(in, MethodReference.class)
+                      gson.fromJson(in, Reference.class)
                     );
                     break;
                 case "owner":
                     builder.withOwner(
-                      gson.fromJson(in, MethodReference.class)
+                      gson.fromJson(in, Reference.class)
                     );
                     break;
                 default:

@@ -22,25 +22,25 @@ public class BouncingTargetMetadataBuilder implements BouncingTargetMetadata
         );
     }
 
-    private MethodReference target = null;
-    private MethodReference owner = null;
+    private Reference target = null;
+    private Reference owner  = null;
 
     private BouncingTargetMetadataBuilder()
     {
     }
 
-    private BouncingTargetMetadataBuilder(final MethodReference target, final MethodReference owner)
+    private BouncingTargetMetadataBuilder(final Reference target, final Reference owner)
     {
         this.target = target;
         this.owner = owner;
     }
 
-    public BouncingTargetMetadataBuilder withTarget(final MethodReference target) {
+    public BouncingTargetMetadataBuilder withTarget(final Reference target) {
         this.target = target;
         return this;
     }
 
-    public BouncingTargetMetadataBuilder withOwner(final MethodReference owner) {
+    public BouncingTargetMetadataBuilder withOwner(final Reference owner) {
         this.owner = owner;
         return this;
     }
@@ -54,7 +54,7 @@ public class BouncingTargetMetadataBuilder implements BouncingTargetMetadata
                 this.target = source.getTarget().get();
             }
             else {
-                this.target = MethodReferenceBuilder.create(this.target)
+                this.target = ReferenceBuilder.create(this.target)
                   .merge(source.getTarget().get())
                   .build();
             }
@@ -65,7 +65,7 @@ public class BouncingTargetMetadataBuilder implements BouncingTargetMetadata
                 this.owner = source.getOwner().get();
             }
             else {
-                this.owner = MethodReferenceBuilder.create(this.owner)
+                this.owner = ReferenceBuilder.create(this.owner)
                   .merge(source.getOwner().get())
                   .build();
             }
@@ -75,13 +75,13 @@ public class BouncingTargetMetadataBuilder implements BouncingTargetMetadata
     }
 
     @Override
-    public Optional<MethodReference> getTarget()
+    public Optional<Reference> getTarget()
     {
         return Optional.ofNullable(target);
     }
 
     @Override
-    public Optional<MethodReference> getOwner()
+    public Optional<Reference> getOwner()
     {
         return Optional.ofNullable(owner);
     }

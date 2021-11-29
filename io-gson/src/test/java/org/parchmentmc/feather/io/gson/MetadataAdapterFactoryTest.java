@@ -14,7 +14,7 @@ public class MetadataAdapterFactoryTest extends GSONTest implements MetadataTest
 
     @Test
     public void testMethodReferences() {
-        METHOD_REFERENCES.forEach(data -> test(MethodReference.class, data));
+        METHOD_REFERENCES.forEach(data -> test(Reference.class, data));
     }
 
     @Test

@@ -6,26 +6,26 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import org.parchmentmc.feather.metadata.MethodReference;
-import org.parchmentmc.feather.metadata.MethodReferenceBuilder;
+import org.parchmentmc.feather.metadata.Reference;
+import org.parchmentmc.feather.metadata.ReferenceBuilder;
 import org.parchmentmc.feather.named.Named;
 
 import java.io.IOException;
 
 /**
- * GSON adapter for {@link MethodReference} objects.
+ * GSON adapter for {@link Reference} objects.
  *
  * <p>For internal use. Users should use {@link MetadataAdapterFactory} instead.</p>
  */
-class MethodReferenceAdapter extends TypeAdapter<MethodReference> {
+class ReferenceAdapter extends TypeAdapter<Reference> {
     private final Gson gson;
 
-    public MethodReferenceAdapter(Gson gson) {
+    public ReferenceAdapter(Gson gson) {
         this.gson = gson;
     }
 
     @Override
-    public void write(JsonWriter out, MethodReference value) throws IOException {
+    public void write(JsonWriter out, Reference value) throws IOException {
         if (value == null) {
             out.nullValue();
             return;
@@ -44,7 +44,7 @@ class MethodReferenceAdapter extends TypeAdapter<MethodReference> {
     }
 
     @Override
-    public MethodReference read(JsonReader in) throws IOException {
+    public Reference read(JsonReader in) throws IOException {
         if (in.peek() == JsonToken.NULL) {
             in.nextNull();
             return null;
@@ -81,7 +81,7 @@ class MethodReferenceAdapter extends TypeAdapter<MethodReference> {
         if (owner.isEmpty()) throw new JsonParseException("Method reference owner is not present");
         if (descriptor.isEmpty()) throw new JsonParseException("Method reference descriptor is not present");
 
-        return MethodReferenceBuilder.create()
+        return ReferenceBuilder.create()
           .withOwner(owner)
           .withName(name)
           .withSignature(signature)

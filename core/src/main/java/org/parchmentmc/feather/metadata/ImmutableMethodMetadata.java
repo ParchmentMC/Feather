@@ -1,27 +1,26 @@
 package org.parchmentmc.feather.metadata;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.parchmentmc.feather.named.Named;
 
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Optional;
 
-final class ImmutableMethodMetadata extends AbstractMethodReference implements MethodMetadata {
-    private final boolean lambda;
-    private final BouncingTargetMetadata bouncingTarget;
-    private final LinkedHashSet<MethodReference> overrides;
-    private final int securitySpecification;
-    private final int startLine;
-    private final int endLine;
-    private final MethodReference parent;
+final class ImmutableMethodMetadata extends AbstractReference implements MethodMetadata {
+    private final boolean                  lambda;
+    private final BouncingTargetMetadata   bouncingTarget;
+    private final LinkedHashSet<Reference> overrides;
+    private final int                      securitySpecification;
+    private final int                      startLine;
+    private final int                      endLine;
+    private final Reference                parent;
 
     public ImmutableMethodMetadata(
       final Named owner,
       final boolean lambda,
       final BouncingTargetMetadata bouncingTarget,
-      final MethodReference parent, final LinkedHashSet<MethodReference> overrides,
+      final Reference parent, final LinkedHashSet<Reference> overrides,
       final Named name,
       final int securitySpecification,
       final Named descriptor,
@@ -49,14 +48,14 @@ final class ImmutableMethodMetadata extends AbstractMethodReference implements M
     }
 
     @Override
-    public Optional<MethodReference> getParent()
+    public Optional<Reference> getParent()
     {
         return Optional.ofNullable(parent);
     }
 
     @Override
     @NonNull
-    public LinkedHashSet<MethodReference> getOverrides() {
+    public LinkedHashSet<Reference> getOverrides() {
         return overrides;
     }
 

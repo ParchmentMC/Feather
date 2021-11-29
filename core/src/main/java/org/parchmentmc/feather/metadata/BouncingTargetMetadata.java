@@ -14,12 +14,12 @@ public interface BouncingTargetMetadata extends HasImmutable<BouncingTargetMetad
      *
      * @return The bouncing target method.
      */
-    Optional<MethodReference> getTarget();
+    Optional<Reference> getTarget();
 
     /**
      * The method that this bouncer bounces from or is owned by.
      *
      * @return The bouncing owning method.
      */
-    Optional<MethodReference> getOwner();
+    Optional<Reference> getOwner();
 }

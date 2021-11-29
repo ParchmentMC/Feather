@@ -6,22 +6,22 @@ import java.util.Optional;
 
 final class ImmutableBouncingTargetMetadata implements BouncingTargetMetadata
 {
-    private final MethodReference target;
-    private final MethodReference owner;
+    private final Reference target;
+    private final Reference owner;
 
-    public ImmutableBouncingTargetMetadata(final MethodReference target, final MethodReference owner) {
+    public ImmutableBouncingTargetMetadata(final Reference target, final Reference owner) {
         this.target = target;
         this.owner = owner;
     }
 
     @Override
-    public Optional<MethodReference> getTarget()
+    public Optional<Reference> getTarget()
     {
         return Optional.ofNullable(target);
     }
 
     @Override
-    public Optional<MethodReference> getOwner()
+    public Optional<Reference> getOwner()
     {
         return Optional.ofNullable(owner);
     }

@@ -43,6 +43,14 @@ public interface ClassMetadata extends WithSecurity, OwnedByClass, WithName, Has
     LinkedHashSet<FieldMetadata> getFields();
 
     /**
+     * A set of all records of this class, if the class is a record.
+     *
+     * @return All records of the current class.
+     */
+    @NonNull
+    LinkedHashSet<RecordMetadata> getRecords();
+
+    /**
      * A Set of all inner classes that reside in the current class.
      *
      * @return All inner class of the current class.
@@ -57,4 +65,11 @@ public interface ClassMetadata extends WithSecurity, OwnedByClass, WithName, Has
      */
     @NonNull
     Named getSignature();
+
+    /**
+     * Indicates if the class is a record.
+     *
+     * @return True if the class is a record, false otherwise.
+     */
+    boolean isRecord();
 }

@@ -14,21 +14,21 @@ import static org.parchmentmc.feather.named.Named.empty;
 import static org.parchmentmc.feather.util.TestConstantsHelper.named;
 
 public interface MetadataTestConstants {
-    LinkedHashSet<MethodReference> METHOD_REFERENCES = Sets.newLinkedHashSet(of(
-            new ImmutableMethodReference(named("a"), named("<init>"),
+    LinkedHashSet<Reference> METHOD_REFERENCES = Sets.newLinkedHashSet(of(
+            new ImmutableReference(named("a"), named("<init>"),
                     named("()V"), named("()V")),
-            new ImmutableMethodReference(named("a"), named("ma"),
+            new ImmutableReference(named("a"), named("ma"),
                     named("()Ljava/util/Set;"), named("()Ljava/util/Set<[I>;"))
     ));
 
     LinkedHashSet<MethodMetadata> METHOD_METADATA = new LinkedHashSet<>(of(
             new ImmutableMethodMetadata(named("a"), false, null, null, new LinkedHashSet<>(),
                     named("ma"), Modifier.PROTECTED, named("()Ljava/util/Set;"), named("()Ljava/util/Set<[I>;"), 0, 0),
-            new ImmutableMethodMetadata(named("a"), true, null, new ImmutableMethodReference(named("a"), named("<init>"),
+            new ImmutableMethodMetadata(named("a"), true, null, new ImmutableReference(named("a"), named("<init>"),
               named("()V"), named("()V")), METHOD_REFERENCES,
                     named("la"), Modifier.PROTECTED, named("()F"), named("()F"), 0, 0),
-            new ImmutableMethodMetadata(named("a"), false, new ImmutableBouncingTargetMetadata( new ImmutableMethodReference(named("a"), named("<init>"),
-              named("()V"), named("()V")),  new ImmutableMethodReference(named("a"), named("<init>"),
+            new ImmutableMethodMetadata(named("a"), false, new ImmutableBouncingTargetMetadata( new ImmutableReference(named("a"), named("<init>"),
+              named("()V"), named("()V")),  new ImmutableReference(named("a"), named("<init>"),
               named("()V"), named("()V"))), null, new LinkedHashSet<>(),
                     named("xa"), Modifier.PROTECTED, named("()V"), named("()V"), 0, 0)
     ));
@@ -50,34 +50,36 @@ public interface MetadataTestConstants {
             )
     ));
 
+    LinkedHashSet<RecordMetadata> RECORD_METADATA = new LinkedHashSet<>();
+
     LinkedHashSet<ClassMetadata> INNER_CLASSES = new LinkedHashSet<>(of(
             new ImmutableClassMetadata(named("a"),
                     new LinkedHashSet<>(of(named("b"), named("c", "IInterface"))),
-                    METHOD_METADATA, FIELD_METADATA, new LinkedHashSet<>(),
+                    METHOD_METADATA, FIELD_METADATA, RECORD_METADATA, new LinkedHashSet<>(),
                     empty(), named("d"),
                     Modifier.PUBLIC | Modifier.FINAL,
-              Named.empty()),
+              Named.empty(), false),
             new ImmutableClassMetadata(empty(),
                     new LinkedHashSet<>(),
-                    METHOD_METADATA, FIELD_METADATA, new LinkedHashSet<>(),
+                    METHOD_METADATA, FIELD_METADATA, RECORD_METADATA, new LinkedHashSet<>(),
                     empty(), named("e"),
                     Modifier.PUBLIC | Modifier.FINAL,
-              NamedBuilder.create().withObfuscated("<T>").build())
+              NamedBuilder.create().withObfuscated("<T>").build(), false)
     ));
 
     LinkedHashSet<ClassMetadata> CLASS_METADATA = new LinkedHashSet<>(of(
             new ImmutableClassMetadata(named("f"),
                     new LinkedHashSet<>(of(named("h"), named("c", "IInterface"))),
-                    METHOD_METADATA, FIELD_METADATA, INNER_CLASSES,
+                    METHOD_METADATA, FIELD_METADATA, RECORD_METADATA, INNER_CLASSES,
                     empty(), named("g"),
                     Modifier.PUBLIC,
-                    Named.empty()),
+                    Named.empty(), false),
             new ImmutableClassMetadata(empty(),
                     new LinkedHashSet<>(),
-                    METHOD_METADATA, FIELD_METADATA, new LinkedHashSet<>(),
+                    METHOD_METADATA, FIELD_METADATA, RECORD_METADATA, new LinkedHashSet<>(),
                     empty(), named("h"),
                     Modifier.PUBLIC,
-              NamedBuilder.create().withObfuscated("<T>").build())
+              NamedBuilder.create().withObfuscated("<T>").build(), false)
     ));
 
     Set<SourceMetadata> SOURCE_METADATA = of(

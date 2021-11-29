@@ -19,9 +19,9 @@ import java.util.LinkedHashSet;
  * <p>For internal use. Users should use {@link MetadataAdapterFactory} instead.</p>
  */
 class MethodMetadataAdapter extends TypeAdapter<MethodMetadata> {
-    private static final TypeToken<LinkedHashSet<MethodReference>> METHOD_REFERENCE_Set_TOKEN = new TypeToken<LinkedHashSet<MethodReference>>() {
+    private static final TypeToken<LinkedHashSet<Reference>> METHOD_REFERENCE_Set_TOKEN = new TypeToken<LinkedHashSet<Reference>>() {
     };
-    private final Gson gson;
+    private final Gson                                       gson;
 
     public MethodMetadataAdapter(Gson gson) {
         this.gson = gson;
@@ -51,7 +51,7 @@ class MethodMetadataAdapter extends TypeAdapter<MethodMetadata> {
         }
         if (value.getParent().isPresent()) {
             out.name("parent");
-            gson.toJson(value.getParent().get(), MethodReference.class, out);
+            gson.toJson(value.getParent().get(), Reference.class, out);
         }
         if (!value.getOverrides().isEmpty()) {
             out.name("overrides");
@@ -82,10 +82,10 @@ class MethodMetadataAdapter extends TypeAdapter<MethodMetadata> {
         Named signature = Named.empty();
         boolean lambda = false;
         BouncingTargetMetadata bouncingTarget = null;
-        LinkedHashSet<MethodReference> overrides = null;
+        LinkedHashSet<Reference> overrides = null;
         int startLine = 0;
         int endLine = 0;
-        MethodReference parent = null;
+        Reference parent = null;
 
         in.beginObject();
         while (in.hasNext()) {
@@ -113,7 +113,7 @@ class MethodMetadataAdapter extends TypeAdapter<MethodMetadata> {
                     bouncingTarget = gson.fromJson(in, BouncingTargetMetadata.class);
                     break;
                 case "parent":
-                    parent = gson.fromJson(in, MethodReference.class);
+                    parent = gson.fromJson(in, Reference.class);
                     break;
                 case "overrides":
                     overrides = gson.fromJson(in, METHOD_REFERENCE_Set_TOKEN.getType());
