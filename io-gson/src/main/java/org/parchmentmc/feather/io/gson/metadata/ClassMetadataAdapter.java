@@ -72,6 +72,7 @@ class ClassMetadataAdapter extends TypeAdapter<ClassMetadata>
         gson.toJson(value.getInnerClasses(), CLASS_METADATA_Set_TOKEN.getType(), out);
         out.name("signature");
         gson.toJson(value.getSignature(), Named.class, out);
+        out.name("record").value(value.isRecord());
         out.endObject();
     }
 
