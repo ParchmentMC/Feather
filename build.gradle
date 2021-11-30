@@ -1,5 +1,5 @@
 plugins {
-    id 'org.parchmentmc.writtenbooks' version '0.5.1' apply false
+    id 'org.parchmentmc.writtenbooks' version '0.5.1.1' apply false
 }
 
 project.group 'org.parchmentmc.feather'
