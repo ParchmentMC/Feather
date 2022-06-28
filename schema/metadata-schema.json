@@ -1,0 +1,121 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/Document",
+    "definitions": {
+        "Document": {
+            "type": "object",
+            "properties": {
+                "specVersion": { "type": "string" },
+                "minecraftVersion": { "type": "string" },
+                "classes": { "type": "array", "items": { "$ref": "#/definitions/ClassMetadata" } }
+            },
+            "required": [ "classes", "minecraftVersion", "specVersion" ],
+            "title": "Feather Metadata"
+        },
+        "Named": {
+            "type": "object",
+            "additionalProperties": { "type": "string" },
+            "properties": {},
+            "required": [],
+            "title": "Mapped Name"
+        },
+        "WithName": {
+            "type": "object",
+            "properties": {
+                "name": { "$ref": "#/definitions/Named" }
+            },
+            "required": [ "name" ]
+        },
+        "WithSecurity": {
+            "type": "object",
+            "properties": {
+                "security": { "type": "integer", "minimum": 0, "maximum": 65535 }
+            },
+            "required": [ "security" ]
+        },
+        "WithType": {
+            "type": "object",
+            "properties": {
+                "descriptor": { "$ref": "#/definitions/Named" },
+                "signature": { "$ref": "#/definitions/Named" }
+            },
+            "required": [ "descriptor", "signature" ]
+        },
+        "OwnedByClass": {
+            "type": "object",
+            "properties": {
+                "owner": { "$ref": "#/definitions/Named" }
+            },
+            "required": [ "owner" ]
+        },
+        "ClassMetadata": {
+            "allOf": [
+                { "$ref": "#/definitions/WithName" },
+                { "$ref": "#/definitions/WithSecurity" },
+                { "$ref": "#/definitions/OwnedByClass" },
+                {
+                    "type": "object",
+                    "properties": {
+                        "extends": { "$ref": "#/definitions/Named" },
+                        "implements": { "type": "array", "items": { "$ref": "#/definitions/Named" } },
+                        "fields": { "type": "array", "items": { "$ref": "#/definitions/FieldMetadata" } },
+                        "methods": { "type": "array", "items": { "$ref": "#/definitions/MethodMetadata" } },
+                        "inner": { "type": "array", "items": { "$ref": "#/definitions/ClassMetadata" } },
+                        "signature": { "$ref": "#/definitions/Named" }
+                    },
+                    "required": [ "extends", "fields", "implements", "inner", "methods", "signature" ]
+                }
+            ],
+            "title": "Class Metadata"
+        },
+        "FieldMetadata": {
+            "allOf": [
+                { "$ref": "#/definitions/WithName" },
+                { "$ref": "#/definitions/WithSecurity" },
+                { "$ref": "#/definitions/WithType" },
+                { "$ref": "#/definitions/OwnedByClass" }
+            ],
+            "title": "Field Metadata"
+        },
+        "MethodReferenceBase": {
+            "allOf": [
+                { "$ref": "#/definitions/WithName" },
+                { "$ref": "#/definitions/WithType" },
+                { "$ref": "#/definitions/OwnedByClass" }
+            ]
+        },
+        "MethodReference": {
+            "allOf": [
+                { "$ref": "#/definitions/MethodReferenceBase" }
+            ],
+            "title": "Method Reference"
+        },
+        "MethodMetadata": {
+            "allOf": [
+                { "$ref": "#/definitions/MethodReferenceBase" },
+                { 
+                    "type": "object",
+                    "properties": {
+                        "lambda": { "type": "boolean" },
+                        "startLine": { "type": "integer", "minimum": 0 },
+                        "endLine": { "type": "integer", "minimum": 0 },
+                        "bouncingTarget": { "$ref": "#/definitions/BouncingTargetMetadata" },
+                        "parent": { "$ref": "#/definitions/MethodReference" },
+                        "overrides": { "type": "array", "items": { "$ref": "#/definitions/MethodReference" } }
+                    },
+                    "required": [ "lambda" ] 
+                }
+            ],
+            "title": "Method Metadata"
+        },
+        "BouncingTargetMetadata": {
+            "type": "object",
+            "properties": {
+                "target": { "$ref": "#/definitions/MethodReference" },
+                "owner": { "$ref": "#/definitions/MethodReference" }
+            },
+            "required": [],
+            "title": "Bouncing Target"
+        }
+    }
+}
