@@ -33,7 +33,7 @@ final class ImmutableClassMetadata implements ClassMetadata {
         this.interfaces = new LinkedHashSet<>(interfaces);
         this.methods = new LinkedHashSet<>(methods);
         this.fields = new LinkedHashSet<>(fields);
-        this.records = records;
+        this.records = new LinkedHashSet<>(records);
         this.innerClasses = new LinkedHashSet<>(innerClasses);
         this.owner = owner;
         this.name = name;
