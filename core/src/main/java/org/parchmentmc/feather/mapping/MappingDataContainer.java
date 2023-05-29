@@ -5,6 +5,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A container for mapping data, for packages, classes, methods, fields, and parameters.
@@ -167,7 +168,7 @@ public interface MappingDataContainer {
      *
      * @see ClassData
      */
-    interface FieldData {
+    interface FieldData extends CanContainConstantValue {
         Comparator<FieldData> COMPARATOR = Comparator.comparing(FieldData::getName);
 
         /**
@@ -292,7 +293,7 @@ public interface MappingDataContainer {
      *
      * @see MethodData
      */
-    interface ParameterData {
+    interface ParameterData extends CanContainConstantValue {
         Comparator<ParameterData> COMPARATOR = Comparator.comparing(ParameterData::getIndex);
 
         /**
@@ -336,4 +337,90 @@ public interface MappingDataContainer {
         @Nullable
         String getJavadoc();
     }
+
+
+    /**
+     * Indicates that this member can contain constant values.
+     */
+    interface CanContainConstantValue {
+        /**
+         * Returns the constants data for this parameter, if it can be determined.
+         * Only members with a {@link int}, {@link long} or {@link boolean} type can have constants data.
+         * <p>
+         * The returned optional HAS to be empty if the member is not of one of the listed types,
+         * if this method would return a none empty optional for a member of a different type,
+         * then the returned optional SHOULD be ignored.
+         * <p>
+         * Data related to constants can be used to "unpick" the constant value of this member.
+         * Allowing for example the value 3 to be decoded to the two constants {@code 1 + 2} or {@code 2 + 1}
+         * which are then combined using a bitwise or. The location of these two constants can be retrieved
+         * from {@link MappingDataContainer.ConstantData#getValues()}, by checking the {@link MappingDataContainer.ConstantData#getType()} and
+         * {@link MappingDataContainer.ConstantValueData#getValue()} of each possible constant value.
+         *
+         * @return the constants data for this member, if it is available and applicable.
+         */
+        @Nullable
+        ConstantData getConstant();
+    }
+
+    /**
+     * Defines the data for the use of constants related to {@link FieldData} or {@link ParameterData}.
+     * Their use is defined by the {@link ConstantType} enum.
+     * The data also gives access to a list of possible values of the constants that are known.
+     */
+    interface ConstantData {
+        Comparator<ConstantData> COMPARATOR = Comparator.comparing(ConstantData::getType);
+
+        /**
+         * Returns the constant type of this constant.
+         *
+         * @return the constant type
+         */
+        ConstantType getType();
+
+        /**
+         * Returns a list of all the constant values.
+         *
+         * @return the list of constant values
+         */
+        List<ConstantValueData> getValues();
+    }
+
+    /**
+     * Defines the data for a single possible constant value.
+     */
+    interface ConstantValueData {
+        Comparator<ConstantValueData> COMPARATOR = Comparator.comparing(ConstantValueData::getValue);
+
+        /**
+         * Returns the value of the constant.
+         * For {@link ConstantType#FLAG} constants, this is the bit value in readable integer, so 1, 2, 4, 8, 16, etc.
+         * For {@link ConstantType#CONSTANT} constants, this is the value of the constant.
+         *
+         * @return the value of the constant
+         */
+        int getValue();
+
+        /**
+         * Returns the fully qualified name of the static field that the constant is stored in.
+         *
+         * @return the fully qualified name of the static field
+         */
+        String getReference();
+    }
+
+    /**
+     * The constant value type.
+     */
+    enum ConstantType {
+        /**
+         * Indicates that this member contains a bit wise combined binary values indicating different flags.
+         */
+        FLAG,
+        /**
+         * Indicates that this member contains a constant value.
+         */
+        CONSTANT
+    }
+
 }

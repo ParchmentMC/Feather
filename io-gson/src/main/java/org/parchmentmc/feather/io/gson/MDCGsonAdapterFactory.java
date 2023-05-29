@@ -14,6 +14,7 @@ import org.parchmentmc.feather.util.SimpleVersion;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -63,7 +64,11 @@ public class MDCGsonAdapterFactory implements TypeAdapterFactory {
         } else if (type.equals(MappingDataContainer.MethodData.class)) {
             return (TypeAdapter<T>) new MethodDataAdapter(gson, ignoreNonDocumented).nullSafe();
         } else if (type.equals(MappingDataContainer.ParameterData.class)) {
-            return (TypeAdapter<T>) new ParameterDataAdapter(ignoreNonDocumented).nullSafe();
+            return (TypeAdapter<T>) new ParameterDataAdapter(gson, ignoreNonDocumented).nullSafe();
+        } else if (type.equals(MappingDataContainer.ConstantData.class)) {
+            return (TypeAdapter<T>) new ConstantDataAdapter(gson, ignoreNonDocumented).nullSafe();
+        } else if (type.equals(MappingDataContainer.ConstantValueData.class)) {
+            return (TypeAdapter<T>) new ConstantValueDataAdapter().nullSafe();
         }
         return null;
     }
@@ -304,6 +309,10 @@ public class MDCGsonAdapterFactory implements TypeAdapterFactory {
                 writer.name("javadoc");
                 gson.getAdapter(STRING_LIST_TOKEN).write(writer, fieldName.getJavadoc());
             }
+            if (fieldName.getConstant() != null) {
+                writer.name("constant");
+                gson.getAdapter(MappingDataContainer.ConstantData.class).write(writer, fieldName.getConstant());
+            }
             writer.endObject();
         }
 
@@ -312,6 +321,7 @@ public class MDCGsonAdapterFactory implements TypeAdapterFactory {
             String name = null;
             String descriptor = null;
             List<String> javadoc = null;
+            MappingDataContainer.ConstantData constant = null;
 
             reader.beginObject();
             while (reader.hasNext()) {
@@ -326,6 +336,9 @@ public class MDCGsonAdapterFactory implements TypeAdapterFactory {
                     case "javadoc":
                         javadoc = gson.getAdapter(STRING_LIST_TOKEN).read(reader);
                         break;
+                    case "constant":
+                        constant = gson.getAdapter(MappingDataContainer.ConstantData.class).read(reader);
+                        break;
                     default:
                         reader.skipValue();
                         break;
@@ -337,7 +350,7 @@ public class MDCGsonAdapterFactory implements TypeAdapterFactory {
             if (descriptor == null) throw new IllegalArgumentException("Field descriptor must not be null");
             if (javadoc == null) javadoc = Collections.emptyList();
 
-            return new ImmutableMappingDataContainer.ImmutableFieldData(name, descriptor, javadoc);
+            return new ImmutableMappingDataContainer.ImmutableFieldData(name, descriptor, javadoc, constant);
         }
     }
 
@@ -422,9 +435,11 @@ public class MDCGsonAdapterFactory implements TypeAdapterFactory {
      * GSON adapter for {@link MappingDataContainer.ParameterData}s.
      */
     static class ParameterDataAdapter extends TypeAdapter<MappingDataContainer.ParameterData> {
+        private final Gson gson;
         private final boolean ignoreNonDocumented;
 
-        ParameterDataAdapter(boolean ignoreNonDocumented) {
+        ParameterDataAdapter(Gson gson, boolean ignoreNonDocumented) {
+            this.gson = gson;
             this.ignoreNonDocumented = ignoreNonDocumented;
         }
 
@@ -443,6 +458,10 @@ public class MDCGsonAdapterFactory implements TypeAdapterFactory {
             if (packageData.getJavadoc() != null) {
                 writer.name("javadoc").value(packageData.getJavadoc());
             }
+            if (packageData.getConstant() != null) {
+                writer.name("constant");
+                gson.getAdapter(MappingDataContainer.ConstantData.class).write(writer, packageData.getConstant());
+            }
             writer.endObject();
         }
 
@@ -452,6 +471,7 @@ public class MDCGsonAdapterFactory implements TypeAdapterFactory {
             byte index = -1;
             String name = null;
             String javadoc = null;
+            MappingDataContainer.ConstantData constant = null;
 
             reader.beginObject();
             while (reader.hasNext()) {
@@ -466,6 +486,9 @@ public class MDCGsonAdapterFactory implements TypeAdapterFactory {
                     case "javadoc":
                         javadoc = reader.nextString();
                         break;
+                    case "constant":
+                        constant = gson.getAdapter(MappingDataContainer.ConstantData.class).read(reader);
+                        break;
                     default:
                         reader.skipValue();
                         break;
@@ -475,7 +498,103 @@ public class MDCGsonAdapterFactory implements TypeAdapterFactory {
 
             if (index < 0) throw new IllegalArgumentException("Parameter index must be present and positive");
 
-            return new ImmutableMappingDataContainer.ImmutableParameterData(index, name, javadoc);
+            return new ImmutableMappingDataContainer.ImmutableParameterData(index, name, javadoc, constant);
+        }
+    }
+
+    static class ConstantDataAdapter extends TypeAdapter<MappingDataContainer.ConstantData> {
+        static final TypeToken<Collection<? extends MappingDataContainer.ConstantValueData>> CONSTANT_VALUE_DATA_COLLECTION =
+                new TypeToken<Collection<? extends MappingDataContainer.ConstantValueData>>() {
+                };
+
+        private final Gson gson;
+        private final boolean ignoreNonDocumented;
+
+        ConstantDataAdapter(Gson gson, boolean ignoreNonDocumented) {
+            this.gson = gson;
+            this.ignoreNonDocumented = ignoreNonDocumented;
+        }
+
+        @Override
+        public void write(JsonWriter out, MappingDataContainer.ConstantData value) throws IOException {
+            out.beginObject();
+
+            out.name("type");
+            gson.getAdapter(MappingDataContainer.ConstantType.class).write(out, value.getType());
+
+            out.name("values");
+            gson.getAdapter(CONSTANT_VALUE_DATA_COLLECTION).write(out, value.getValues());
+
+            out.endObject();
+        }
+
+        @Override
+        public MappingDataContainer.ConstantData read(JsonReader in) throws IOException {
+            MappingDataContainer.ConstantType type = null;
+            Collection<? extends MappingDataContainer.ConstantValueData> values = null;
+
+            in.beginObject();
+            while (in.hasNext()) {
+                String propertyName = in.nextName();
+                switch (propertyName) {
+                    case "type":
+                        type = gson.getAdapter(MappingDataContainer.ConstantType.class).read(in);
+                        break;
+                    case "values":
+                        values = gson.getAdapter(CONSTANT_VALUE_DATA_COLLECTION).read(in);
+                        break;
+                    default:
+                        in.skipValue();
+                        break;
+                }
+            }
+            in.endObject();
+
+            if (type == null) throw new IllegalArgumentException("Field type must not be null");
+            if (values == null) values = Collections.emptyList();
+
+            return new ImmutableMappingDataContainer.ImmutableConstantData(type, new ArrayList<>(values));
+        }
+    }
+
+    static class ConstantValueDataAdapter extends TypeAdapter<MappingDataContainer.ConstantValueData> {
+
+        @Override
+        public void write(JsonWriter out, MappingDataContainer.ConstantValueData value) throws IOException {
+            out.beginObject();
+
+            out.name("value").value(value.getValue());
+            out.name("reference").value(value.getReference());
+
+            out.endObject();
+        }
+
+        @Override
+        public MappingDataContainer.ConstantValueData read(JsonReader in) throws IOException {
+            Integer value = null;
+            String reference = null;
+
+            in.beginObject();
+            while (in.hasNext()) {
+                String propertyName = in.nextName();
+                switch (propertyName) {
+                    case "value":
+                        value = in.nextInt();
+                        break;
+                    case "reference":
+                        reference = in.nextString();
+                        break;
+                    default:
+                        in.skipValue();
+                        break;
+                }
+            }
+            in.endObject();
+
+            if (value == null) throw new IllegalArgumentException("Field value must not be null");
+            if (reference == null) throw new IllegalArgumentException("Field reference must not be null");
+
+            return new ImmutableMappingDataContainer.ImmutableConstantValueData(value, reference);
         }
     }
 }
