@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public final class ClassMetadataBuilder implements ClassMetadata {
     private Named superName = Named.empty();
@@ -306,11 +305,11 @@ public final class ClassMetadataBuilder implements ClassMetadata {
     public ClassMetadata build() {
         return new ImmutableClassMetadata(
                 superName.toImmutable(),
-                interfaces.stream().map(Named::toImmutable).collect(Collectors.toCollection(LinkedHashSet::new)),
-                methods.stream().map(MethodMetadata::toImmutable).collect(Collectors.toCollection(LinkedHashSet::new)),
-                fields.stream().map(FieldMetadata::toImmutable).collect(Collectors.toCollection(LinkedHashSet::new)),
-                records.stream().map(RecordMetadata::toImmutable).collect(Collectors.toCollection(LinkedHashSet::new)),
-                innerClasses.stream().map(ClassMetadata::toImmutable).collect(Collectors.toCollection(LinkedHashSet::new)),
+                interfaces.stream().map(Named::toImmutable).collect(CollectorUtils.toLinkedSet()),
+                methods.stream().map(MethodMetadata::toImmutable).collect(CollectorUtils.toLinkedSet()),
+                fields.stream().map(FieldMetadata::toImmutable).collect(CollectorUtils.toLinkedSet()),
+                records.stream().map(RecordMetadata::toImmutable).collect(CollectorUtils.toLinkedSet()),
+                innerClasses.stream().map(ClassMetadata::toImmutable).collect(CollectorUtils.toLinkedSet()),
                 owner.toImmutable(),
                 name.toImmutable(),
                 securitySpecifications,

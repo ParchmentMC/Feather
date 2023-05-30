@@ -10,7 +10,6 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public final class SourceMetadataBuilder implements SourceMetadata {
     private SimpleVersion specVersion = SimpleVersion.of(1, 0, 0);
@@ -105,7 +104,7 @@ public final class SourceMetadataBuilder implements SourceMetadata {
         return new ImmutableSourceMetadata(
                 specVersion,
                 minecraftVersion,
-                classes.stream().map(ClassMetadata::toImmutable).collect(Collectors.toCollection(LinkedHashSet::new))
+                classes.stream().map(ClassMetadata::toImmutable).collect(CollectorUtils.toLinkedSet())
         );
     }
 

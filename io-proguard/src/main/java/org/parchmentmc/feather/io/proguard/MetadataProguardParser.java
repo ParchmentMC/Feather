@@ -166,7 +166,7 @@ public final class MetadataProguardParser {
                         .stream()
                         .filter(classMetadataBuilder -> classMetadataBuilder.getOwner().isEmpty())
                         .map(ClassMetadataBuilder::build)
-                        .collect(Collectors.toCollection(LinkedHashSet::new))
+                        .collect(CollectorUtils.toLinkedSet())
                 )
                 .build();
     }
