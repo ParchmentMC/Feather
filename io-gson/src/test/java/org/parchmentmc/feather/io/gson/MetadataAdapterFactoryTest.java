@@ -2,7 +2,6 @@ package org.parchmentmc.feather.io.gson;
 
 import org.junit.jupiter.api.Test;
 import org.parchmentmc.feather.io.gson.metadata.MetadataAdapterFactory;
-import org.parchmentmc.feather.metadata.MetadataTestConstants;
 import org.parchmentmc.feather.metadata.*;
 import org.parchmentmc.feather.util.SimpleVersion;
 

@@ -1,7 +1,6 @@
 package org.parchmentmc.feather.io.moshi;
 
 import org.junit.jupiter.api.Test;
-import org.parchmentmc.feather.metadata.MetadataTestConstants;
 import org.parchmentmc.feather.metadata.*;
 
 public class MetadataMoshiAdapterTest extends MoshiTest implements MetadataTestConstants {

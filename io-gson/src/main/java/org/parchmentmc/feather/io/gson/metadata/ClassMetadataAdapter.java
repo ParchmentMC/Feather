@@ -18,36 +18,27 @@ import java.util.LinkedHashSet;
  *
  * <p>For internal use. Users should use {@link MetadataAdapterFactory} instead.</p>
  */
-class ClassMetadataAdapter extends TypeAdapter<ClassMetadata>
-{
-    private static final TypeToken<LinkedHashSet<Named>>          NAMED_Set_TOKEN           = new TypeToken<LinkedHashSet<Named>>()
-    {
+class ClassMetadataAdapter extends TypeAdapter<ClassMetadata> {
+    private static final TypeToken<LinkedHashSet<Named>> NAMED_Set_TOKEN = new TypeToken<LinkedHashSet<Named>>() {
     };
-    private static final TypeToken<LinkedHashSet<MethodMetadata>> METHOD_METADATA_Set_TOKEN = new TypeToken<LinkedHashSet<MethodMetadata>>()
-    {
+    private static final TypeToken<LinkedHashSet<MethodMetadata>> METHOD_METADATA_Set_TOKEN = new TypeToken<LinkedHashSet<MethodMetadata>>() {
     };
-    private static final TypeToken<LinkedHashSet<FieldMetadata>>  FIELD_METADATA_Set_TOKEN  = new TypeToken<LinkedHashSet<FieldMetadata>>()
-    {
+    private static final TypeToken<LinkedHashSet<FieldMetadata>> FIELD_METADATA_Set_TOKEN = new TypeToken<LinkedHashSet<FieldMetadata>>() {
     };
-    private static final TypeToken<LinkedHashSet<RecordMetadata>> RECORD_METADATA_Set_TOKEN = new TypeToken<LinkedHashSet<RecordMetadata>>()
-    {
+    private static final TypeToken<LinkedHashSet<RecordMetadata>> RECORD_METADATA_Set_TOKEN = new TypeToken<LinkedHashSet<RecordMetadata>>() {
     };
-    private static final TypeToken<LinkedHashSet<ClassMetadata>>  CLASS_METADATA_Set_TOKEN  = new TypeToken<LinkedHashSet<ClassMetadata>>()
-    {
+    private static final TypeToken<LinkedHashSet<ClassMetadata>> CLASS_METADATA_Set_TOKEN = new TypeToken<LinkedHashSet<ClassMetadata>>() {
     };
 
     private final Gson gson;
 
-    public ClassMetadataAdapter(Gson gson)
-    {
+    public ClassMetadataAdapter(Gson gson) {
         this.gson = gson;
     }
 
     @Override
-    public void write(JsonWriter out, ClassMetadata value) throws IOException
-    {
-        if (value == null)
-        {
+    public void write(JsonWriter out, ClassMetadata value) throws IOException {
+        if (value == null) {
             out.nullValue();
             return;
         }
@@ -77,10 +68,8 @@ class ClassMetadataAdapter extends TypeAdapter<ClassMetadata>
     }
 
     @Override
-    public ClassMetadata read(JsonReader in) throws IOException
-    {
-        if (in.peek() == JsonToken.NULL)
-        {
+    public ClassMetadata read(JsonReader in) throws IOException {
+        if (in.peek() == JsonToken.NULL) {
             in.nextNull();
             return null;
         }
@@ -98,11 +87,9 @@ class ClassMetadataAdapter extends TypeAdapter<ClassMetadata>
         boolean isRecord = false;
 
         in.beginObject();
-        while (in.hasNext())
-        {
+        while (in.hasNext()) {
             final String propertyName = in.nextName();
-            switch (propertyName)
-            {
+            switch (propertyName) {
                 case "name":
                     name = gson.fromJson(in, Named.class);
                     break;
@@ -142,53 +129,45 @@ class ClassMetadataAdapter extends TypeAdapter<ClassMetadata>
         }
         in.endObject();
 
-        if (name.isEmpty())
-        {
+        if (name.isEmpty()) {
             throw new JsonParseException("Class metadata name is not present or empty");
         }
         // owner can be empty
-        if (security == -1)
-        {
+        if (security == -1) {
             throw new JsonParseException("Class metadata security specification is not present");
         }
         // superName can be empty
-        if (interfaces == null)
-        {
+        if (interfaces == null) {
             methods = new LinkedHashSet<>();
         }
-        if (fields == null)
-        {
+        if (fields == null) {
             fields = new LinkedHashSet<>();
         }
-        if (records == null)
-        {
+        if (records == null) {
             records = new LinkedHashSet<>();
         }
-        if (methods == null)
-        {
+        if (methods == null) {
             methods = new LinkedHashSet<>();
         }
-        if (innerClasses == null)
-        {
+        if (innerClasses == null) {
             innerClasses = new LinkedHashSet<>();
         }
-        if (!records.isEmpty())
-        {
+        if (!records.isEmpty()) {
             isRecord = true;
         }
 
         return ClassMetadataBuilder.create()
-          .withSuperName(superName)
-          .withInterfaces(interfaces)
-          .withOwner(owner)
-          .withMethods(methods)
-          .withFields(fields)
-          .withInnerClasses(innerClasses)
-          .withName(name)
-          .withSecuritySpecifications(security)
-          .withSignature(signature)
-          .withRecords(records)
-          .withIsRecord(isRecord)
-          .build();
+                .withSuperName(superName)
+                .withInterfaces(interfaces)
+                .withOwner(owner)
+                .withMethods(methods)
+                .withFields(fields)
+                .withInnerClasses(innerClasses)
+                .withName(name)
+                .withSecuritySpecifications(security)
+                .withSignature(signature)
+                .withRecords(records)
+                .withIsRecord(isRecord)
+                .build();
     }
 }

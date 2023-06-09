@@ -5,8 +5,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Optional;
 
-public class BouncingTargetMetadataBuilder implements BouncingTargetMetadata
-{
+public class BouncingTargetMetadataBuilder implements BouncingTargetMetadata {
 
     public static BouncingTargetMetadataBuilder create() {
         return new BouncingTargetMetadataBuilder();
@@ -17,20 +16,18 @@ public class BouncingTargetMetadataBuilder implements BouncingTargetMetadata
             return create();
 
         return new BouncingTargetMetadataBuilder(
-          bouncingTargetMetadata.getTarget().orElse(null),
-          bouncingTargetMetadata.getOwner().orElse(null)
+                bouncingTargetMetadata.getTarget().orElse(null),
+                bouncingTargetMetadata.getOwner().orElse(null)
         );
     }
 
     private Reference target = null;
-    private Reference owner  = null;
+    private Reference owner = null;
 
-    private BouncingTargetMetadataBuilder()
-    {
+    private BouncingTargetMetadataBuilder() {
     }
 
-    private BouncingTargetMetadataBuilder(final Reference target, final Reference owner)
-    {
+    private BouncingTargetMetadataBuilder(final Reference target, final Reference owner) {
         this.target = target;
         this.owner = owner;
     }
@@ -52,22 +49,20 @@ public class BouncingTargetMetadataBuilder implements BouncingTargetMetadata
         if (source.getTarget().isPresent()) {
             if (this.target == null) {
                 this.target = source.getTarget().get();
-            }
-            else {
+            } else {
                 this.target = ReferenceBuilder.create(this.target)
-                  .merge(source.getTarget().get())
-                  .build();
+                        .merge(source.getTarget().get())
+                        .build();
             }
         }
 
         if (source.getOwner().isPresent()) {
             if (this.owner == null) {
                 this.owner = source.getOwner().get();
-            }
-            else {
+            } else {
                 this.owner = ReferenceBuilder.create(this.owner)
-                  .merge(source.getOwner().get())
-                  .build();
+                        .merge(source.getOwner().get())
+                        .build();
             }
         }
 
@@ -75,28 +70,25 @@ public class BouncingTargetMetadataBuilder implements BouncingTargetMetadata
     }
 
     @Override
-    public Optional<Reference> getTarget()
-    {
+    public Optional<Reference> getTarget() {
         return Optional.ofNullable(target);
     }
 
     @Override
-    public Optional<Reference> getOwner()
-    {
+    public Optional<Reference> getOwner() {
         return Optional.ofNullable(owner);
     }
 
 
     public @NonNull BouncingTargetMetadata build() {
         return new ImmutableBouncingTargetMetadata(
-          target,
-          owner
+                target,
+                owner
         );
     }
 
     @Override
-    public @NonNull BouncingTargetMetadata toImmutable()
-    {
+    public @NonNull BouncingTargetMetadata toImmutable() {
         return build();
     }
 }

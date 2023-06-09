@@ -9,6 +9,7 @@ public interface IOAdapter<T> {
 
     /**
      * Converts a Json representation into an instance of T
+     *
      * @param input Json
      * @return an instance of T
      */
@@ -16,6 +17,7 @@ public interface IOAdapter<T> {
 
     /**
      * Converts an instance of T into an Json representation
+     *
      * @param value the Instance
      * @return Json
      */

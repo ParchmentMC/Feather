@@ -81,9 +81,9 @@ class SourceMetadataAdapter extends TypeAdapter<SourceMetadata> {
         if (classes == null) throw new JsonParseException("Classes Set is not present");
 
         return SourceMetadataBuilder.create()
-          .withMinecraftVersion(minecraftVersion)
-          .withSpecVersion(specVersion)
-          .withClasses(classes)
-          .build();
+                .withMinecraftVersion(minecraftVersion)
+                .withSpecVersion(specVersion)
+                .withClasses(classes)
+                .build();
     }
 }

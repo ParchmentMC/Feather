@@ -1,8 +1,8 @@
 package org.parchmentmc.feather.io.tests;
 
-import java.util.Objects;
-
 import org.checkerframework.checker.nullness.qual.Nullable;
+
+import java.util.Objects;
 
 public class Pair<A, B> {
 

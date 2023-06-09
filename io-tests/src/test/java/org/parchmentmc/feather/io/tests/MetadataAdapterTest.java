@@ -1,12 +1,7 @@
 package org.parchmentmc.feather.io.tests;
 
 import org.junit.jupiter.api.Test;
-import org.parchmentmc.feather.metadata.ClassMetadata;
-import org.parchmentmc.feather.metadata.FieldMetadata;
-import org.parchmentmc.feather.metadata.MetadataTestConstants;
-import org.parchmentmc.feather.metadata.MethodMetadata;
-import org.parchmentmc.feather.metadata.Reference;
-import org.parchmentmc.feather.metadata.SourceMetadata;
+import org.parchmentmc.feather.metadata.*;
 
 public class MetadataAdapterTest extends RoundRobinTest implements MetadataTestConstants {
 

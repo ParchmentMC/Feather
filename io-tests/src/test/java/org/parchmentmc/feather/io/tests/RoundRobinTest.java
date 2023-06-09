@@ -1,15 +1,13 @@
 package org.parchmentmc.feather.io.tests;
 
-import java.util.ServiceLoader;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.ThrowingSupplier;
 import org.parchmentmc.feather.spi.IOAdapter;
 import org.parchmentmc.feather.spi.IOAdapterFactory;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
+import java.util.ServiceLoader;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RoundRobinTest {
 

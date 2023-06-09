@@ -37,8 +37,8 @@ public class RemapHelperTest {
     }
 
     static final Map<String, String> REMAPS = ImmutableMap.of(
-      "a", "com/example/Remapped",
-      "com/example/Original", "com/example/Target"
+            "a", "com/example/Remapped",
+            "com/example/Original", "com/example/Target"
     );
 
     @Test
@@ -59,6 +59,6 @@ public class RemapHelperTest {
         assertEquals("(II[Z)La;", remapMethodDescriptor("(II[Z)La;", s -> null));
         assertEquals("(II[Z)Lcom/example/Remapped;", remapMethodDescriptor("(II[Z)La;", REMAPS::get));
         assertEquals("([[Lcom/example/Remapped;[Lcom/example/Target;Z)[[[C",
-          remapMethodDescriptor("([[La;[Lcom/example/Original;Z)[[[C", REMAPS::get));
+                remapMethodDescriptor("([[La;[Lcom/example/Original;Z)[[[C", REMAPS::get));
     }
 }

@@ -25,11 +25,11 @@ public interface MetadataTestConstants {
             new ImmutableMethodMetadata(named("a"), false, null, null, new LinkedHashSet<>(),
                     named("ma"), Modifier.PROTECTED, named("()Ljava/util/Set;"), named("()Ljava/util/Set<[I>;"), 0, 0),
             new ImmutableMethodMetadata(named("a"), true, null, new ImmutableReference(named("a"), named("<init>"),
-              named("()V"), named("()V")), METHOD_REFERENCES,
+                    named("()V"), named("()V")), METHOD_REFERENCES,
                     named("la"), Modifier.PROTECTED, named("()F"), named("()F"), 0, 0),
-            new ImmutableMethodMetadata(named("a"), false, new ImmutableBouncingTargetMetadata( new ImmutableReference(named("a"), named("<init>"),
-              named("()V"), named("()V")),  new ImmutableReference(named("a"), named("<init>"),
-              named("()V"), named("()V"))), null, new LinkedHashSet<>(),
+            new ImmutableMethodMetadata(named("a"), false, new ImmutableBouncingTargetMetadata(new ImmutableReference(named("a"), named("<init>"),
+                    named("()V"), named("()V")), new ImmutableReference(named("a"), named("<init>"),
+                    named("()V"), named("()V"))), null, new LinkedHashSet<>(),
                     named("xa"), Modifier.PROTECTED, named("()V"), named("()V"), 0, 0)
     ));
 
@@ -58,13 +58,13 @@ public interface MetadataTestConstants {
                     METHOD_METADATA, FIELD_METADATA, RECORD_METADATA, new LinkedHashSet<>(),
                     empty(), named("d"),
                     Modifier.PUBLIC | Modifier.FINAL,
-              Named.empty(), false),
+                    Named.empty(), false),
             new ImmutableClassMetadata(empty(),
                     new LinkedHashSet<>(),
                     METHOD_METADATA, FIELD_METADATA, RECORD_METADATA, new LinkedHashSet<>(),
                     empty(), named("e"),
                     Modifier.PUBLIC | Modifier.FINAL,
-              NamedBuilder.create().withObfuscated("<T>").build(), false)
+                    NamedBuilder.create().withObfuscated("<T>").build(), false)
     ));
 
     LinkedHashSet<ClassMetadata> CLASS_METADATA = new LinkedHashSet<>(of(
@@ -79,7 +79,7 @@ public interface MetadataTestConstants {
                     METHOD_METADATA, FIELD_METADATA, RECORD_METADATA, new LinkedHashSet<>(),
                     empty(), named("h"),
                     Modifier.PUBLIC,
-              NamedBuilder.create().withObfuscated("<T>").build(), false)
+                    NamedBuilder.create().withObfuscated("<T>").build(), false)
     ));
 
     Set<SourceMetadata> SOURCE_METADATA = of(

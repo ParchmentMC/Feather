@@ -7,8 +7,7 @@ import java.util.Optional;
 /**
  * The metadata used to indicate the methods bounding relationship.
  */
-public interface BouncingTargetMetadata extends HasImmutable<BouncingTargetMetadata>
-{
+public interface BouncingTargetMetadata extends HasImmutable<BouncingTargetMetadata> {
     /**
      * The method that this bouncer bounces to.
      *

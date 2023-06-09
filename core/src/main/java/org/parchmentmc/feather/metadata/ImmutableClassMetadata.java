@@ -17,18 +17,18 @@ final class ImmutableClassMetadata implements ClassMetadata {
     private final Named owner;
     private final Named name;
     private final int securitySpecifications;
-    private final Named                   signature;
+    private final Named signature;
     private final boolean isRecord;
 
     public ImmutableClassMetadata(
-      final Named superName,
-      final LinkedHashSet<Named> interfaces,
-      final LinkedHashSet<MethodMetadata> methods,
-      final LinkedHashSet<FieldMetadata> fields,
-      final LinkedHashSet<RecordMetadata> records, final LinkedHashSet<ClassMetadata> innerClasses,
-      final Named owner,
-      final Named name,
-      final int securitySpecifications, final Named signature, final boolean isRecord) {
+            final Named superName,
+            final LinkedHashSet<Named> interfaces,
+            final LinkedHashSet<MethodMetadata> methods,
+            final LinkedHashSet<FieldMetadata> fields,
+            final LinkedHashSet<RecordMetadata> records, final LinkedHashSet<ClassMetadata> innerClasses,
+            final Named owner,
+            final Named name,
+            final int securitySpecifications, final Named signature, final boolean isRecord) {
         this.superName = superName;
         this.interfaces = new LinkedHashSet<>(interfaces);
         this.methods = new LinkedHashSet<>(methods);
@@ -93,8 +93,7 @@ final class ImmutableClassMetadata implements ClassMetadata {
     }
 
     @Override
-    public @NonNull LinkedHashSet<RecordMetadata> getRecords()
-    {
+    public @NonNull LinkedHashSet<RecordMetadata> getRecords() {
         return records;
     }
 
@@ -104,14 +103,12 @@ final class ImmutableClassMetadata implements ClassMetadata {
     }
 
     @Override
-    public @NonNull Named getSignature()
-    {
+    public @NonNull Named getSignature() {
         return signature;
     }
 
     @Override
-    public boolean isRecord()
-    {
+    public boolean isRecord() {
         return isRecord;
     }
 

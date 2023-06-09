@@ -1,12 +1,10 @@
 package org.parchmentmc.feather.io.tests;
 
+import org.junit.jupiter.api.Test;
+
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-
-import org.junit.jupiter.api.Test;
-import org.parchmentmc.feather.io.moshi.MoshiTest;
-import org.parchmentmc.feather.io.moshi.OffsetDateTimeAdapter;
 
 public class OffsetDateTimeAdapterTest extends RoundRobinTest {
 

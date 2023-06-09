@@ -10,8 +10,8 @@ public final class TestConstantsHelper {
 
     public static Named named(final String obfuscatedName, final String mojangName) {
         return NamedBuilder.create()
-          .withObfuscated(obfuscatedName)
-          .withMojang(mojangName)
-          .build();
+                .withObfuscated(obfuscatedName)
+                .withMojang(mojangName)
+                .build();
     }
 }

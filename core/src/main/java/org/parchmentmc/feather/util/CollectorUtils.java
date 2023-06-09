@@ -3,11 +3,9 @@ package org.parchmentmc.feather.util;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -33,21 +31,20 @@ public final class CollectorUtils {
      * with the notable difference that the returned {@link Map} retains the insertion order
      * of accumulated elements.
      *
-     * @param <T> the type of the input elements
-     * @param <K> the output type of the key mapping function
-     * @param <U> the output type of the value mapping function
-     * @param keyMapper a mapping function to produce keys
+     * @param <T>         the type of the input elements
+     * @param <K>         the output type of the key mapping function
+     * @param <U>         the output type of the value mapping function
+     * @param keyMapper   a mapping function to produce keys
      * @param valueMapper a mapping function to produce values
      * @return a {@code Collector} which collects elements into a {@code Map}
      * whose keys and values are the result of applying mapping functions to
      * the input elements, and which retains the insertion order of
      * accumulated elements
-     *
      * @see #toLinkedMap(Function, Function, BinaryOperator)
      * @see Collectors#toMap(Function, Function)
      */
-    public static <T, K, U> Collector<T, ?, Map<K,U>> toLinkedMap(Function<? super T, ? extends K> keyMapper,
-                                                                  Function<? super T, ? extends U> valueMapper) {
+    public static <T, K, U> Collector<T, ?, Map<K, U>> toLinkedMap(Function<? super T, ? extends K> keyMapper,
+                                                                   Function<? super T, ? extends U> valueMapper) {
         return Collectors.toMap(keyMapper, valueMapper, throwingMerger(), LinkedHashMap::new);
     }
 
@@ -66,11 +63,11 @@ public final class CollectorUtils {
      * with the notable difference that the returned {@link Map} retains the insertion order
      * of accumulated elements.
      *
-     * @param <T> the type of the input elements
-     * @param <K> the output type of the key mapping function
-     * @param <U> the output type of the value mapping function
-     * @param keyMapper a mapping function to produce keys
-     * @param valueMapper a mapping function to produce values
+     * @param <T>           the type of the input elements
+     * @param <K>           the output type of the key mapping function
+     * @param <U>           the output type of the value mapping function
+     * @param keyMapper     a mapping function to produce keys
+     * @param valueMapper   a mapping function to produce values
      * @param mergeFunction a merge function, used to resolve collisions between
      *                      values associated with the same key, as supplied
      *                      to {@link Map#merge(Object, Object, BiFunction)}
@@ -80,13 +77,12 @@ public final class CollectorUtils {
      * function to all input elements equal to the key and combining them
      * using the merge function, and which retains the insertion order of
      * accumulated elements
-     *
      * @see Collectors#toMap(Function, Function, BinaryOperator)
      */
     public static <T, K, U>
-    Collector<T, ?, Map<K,U>> toLinkedMap(Function<? super T, ? extends K> keyMapper,
-                                    Function<? super T, ? extends U> valueMapper,
-                                    BinaryOperator<U> mergeFunction) {
+    Collector<T, ?, Map<K, U>> toLinkedMap(Function<? super T, ? extends K> keyMapper,
+                                           Function<? super T, ? extends U> valueMapper,
+                                           BinaryOperator<U> mergeFunction) {
         return Collectors.toMap(keyMapper, valueMapper, mergeFunction, LinkedHashMap::new);
     }
 
@@ -101,7 +97,9 @@ public final class CollectorUtils {
      * @return a merge function which always throw {@code IllegalStateException}
      */
     private static <T> BinaryOperator<T> throwingMerger() {
-        return (u,v) -> { throw new IllegalStateException(String.format("Duplicate key %s", u)); };
+        return (u, v) -> {
+            throw new IllegalStateException(String.format("Duplicate key %s", u));
+        };
     }
 
     /**

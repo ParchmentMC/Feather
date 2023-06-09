@@ -16,8 +16,7 @@ import java.io.IOException;
  *
  * <p>For internal use. Users should use {@link MetadataAdapterFactory} instead.</p>
  */
-class BouncingTargetMetadataAdapter extends TypeAdapter<BouncingTargetMetadata>
-{
+class BouncingTargetMetadataAdapter extends TypeAdapter<BouncingTargetMetadata> {
     private final Gson gson;
 
     public BouncingTargetMetadataAdapter(Gson gson) {
@@ -25,10 +24,8 @@ class BouncingTargetMetadataAdapter extends TypeAdapter<BouncingTargetMetadata>
     }
 
     @Override
-    public void write(final JsonWriter out, final BouncingTargetMetadata value) throws IOException
-    {
-        if (value == null)
-        {
+    public void write(final JsonWriter out, final BouncingTargetMetadata value) throws IOException {
+        if (value == null) {
             out.nullValue();
             return;
         }
@@ -47,8 +44,7 @@ class BouncingTargetMetadataAdapter extends TypeAdapter<BouncingTargetMetadata>
     }
 
     @Override
-    public BouncingTargetMetadata read(final JsonReader in) throws IOException
-    {
+    public BouncingTargetMetadata read(final JsonReader in) throws IOException {
         if (in.peek() == JsonToken.NULL) {
             in.nextNull();
             return null;
@@ -61,12 +57,12 @@ class BouncingTargetMetadataAdapter extends TypeAdapter<BouncingTargetMetadata>
             switch (propertyName) {
                 case "target":
                     builder.withTarget(
-                      gson.fromJson(in, Reference.class)
+                            gson.fromJson(in, Reference.class)
                     );
                     break;
                 case "owner":
                     builder.withOwner(
-                      gson.fromJson(in, Reference.class)
+                            gson.fromJson(in, Reference.class)
                     );
                     break;
                 default:

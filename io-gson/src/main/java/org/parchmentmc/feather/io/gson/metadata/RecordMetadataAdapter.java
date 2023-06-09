@@ -18,18 +18,15 @@ import java.io.IOException;
  *
  * <p>For internal use. Users should use {@link MetadataAdapterFactory} instead.</p>
  */
-class RecordMetadataAdapter extends TypeAdapter<RecordMetadata>
-{
+class RecordMetadataAdapter extends TypeAdapter<RecordMetadata> {
     private final Gson gson;
 
-    public RecordMetadataAdapter(Gson gson)
-    {
+    public RecordMetadataAdapter(Gson gson) {
         this.gson = gson;
     }
 
     @Override
-    public void write(final JsonWriter out, final RecordMetadata value) throws IOException
-    {
+    public void write(final JsonWriter out, final RecordMetadata value) throws IOException {
         out.beginObject();
         out.name("owner");
         gson.toJson(value.getOwner(), Named.class, out);
@@ -41,10 +38,8 @@ class RecordMetadataAdapter extends TypeAdapter<RecordMetadata>
     }
 
     @Override
-    public RecordMetadata read(final JsonReader in) throws IOException
-    {
-        if (in.peek() == JsonToken.NULL)
-        {
+    public RecordMetadata read(final JsonReader in) throws IOException {
+        if (in.peek() == JsonToken.NULL) {
             in.nextNull();
             return null;
         }
@@ -54,11 +49,9 @@ class RecordMetadataAdapter extends TypeAdapter<RecordMetadata>
         Reference getter = null;
 
         in.beginObject();
-        while (in.hasNext())
-        {
+        while (in.hasNext()) {
             final String propertyName = in.nextName();
-            switch (propertyName)
-            {
+            switch (propertyName) {
                 case "owner":
                     owner = gson.fromJson(in, Named.class);
                     break;
@@ -74,23 +67,20 @@ class RecordMetadataAdapter extends TypeAdapter<RecordMetadata>
         }
         in.endObject();
 
-        if (owner.isEmpty())
-        {
+        if (owner.isEmpty()) {
             throw new JsonParseException("Field owner is not present or empty");
         }
-        if (field == null)
-        {
+        if (field == null) {
             throw new JsonParseException("Field field is not present or empty");
         }
-        if (getter == null)
-        {
+        if (getter == null) {
             throw new JsonParseException("Field getter is not present or empty");
         }
 
         return RecordMetadataBuilder.create()
-          .withOwner(owner)
-          .withField(field)
-          .withGetter(getter)
-          .build();
+                .withOwner(owner)
+                .withField(field)
+                .withGetter(getter)
+                .build();
     }
 }

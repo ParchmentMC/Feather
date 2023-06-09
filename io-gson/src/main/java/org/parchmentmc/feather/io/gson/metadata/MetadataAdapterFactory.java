@@ -48,7 +48,7 @@ public class MetadataAdapterFactory implements TypeAdapterFactory {
             return (TypeAdapter<T>) new ReferenceAdapter(gson);
         } else if (type.equals(BouncingTargetMetadata.class)) {
             return (TypeAdapter<T>) new BouncingTargetMetadataAdapter(gson);
-        }else if (type.equals(RecordMetadata.class)) {
+        } else if (type.equals(RecordMetadata.class)) {
             return (TypeAdapter<T>) new RecordMetadataAdapter(gson);
         }
 

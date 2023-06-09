@@ -7,7 +7,10 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import org.parchmentmc.feather.metadata.*;
+import org.parchmentmc.feather.metadata.BouncingTargetMetadata;
+import org.parchmentmc.feather.metadata.MethodMetadata;
+import org.parchmentmc.feather.metadata.MethodMetadataBuilder;
+import org.parchmentmc.feather.metadata.Reference;
 import org.parchmentmc.feather.named.Named;
 
 import java.io.IOException;
@@ -21,7 +24,7 @@ import java.util.LinkedHashSet;
 class MethodMetadataAdapter extends TypeAdapter<MethodMetadata> {
     private static final TypeToken<LinkedHashSet<Reference>> METHOD_REFERENCE_Set_TOKEN = new TypeToken<LinkedHashSet<Reference>>() {
     };
-    private final Gson                                       gson;
+    private final Gson gson;
 
     public MethodMetadataAdapter(Gson gson) {
         this.gson = gson;
@@ -142,17 +145,17 @@ class MethodMetadataAdapter extends TypeAdapter<MethodMetadata> {
         if (endLine < startLine) throw new JsonParseException("Method metadata contains end before start");
 
         return MethodMetadataBuilder.create()
-          .withBouncingTarget(bouncingTarget)
-          .withName(name)
-          .withOwner(owner)
-          .withDescriptor(descriptor)
-          .withSignature(signature)
-          .withSecuritySpecification(security)
-          .withParent(parent)
-          .withOverrides(overrides)
-          .withStartLine(startLine)
-          .withEndLine(endLine)
-          .withLambda(lambda)
-          .build();
+                .withBouncingTarget(bouncingTarget)
+                .withName(name)
+                .withOwner(owner)
+                .withDescriptor(descriptor)
+                .withSignature(signature)
+                .withSecuritySpecification(security)
+                .withParent(parent)
+                .withOverrides(overrides)
+                .withStartLine(startLine)
+                .withEndLine(endLine)
+                .withLambda(lambda)
+                .build();
     }
 }

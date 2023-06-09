@@ -82,10 +82,10 @@ class ReferenceAdapter extends TypeAdapter<Reference> {
         if (descriptor.isEmpty()) throw new JsonParseException("Method reference descriptor is not present");
 
         return ReferenceBuilder.create()
-          .withOwner(owner)
-          .withName(name)
-          .withSignature(signature)
-          .withDescriptor(descriptor)
-          .build();
+                .withOwner(owner)
+                .withName(name)
+                .withSignature(signature)
+                .withDescriptor(descriptor)
+                .build();
     }
 }

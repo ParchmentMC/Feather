@@ -5,8 +5,7 @@ import org.parchmentmc.feather.util.HasImmutable;
 /**
  * Represents a single record in a record class.
  */
-public interface RecordMetadata extends OwnedByClass, HasImmutable<RecordMetadata>
-{
+public interface RecordMetadata extends OwnedByClass, HasImmutable<RecordMetadata> {
 
     /**
      * The field target of the record.

@@ -5,8 +5,7 @@ import org.parchmentmc.feather.named.Named;
 
 import java.util.Objects;
 
-public class AbstractReference implements BaseReference
-{
+public class AbstractReference implements BaseReference {
     protected final Named owner;
     protected final Named name;
     protected final Named descriptor;

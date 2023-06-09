@@ -7,143 +7,122 @@ import org.parchmentmc.feather.named.NamedBuilder;
 
 import java.util.Objects;
 
-public final class ReferenceBuilder implements Reference
-{
-    private Named owner      = Named.empty();
-    private Named name       = Named.empty();
+public final class ReferenceBuilder implements Reference {
+    private Named owner = Named.empty();
+    private Named name = Named.empty();
     private Named descriptor = Named.empty();
-    private Named signature  = Named.empty();
+    private Named signature = Named.empty();
 
-    private ReferenceBuilder()
-    {
+    private ReferenceBuilder() {
     }
 
-    public static ReferenceBuilder create(final Reference methodReference)
-    {
-        if (methodReference == null)
-        {
+    public static ReferenceBuilder create(final Reference methodReference) {
+        if (methodReference == null) {
             return create();
         }
 
         return create()
-          .withOwner(methodReference.getOwner())
-          .withName(methodReference.getName())
-          .withDescriptor(methodReference.getDescriptor())
-          .withSignature(methodReference.getSignature());
+                .withOwner(methodReference.getOwner())
+                .withName(methodReference.getName())
+                .withDescriptor(methodReference.getDescriptor())
+                .withSignature(methodReference.getSignature());
     }
 
-    public static ReferenceBuilder create()
-    {
+    public static ReferenceBuilder create() {
         return new ReferenceBuilder();
     }
 
-    public ReferenceBuilder withSignature(Named signature)
-    {
+    public ReferenceBuilder withSignature(Named signature) {
         this.signature = signature;
         return this;
     }
 
-    public ReferenceBuilder withDescriptor(Named descriptor)
-    {
+    public ReferenceBuilder withDescriptor(Named descriptor) {
         this.descriptor = descriptor;
         return this;
     }
 
-    public ReferenceBuilder withName(Named name)
-    {
+    public ReferenceBuilder withName(Named name) {
         this.name = name;
         return this;
     }
 
-    public ReferenceBuilder withOwner(Named owner)
-    {
+    public ReferenceBuilder withOwner(Named owner) {
         this.owner = owner;
         return this;
     }
 
-    public ReferenceBuilder merge(@Nullable final Reference source)
-    {
-        if (source == null)
-        {
+    public ReferenceBuilder merge(@Nullable final Reference source) {
+        if (source == null) {
             return this;
         }
 
         this.owner = NamedBuilder.create(this.owner)
-          .merge(source.getOwner())
-          .build();
+                .merge(source.getOwner())
+                .build();
         this.name = NamedBuilder.create(this.name)
-          .merge(source.getName())
-          .build();
+                .merge(source.getName())
+                .build();
         this.descriptor = NamedBuilder.create(this.descriptor)
-          .merge(source.getDescriptor())
-          .build();
+                .merge(source.getDescriptor())
+                .build();
         this.signature = NamedBuilder.create(this.signature)
-          .merge(source.getSignature())
-          .build();
+                .merge(source.getSignature())
+                .build();
 
         return this;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return Objects.hash(getOwner(), getName(), getDescriptor(), getSignature());
     }
 
     @Override
-    public boolean equals(Object o)
-    {
-        if (this == o)
-        {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if (!(o instanceof Reference))
-        {
+        if (!(o instanceof Reference)) {
             return false;
         }
         Reference that = (Reference) o;
         return Objects.equals(getOwner(), that.getOwner())
-                 && getName().equals(that.getName())
-                 && getDescriptor().equals(that.getDescriptor());
+                && getName().equals(that.getName())
+                && getDescriptor().equals(that.getDescriptor());
     }
 
     @Override
-    public @NonNull Named getOwner()
-    {
+    public @NonNull Named getOwner() {
         return owner;
     }
 
     @Override
-    public @NonNull Named getName()
-    {
+    public @NonNull Named getName() {
         return name;
     }
 
     @Override
-    public @NonNull Named getDescriptor()
-    {
+    public @NonNull Named getDescriptor() {
         return descriptor;
     }
 
     @Override
-    public @NonNull Named getSignature()
-    {
+    public @NonNull Named getSignature() {
         return signature;
     }
 
     @Override
-    public @NonNull Reference toImmutable()
-    {
+    public @NonNull Reference toImmutable() {
         return build();
     }
 
-    public ImmutableReference build()
-    {
+    public ImmutableReference build() {
         return new ImmutableReference(
-          owner.toImmutable(),
-          name.toImmutable(),
-          descriptor.toImmutable(),
-          signature.toImmutable()
+                owner.toImmutable(),
+                name.toImmutable(),
+                descriptor.toImmutable(),
+                signature.toImmutable()
         );
     }
 }

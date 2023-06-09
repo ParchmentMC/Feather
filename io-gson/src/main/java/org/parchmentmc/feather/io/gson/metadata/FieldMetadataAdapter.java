@@ -88,11 +88,11 @@ class FieldMetadataAdapter extends TypeAdapter<FieldMetadata> {
         if (descriptor.isEmpty()) throw new JsonParseException("Field descriptor is not present or empty");
 
         return FieldMetadataBuilder.create()
-          .withOwner(owner)
-          .withName(name)
-          .withSecuritySpecification(security)
-          .withSignature(signature)
-          .withDescriptor(descriptor)
-          .build();
+                .withOwner(owner)
+                .withName(name)
+                .withSecuritySpecification(security)
+                .withSignature(signature)
+                .withDescriptor(descriptor)
+                .build();
     }
 }

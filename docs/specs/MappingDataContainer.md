@@ -1,9 +1,9 @@
 # Mapping Data Container Specification
 
 A mapping data container (also known as **MDC**, and represented by the `MappingDataContainer` class) is a container of
-javadocs for packages, classes, fields, methods, and parameters, and parameter names. It contains five inner data classes
-which are used to represented the stored data for each type listed previously, respectively: `PackageData`, `ClassData`,
-`FieldData`, `MethodData`, and `ParameterData`.
+javadocs for packages, classes, fields, methods, and parameters, and parameter names. It contains five inner data
+classes which are used to represented the stored data for each type listed previously, respectively: `PackageData`,
+`ClassData`, `FieldData`, `MethodData`, and `ParameterData`.
 
 A mapping data container contains a collection of package data and a collection of class data. These collections may be
 queried by package name and class name, respectively.
@@ -15,17 +15,17 @@ Class data consists of the class name (in internal binary form, such as `com/exa
 of field data, a collection of method data, and optionally javadocs in the form of a list of strings. These collections
 may be queried by field name and method name and descriptor, respectively. The class name must be present.
 
-Field data consists of the field name, the field type descriptor, and optionally javadocs in the form of a list of strings.
-The field name and field type descriptor must be present.
+Field data consists of the field name, the field type descriptor, and optionally javadocs in the form of a list of
+strings. The field name and field type descriptor must be present.
 
 Method data consists of the method name, the method descriptor, a collection of parameter data, and optionally javadocs
-in the form of a list of strings. The collection may be queried by parameter index. The method name and method descriptor
-must be present.
+in the form of a list of strings. The collection may be queried by parameter index. The method name and method
+descriptor must be present.
 
 Parameter data consists of the parameter index as a byte, optionally a name for the parameter, and optionally javadocs
 as a string. The parameter index must be present. The parameter index is determined by counting its position, where the
-first parameter's index is 0 for static methods, and 1 for non-static methods (because 0 is the implicit `this` parameter),
-and counting two positions for `long`s and `double`s.
+first parameter's index is 0 for static methods, and 1 for non-static methods (because 0 is the implicit `this`
+parameter), and counting two positions for `long`s and `double`s.
 
 For javadocs in the form of a list of strings, each string in the list represents one line (each line is implicitly
 terminated by a newline). Consumers may reformat the javadocs data in any way they see fit, such as limiting combining
@@ -41,11 +41,13 @@ major version, the minor version, and the patch version, in the form of `<major>
 can be omitted, in which case it will default to a value of zero. For each change to the format, this version field is
 incremented accordingly:
 
-- For minor changes which do not break compatibility nor add new data, the patch version is incremented. _(It is expected  
+- For minor changes which do not break compatibility nor add new data, the patch version is incremented. _(It is
+  expected  
   that this field will usually never be incremented.)_
 - For changes which add new data without breaking compatibility with parsers for previous versions of the format, the
   minor version is incremented.
-- For changes which break compatibility with parsers for previous versions of the format, the major version is incremented.
+- For changes which break compatibility with parsers for previous versions of the format, the major version is
+  incremented.
 
 For example, a parser for a version `1.0.1` should be able to read versioned mapping data containers with versions of
 `1.0.0`, `1.1.0`, `1.3.4`, but not necessarily be able to read one with version `2.0.0`.
@@ -66,42 +68,42 @@ array must be an empty array instead of a null.
 
 ```yaml
 {
-  "version": "1.0.0", # version string, required for versioned MDCs; must be in the form of "(\d+)\.(\d+)\.(\d+)"
+    "version": "1.0.0", # version string, required for versioned MDCs; must be in the form of "(\d+)\.(\d+)\.(\d+)"
     "packages": [ # Collection of package data
-      { # A single package data
-        "name": "com/example/test/pkg", # Package name in internal binary form
-        "javadoc": [ "Testing package", "", "Some docs" ] # Javadocs, may be not present
-      },
-      { # A package data without javadocs
-        "name": "com/example/undocumented"
-      }
+        { # A single package data
+            "name": "com/example/test/pkg", # Package name in internal binary form
+            "javadoc": [ "Testing package", "", "Some docs" ] # Javadocs, may be not present
+        },
+        { # A package data without javadocs
+            "name": "com/example/undocumented"
+        }
     ],
-  "classes": [ # Collection of class data
-    { # A single class data
-      "name": "com/example/test/TestingClass", # Class name in internal binary form
-      "javadoc": [ "Testing class" ], # Javadocs, may be not present
-      "fields": [ # Collection of field data
-        {
-          "name": "myField", # Field name
-          "descriptor": "Ljava/util/List;", # Field type descriptor
-          "javadoc": [ "A field containing a list", "", "Who knows what it holds." ] # Javadocs, may be not present
+    "classes": [ # Collection of class data
+        { # A single class data
+            "name": "com/example/test/TestingClass", # Class name in internal binary form
+            "javadoc": [ "Testing class" ], # Javadocs, may be not present
+            "fields": [ # Collection of field data
+                {
+                    "name": "myField", # Field name
+                    "descriptor": "Ljava/util/List;", # Field type descriptor
+                    "javadoc": [ "A field containing a list", "", "Who knows what it holds." ] # Javadocs, may be not present
+                }
+            ],
+            "methods": [ # Collection of method data
+                {
+                    "name": "doSomething", # Method name
+                    "descriptor": "(I)Ljava/lang/Object;", # Method descriptor
+                    "javadoc": [ "Does something" ], # Javadocs, may be not present
+                    "parameters": [ # Collection of parameter data
+                        {
+                            "index": 0, # Parameter index (this indicates the method is static)
+                            "name": "myParam", # Parameter name, may be not present
+                            "javadoc": "a number parameter" # Javadoc, may be not present
+                        }
+                    ]
+                }
+            ]
         }
-      ],
-      "methods": [ # Collection of method data
-        {
-          "name": "doSomething", # Method name
-          "descriptor": "(I)Ljava/lang/Object;", # Method descriptor
-          "javadoc": [ "Does something" ], # Javadocs, may be not present
-          "parameters": [ # Collection of parameter data
-            {
-              "index": 0, # Parameter index (this indicates the method is static)
-              "name": "myParam", # Parameter name, may be not present
-              "javadoc": "a number parameter" # Javadoc, may be not present
-            }
-          ]
-        }
-      ]
-    }
-  ]
+    ]
 }
 ```

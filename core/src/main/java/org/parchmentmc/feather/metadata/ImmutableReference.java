@@ -3,8 +3,7 @@ package org.parchmentmc.feather.metadata;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.parchmentmc.feather.named.Named;
 
-final class ImmutableReference extends AbstractReference implements Reference
-{
+final class ImmutableReference extends AbstractReference implements Reference {
 
     public ImmutableReference(final Named owner, final Named name, final Named descriptor, final Named signature) {
         super(owner, name, descriptor, signature);

@@ -8,25 +8,25 @@ import java.util.Objects;
 import java.util.Optional;
 
 final class ImmutableMethodMetadata extends AbstractReference implements MethodMetadata {
-    private final boolean                  lambda;
-    private final BouncingTargetMetadata   bouncingTarget;
+    private final boolean lambda;
+    private final BouncingTargetMetadata bouncingTarget;
     private final LinkedHashSet<Reference> overrides;
-    private final int                      securitySpecification;
-    private final int                      startLine;
-    private final int                      endLine;
-    private final Reference                parent;
+    private final int securitySpecification;
+    private final int startLine;
+    private final int endLine;
+    private final Reference parent;
 
     public ImmutableMethodMetadata(
-      final Named owner,
-      final boolean lambda,
-      final BouncingTargetMetadata bouncingTarget,
-      final Reference parent, final LinkedHashSet<Reference> overrides,
-      final Named name,
-      final int securitySpecification,
-      final Named descriptor,
-      final Named signature,
-      final int startLine,
-      final int endLine) {
+            final Named owner,
+            final boolean lambda,
+            final BouncingTargetMetadata bouncingTarget,
+            final Reference parent, final LinkedHashSet<Reference> overrides,
+            final Named name,
+            final int securitySpecification,
+            final Named descriptor,
+            final Named signature,
+            final int startLine,
+            final int endLine) {
         super(owner, name, descriptor, signature);
         this.lambda = lambda;
         this.bouncingTarget = bouncingTarget;
@@ -48,8 +48,7 @@ final class ImmutableMethodMetadata extends AbstractReference implements MethodM
     }
 
     @Override
-    public Optional<Reference> getParent()
-    {
+    public Optional<Reference> getParent() {
         return Optional.ofNullable(parent);
     }
 

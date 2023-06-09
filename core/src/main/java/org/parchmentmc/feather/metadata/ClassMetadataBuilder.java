@@ -7,11 +7,7 @@ import org.parchmentmc.feather.named.NamedBuilder;
 import org.parchmentmc.feather.util.AccessFlag;
 import org.parchmentmc.feather.util.CollectorUtils;
 
-import java.util.EnumSet;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 public final class ClassMetadataBuilder implements ClassMetadata {

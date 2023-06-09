@@ -9,11 +9,11 @@ A library for common data objects and parsing, used across ParchmentMC's project
 
 There are five subprojects within the repository:
 
- - **`core`** - the main data interfaces and implementations (immutables and builders).
- - **`io-gson`** - JSON adapters for the [Gson](https://github.com/google/gson) library
- - **`io-moshi`** - JSON adapters for the [Moshi](https://github.com/square/moshi) library.
- - **`io-proguard`** - parsing for ProGuard mapping files
- - **`utils`** - miscellaneous utilities not fit for inclusion in the core library
+- **`core`** - the main data interfaces and implementations (immutables and builders).
+- **`io-gson`** - JSON adapters for the [Gson](https://github.com/google/gson) library
+- **`io-moshi`** - JSON adapters for the [Moshi](https://github.com/square/moshi) library.
+- **`io-proguard`** - parsing for ProGuard mapping files
+- **`utils`** - miscellaneous utilities not fit for inclusion in the core library
 
 Installing Feather
 ==================
