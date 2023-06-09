@@ -3,7 +3,7 @@ archivesBaseName = 'io-moshi'
 
 dependencies {
     api project(':feather')
-    api 'com.squareup.moshi:moshi:1.12.0'
+    api libs.moshi
     testImplementation project(':feather').sourceSets.test.output
 }
 
