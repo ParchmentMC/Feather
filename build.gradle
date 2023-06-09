@@ -7,6 +7,7 @@ project.group 'org.parchmentmc.feather'
 subprojects {
     apply plugin: 'maven-publish'
     apply plugin: 'java-library'
+    apply plugin: 'java-test-fixtures'
     apply plugin: 'org.parchmentmc.writtenbooks'
 
     group rootProject.group
@@ -23,8 +24,8 @@ subprojects {
     }
 
     dependencies {
-        testImplementation libs.junit.api
-        testImplementation libs.guava
+        testFixturesApi libs.junit.api
+
         testRuntimeOnly libs.junit.engine
     }
 
@@ -37,6 +38,10 @@ subprojects {
         withJavadocJar()
         withSourcesJar()
     }
+
+    // Disable publishing of test fixtures
+    components.java.withVariantsFromConfiguration(configurations.testFixturesApiElements) { skip() }
+    components.java.withVariantsFromConfiguration(configurations.testFixturesRuntimeElements) { skip() }
 
     publishing {
         publications.withType(MavenPublication).configureEach {

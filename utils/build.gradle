@@ -3,7 +3,8 @@ archivesBaseName = 'utils'
 
 dependencies {
     api project(':feather')
-    testImplementation project(':feather').sourceSets.test.output
+
+    testImplementation testFixtures(project(':feather'))
 }
 
 publishing {

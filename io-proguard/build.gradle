@@ -3,10 +3,9 @@ archivesBaseName = 'io-proguard'
 
 dependencies {
     api project(':feather')
-    testImplementation project(':feather').sourceSets.test.output
+    testImplementation testFixtures(project(':feather'))
 
     api project(':utils')
-    testImplementation project(':utils').sourceSets.test.output
 }
 
 publishing {

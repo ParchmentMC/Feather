@@ -4,7 +4,8 @@ archivesBaseName = 'io-gson'
 dependencies {
     api project(':feather')
     api libs.gson
-    testImplementation project(':feather').sourceSets.test.output
+
+    testFixturesApi testFixtures(project(':feather'))
 }
 
 publishing {

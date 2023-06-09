@@ -4,6 +4,8 @@ archivesBaseName = 'feather'
 dependencies {
     api libs.checker.qual
     implementation libs.guava
+
+    testFixturesApi libs.guava
 }
 
 publishing {
