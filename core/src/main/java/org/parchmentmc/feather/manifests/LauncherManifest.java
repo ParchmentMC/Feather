@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * The launcher manifest, version 2.
  *
- * <p>Retrievable from <tt>https://launchermeta.mojang.com/mc/game/version_manifest_v2.json</tt>.</p>
+ * <p>Retrievable from <tt>https://piston-meta.mojang.com/mc/game/version_manifest_v2.json</tt>.</p>
  *
  * @see <a href="https://minecraft.fandom.com/wiki/Version_manifest.json">Official Minecraft wiki,
  * <tt>Version_manifest.json</tt></a>
@@ -160,7 +160,7 @@ public class LauncherManifest implements Serializable {
         /**
          * Returns the URL where the manifest for this version can be downloaded from.
          *
-         * <p>The current format is <tt>https://launchermeta.mojang.com/v1/packages/<strong>&lt;SHA-1 checksum of
+         * <p>The current format is <tt>https://piston-meta.mojang.com/v1/packages/<strong>&lt;SHA-1 checksum of
          * manifest&gt;</strong>/<strong>&lt;{@link #id}&gt;</strong>.json</tt></p>
          *
          * @return the manifest URL
