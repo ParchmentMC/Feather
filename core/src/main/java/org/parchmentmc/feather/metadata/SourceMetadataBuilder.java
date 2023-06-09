@@ -3,13 +3,13 @@ package org.parchmentmc.feather.metadata;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.parchmentmc.feather.named.Named;
 import org.parchmentmc.feather.named.NamedBuilder;
+import org.parchmentmc.feather.util.CollectorUtils;
 import org.parchmentmc.feather.util.SimpleVersion;
 
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public final class SourceMetadataBuilder implements SourceMetadata {
     private SimpleVersion specVersion = SimpleVersion.of(1, 0, 0);
@@ -53,14 +53,14 @@ public final class SourceMetadataBuilder implements SourceMetadata {
             return this;
 
         final Map<Named, ClassMetadata> schemadLocalInnerClasses = this.classes
-                .stream().collect(Collectors.toMap(
+                .stream().collect(CollectorUtils.toLinkedMap(
                         fm -> NamedBuilder.create()
                                 .with(mergingSchema, fm.getName().getName(mergingSchema).orElse(""))
                                 .build(),
                         Function.identity()
                 ));
         final Map<Named, ClassMetadata> schemadSourceInnerClasses = source.getClasses()
-                .stream().collect(Collectors.toMap(
+                .stream().collect(CollectorUtils.toLinkedMap(
                         fm -> NamedBuilder.create()
                                 .with(mergingSchema, fm.getName().getName(mergingSchema).orElse(""))
                                 .build(),
@@ -104,7 +104,7 @@ public final class SourceMetadataBuilder implements SourceMetadata {
         return new ImmutableSourceMetadata(
                 specVersion,
                 minecraftVersion,
-                classes.stream().map(ClassMetadata::toImmutable).collect(Collectors.toCollection(LinkedHashSet::new))
+                classes.stream().map(ClassMetadata::toImmutable).collect(CollectorUtils.toLinkedSet())
         );
     }
 

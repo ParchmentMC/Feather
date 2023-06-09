@@ -3,6 +3,7 @@ package org.parchmentmc.feather.io.proguard;
 import org.parchmentmc.feather.metadata.*;
 import org.parchmentmc.feather.named.Named;
 import org.parchmentmc.feather.named.NamedBuilder;
+import org.parchmentmc.feather.util.CollectorUtils;
 import org.parchmentmc.feather.utils.RemapHelper;
 
 import java.io.*;
@@ -145,7 +146,7 @@ public final class MetadataProguardParser {
     private static SourceMetadata adaptInnerOuterClassList(final SourceMetadata sourceMetadata) {
         final Map<Named, ClassMetadataBuilder> namedClassMetadataMap = sourceMetadata.getClasses()
                 .stream()
-                .collect(Collectors.toMap(
+                .collect(CollectorUtils.toLinkedMap(
                         WithName::getName,
                         ClassMetadataBuilder::create
                 ));
@@ -165,7 +166,7 @@ public final class MetadataProguardParser {
                         .stream()
                         .filter(classMetadataBuilder -> classMetadataBuilder.getOwner().isEmpty())
                         .map(ClassMetadataBuilder::build)
-                        .collect(Collectors.toCollection(LinkedHashSet::new))
+                        .collect(CollectorUtils.toLinkedSet())
                 )
                 .build();
     }
@@ -211,7 +212,7 @@ public final class MetadataProguardParser {
         return ClassMetadataBuilder.create(classMetadata)
                 .withInnerClasses(classMetadata.getInnerClasses().stream()
                         .map(inner -> adaptTypeDescriptors(inner, mojToObfClassMap))
-                        .collect(Collectors.toSet()))
+                        .collect(CollectorUtils.toLinkedSet()))
                 .withMethods(classMetadata.getMethods().stream()
                         .map(method -> {
                             final String mojangName = method.getDescriptor().getMojangName().orElseThrow(() -> new IllegalStateException("Missing mojang descriptor"));
@@ -222,7 +223,7 @@ public final class MetadataProguardParser {
                                             .withObfuscated(RemapHelper.remapMethodDescriptor(mojangName, mojToObfClassMap::get))
                                     );
                         })
-                        .collect(Collectors.toSet()))
+                        .collect(CollectorUtils.toLinkedSet()))
                 .withFields(classMetadata.getFields().stream()
                         .map(field -> {
                             final String mojangName = field.getDescriptor().getMojangName().orElseThrow(() -> new IllegalStateException("Missing mojang type."));
@@ -233,7 +234,7 @@ public final class MetadataProguardParser {
                                             .withObfuscated(RemapHelper.remapTypeDescriptor(mojangName, mojToObfClassMap::get))
                                     );
                         })
-                        .collect(Collectors.toSet()));
+                        .collect(CollectorUtils.toLinkedSet()));
     }
 
     /**
