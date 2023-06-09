@@ -16,10 +16,10 @@ import static org.parchmentmc.feather.mapping.VersionedMappingDataContainer.CURR
  */
 public interface MDCTestConstants {
     List<MappingDataContainer.ParameterData> PARAMETERS = of(
-            new ImmutableMappingDataContainer.ImmutableParameterData((byte) 1, "1testName", "1Some javadoc"),
-            new ImmutableMappingDataContainer.ImmutableParameterData((byte) 2, null, "2Some javadoc"),
-            new ImmutableMappingDataContainer.ImmutableParameterData((byte) 3, "3testName", null),
-            new ImmutableMappingDataContainer.ImmutableParameterData((byte) 4, null, null)
+            new ImmutableMappingDataContainer.ImmutableParameterData((byte) 1, "1testName", "1Some javadoc", null),
+            new ImmutableMappingDataContainer.ImmutableParameterData((byte) 2, null, "2Some javadoc", null),
+            new ImmutableMappingDataContainer.ImmutableParameterData((byte) 3, "3testName", null, null),
+            new ImmutableMappingDataContainer.ImmutableParameterData((byte) 4, null, null, null)
     );
 
     List<String> MULTILINE_JAVADOC = of("Some javadocs", "", "Multiline javadocs!");
@@ -32,9 +32,9 @@ public interface MDCTestConstants {
     );
 
     List<MappingDataContainer.FieldData> FIELDS = of(
-            new ImmutableMappingDataContainer.ImmutableFieldData("aField", "F", of()),
-            new ImmutableMappingDataContainer.ImmutableFieldData("anotherOne", "Ljava/util/Objects;", of()),
-            new ImmutableMappingDataContainer.ImmutableFieldData("thirdTimes", "Z", MULTILINE_JAVADOC)
+            new ImmutableMappingDataContainer.ImmutableFieldData("aField", "F", of(), null),
+            new ImmutableMappingDataContainer.ImmutableFieldData("anotherOne", "Ljava/util/Objects;", of(), null),
+            new ImmutableMappingDataContainer.ImmutableFieldData("thirdTimes", "Z", MULTILINE_JAVADOC, null)
     );
 
     List<MappingDataContainer.ClassData> CLASSES = of(

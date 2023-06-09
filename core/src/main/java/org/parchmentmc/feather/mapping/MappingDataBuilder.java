@@ -125,6 +125,53 @@ public class MappingDataBuilder implements MappingDataContainer {
         T clearJavadoc();
     }
 
+    public interface MutableHasConstants<T> extends MutableHasConstantValues<T>, CanContainConstantValue {
+        @Override
+        @Nullable
+        MutableConstantData getConstant();
+
+        T setConstant(@Nullable ConstantData constantData);
+
+        @Override
+        default List<ConstantValueData> getConstantValues() {
+            final MappingDataContainer.ConstantData constantData = this.getConstant();
+            if (constantData == null) {
+                setConstant(new MutableConstantData());
+                return getConstantValues();
+            }
+
+            return constantData.getValues();
+        }
+    }
+
+    public interface MutableHasConstantValues<T> {
+        default T addConstantValue(ConstantValueData value) {
+            final List<ConstantValueData> values = this.getConstantValues();
+            if (!values.contains(value)) {
+                values.add(value);
+            }
+            return setConstantValues(values);
+        }
+
+        default T removeConstantValue(ConstantValueData value) {
+            final List<ConstantValueData> values = this.getConstantValues();
+            values.remove(value);
+            return setConstantValues(values);
+        }
+
+        default T addConstantValue(int value, String reference) {
+            return addConstantValue(new MutableConstantValueData(value, reference));
+        }
+
+        default T removeConstantValue(int value, String reference) {
+            return removeConstantValue(new MutableConstantValueData(value, reference));
+        }
+
+        List<ConstantValueData> getConstantValues();
+
+        T setConstantValues(List<ConstantValueData> values);
+    }
+
     public static class MutablePackageData implements MappingDataContainer.PackageData, MutableHasJavadoc<MutablePackageData> {
         private final String name;
         private final List<String> javadoc = new ArrayList<>();
@@ -309,10 +356,11 @@ public class MappingDataBuilder implements MappingDataContainer {
         }
     }
 
-    public static class MutableFieldData implements MappingDataContainer.FieldData, MutableHasJavadoc<MutableFieldData> {
+    public static class MutableFieldData implements MappingDataContainer.FieldData, MutableHasJavadoc<MutableFieldData>, MutableHasConstants<MutableFieldData> {
         private final String name;
         private final String descriptor;
         private final List<String> javadoc = new ArrayList<>();
+        private MutableConstantData constant;
         private transient final List<String> javadocView = Collections.unmodifiableList(javadoc);
 
         MutableFieldData(String name, String descriptor) {
@@ -348,17 +396,55 @@ public class MappingDataBuilder implements MappingDataContainer {
         }
 
         @Override
+        public MutableConstantData getConstant() {
+            return constant;
+        }
+
+        @Override
+        public MutableFieldData setConstant(@Nullable ConstantData constantData) {
+            if (constantData == null) {
+                this.constant = null;
+            } else {
+                this.constant = new MutableConstantData(constantData);
+            }
+            return this;
+        }
+
+        @Override
+        public MutableFieldData setConstantValues(List<ConstantValueData> values) {
+            if (this.constant == null) {
+                this.constant = new MutableConstantData();
+            }
+
+            this.constant.setConstantValues(values);
+            return this;
+        }
+
+        @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (!(o instanceof FieldData)) return false;
-            FieldData that = (FieldData) o;
-            return getName().equals(that.getName()) && Objects.equals(getDescriptor(), that.getDescriptor())
-                    && getJavadoc().equals(that.getJavadoc());
+            if (!(o instanceof MutableFieldData)) return false;
+
+            MutableFieldData that = (MutableFieldData) o;
+
+            if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
+            if (getDescriptor() != null ? !getDescriptor().equals(that.getDescriptor()) : that.getDescriptor() != null)
+                return false;
+            if (getJavadoc() != null ? !getJavadoc().equals(that.getJavadoc()) : that.getJavadoc() != null)
+                return false;
+            if (getConstant() != null ? !getConstant().equals(that.getConstant()) : that.getConstant() != null)
+                return false;
+            return Objects.equals(javadocView, that.javadocView);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(getName(), getDescriptor(), getJavadoc());
+            int result = getName() != null ? getName().hashCode() : 0;
+            result = 31 * result + (getDescriptor() != null ? getDescriptor().hashCode() : 0);
+            result = 31 * result + (getJavadoc() != null ? getJavadoc().hashCode() : 0);
+            result = 31 * result + (getConstant() != null ? getConstant().hashCode() : 0);
+            result = 31 * result + (javadocView != null ? javadocView.hashCode() : 0);
+            return result;
         }
     }
 
@@ -458,12 +544,13 @@ public class MappingDataBuilder implements MappingDataContainer {
         }
     }
 
-    public static class MutableParameterData implements MappingDataContainer.ParameterData, MutableHasJavadoc<MutableParameterData> {
+    public static class MutableParameterData implements MappingDataContainer.ParameterData, MutableHasJavadoc<MutableParameterData>, MutableHasConstants<MutableParameterData> {
         private final byte index;
         @Nullable
         private String name = null;
         @Nullable
         private String javadoc = null;
+        private MutableConstantData constant = null;
 
         MutableParameterData(byte index) {
             this.index = index;
@@ -497,19 +584,6 @@ public class MappingDataBuilder implements MappingDataContainer {
         }
 
         @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof ParameterData)) return false;
-            ParameterData that = (ParameterData) o;
-            return getIndex() == that.getIndex() && Objects.equals(getName(), that.getName()) && Objects.equals(getJavadoc(), that.getJavadoc());
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(getIndex(), getName(), getJavadoc());
-        }
-
-        @Override
         public MutableParameterData addJavadoc(Collection<? extends String> lines) {
             this.javadoc = lines.stream().findFirst().orElse(null);
             return this;
@@ -519,6 +593,153 @@ public class MappingDataBuilder implements MappingDataContainer {
         public MutableParameterData clearJavadoc() {
             this.javadoc = null;
             return this;
+        }
+
+        @Override
+        public @Nullable MutableConstantData getConstant() {
+            return constant;
+        }
+
+        @Override
+        public MutableParameterData setConstant(@Nullable ConstantData constantData) {
+            if (constantData == null) {
+                this.constant = null;
+            } else {
+                this.constant = new MutableConstantData(constantData);
+            }
+
+            return this;
+        }
+
+        @Override
+        public MutableParameterData setConstantValues(List<ConstantValueData> values) {
+            if (this.constant == null)
+                this.constant = new MutableConstantData();
+
+            this.constant.setValues(values);
+
+            return this;
+        }
+    }
+
+    public static class MutableConstantData implements MappingDataContainer.ConstantData, MutableHasConstantValues<MutableConstantData> {
+
+        private ConstantType type;
+        private List<ConstantValueData> values = new ArrayList<>();
+
+        public MutableConstantData(ConstantType type, List<ConstantValueData> values) {
+            this.type = type;
+            this.values = values;
+        }
+
+        public MutableConstantData(ConstantData from) {
+            this(from.getType(), new ArrayList<>(from.getValues()));
+        }
+
+        public MutableConstantData() {
+        }
+
+        @Override
+        public ConstantType getType() {
+            return type;
+        }
+
+        @Override
+        public List<ConstantValueData> getValues() {
+            return values;
+        }
+
+        public MutableConstantData setValues(List<ConstantValueData> values) {
+            this.values = values;
+            return this;
+        }
+
+        public MutableConstantData setType(ConstantType type) {
+            this.type = type;
+            return this;
+        }
+
+        @Override
+        public List<ConstantValueData> getConstantValues() {
+            return values;
+        }
+
+        @Override
+        public MutableConstantData setConstantValues(List<ConstantValueData> values) {
+            this.values = values;
+            return this;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof MutableConstantData)) return false;
+
+            MutableConstantData that = (MutableConstantData) o;
+
+            if (getType() != that.getType()) return false;
+            return getValues() != null ? getValues().equals(that.getValues()) : that.getValues() == null;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = getType() != null ? getType().hashCode() : 0;
+            result = 31 * result + (getValues() != null ? getValues().hashCode() : 0);
+            return result;
+        }
+    }
+
+    public static class MutableConstantValueData implements MappingDataContainer.ConstantValueData {
+
+        private int value;
+        private String reference;
+
+        public MutableConstantValueData(int value, String reference) {
+            this.value = value;
+            this.reference = reference;
+        }
+
+        public MutableConstantValueData(MappingDataContainer.ConstantValueData from) {
+            this(from.getValue(), from.getReference());
+        }
+
+        public MutableConstantValueData() {
+        }
+
+        @Override
+        public int getValue() {
+            return value;
+        }
+
+        public void setValue(int value) {
+            this.value = value;
+        }
+
+        @Override
+        public String getReference() {
+            return reference;
+        }
+
+        public void setReference(String reference) {
+            this.reference = reference;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof MutableConstantValueData)) return false;
+
+            MutableConstantValueData that = (MutableConstantValueData) o;
+
+            if (getValue() != that.getValue()) return false;
+            return getReference() != null ? getReference().equals(that.getReference()) : that.getReference() == null;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = getValue();
+            result = 31 * result + (getReference() != null ? getReference().hashCode() : 0);
+            return result;
         }
     }
 }

@@ -215,11 +215,14 @@ public class ImmutableMappingDataContainer implements MappingDataContainer {
         private final String name;
         private final String descriptor;
         private final List<String> javadoc;
+        @Nullable
+        private final ConstantData constant;
 
-        public ImmutableFieldData(String name, String descriptor, List<String> javadoc) {
+        public ImmutableFieldData(String name, String descriptor, List<String> javadoc, @Nullable ConstantData constant) {
             this.name = name;
             this.descriptor = descriptor;
             this.javadoc = ImmutableList.copyOf(javadoc);
+            this.constant = constant;
         }
 
         /**
@@ -246,18 +249,36 @@ public class ImmutableMappingDataContainer implements MappingDataContainer {
             return javadoc;
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public ConstantData getConstant() {
+            return constant;
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (!(o instanceof FieldData)) return false;
-            FieldData that = (FieldData) o;
-            return getName().equals(that.getName()) && Objects.equals(getDescriptor(), that.getDescriptor())
-                    && getJavadoc().equals(that.getJavadoc());
+            if (!(o instanceof ImmutableFieldData)) return false;
+
+            ImmutableFieldData that = (ImmutableFieldData) o;
+
+            if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
+            if (getDescriptor() != null ? !getDescriptor().equals(that.getDescriptor()) : that.getDescriptor() != null)
+                return false;
+            if (getJavadoc() != null ? !getJavadoc().equals(that.getJavadoc()) : that.getJavadoc() != null)
+                return false;
+            return getConstant() != null ? getConstant().equals(that.getConstant()) : that.getConstant() == null;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(getName(), getDescriptor(), getJavadoc());
+            int result = getName() != null ? getName().hashCode() : 0;
+            result = 31 * result + (getDescriptor() != null ? getDescriptor().hashCode() : 0);
+            result = 31 * result + (getJavadoc() != null ? getJavadoc().hashCode() : 0);
+            result = 31 * result + (getConstant() != null ? getConstant().hashCode() : 0);
+            return result;
         }
     }
 
@@ -344,11 +365,14 @@ public class ImmutableMappingDataContainer implements MappingDataContainer {
         private final String name;
         @Nullable
         private final String javadoc;
+        @Nullable
+        private final ConstantData constant;
 
-        public ImmutableParameterData(byte index, @Nullable String name, @Nullable String javadoc) {
+        public ImmutableParameterData(byte index, @Nullable String name, @Nullable String javadoc, @Nullable ConstantData constant) {
             this.index = index;
             this.name = name;
             this.javadoc = javadoc;
+            this.constant = constant;
         }
 
         /**
@@ -377,17 +401,131 @@ public class ImmutableMappingDataContainer implements MappingDataContainer {
             return javadoc;
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public ConstantData getConstant() {
+            return constant;
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (!(o instanceof ParameterData)) return false;
-            ParameterData that = (ParameterData) o;
-            return getIndex() == that.getIndex() && Objects.equals(getName(), that.getName()) && Objects.equals(getJavadoc(), that.getJavadoc());
+            if (!(o instanceof ImmutableParameterData)) return false;
+
+            ImmutableParameterData that = (ImmutableParameterData) o;
+
+            if (getIndex() != that.getIndex()) return false;
+            if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
+            if (getJavadoc() != null ? !getJavadoc().equals(that.getJavadoc()) : that.getJavadoc() != null)
+                return false;
+            return getConstant() != null ? getConstant().equals(that.getConstant()) : that.getConstant() == null;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(getIndex(), getName(), getJavadoc());
+            int result = getIndex();
+            result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+            result = 31 * result + (getJavadoc() != null ? getJavadoc().hashCode() : 0);
+            result = 31 * result + (getConstant() != null ? getConstant().hashCode() : 0);
+            return result;
+        }
+    }
+
+    /**
+     * An immutable {@link MappingDataContainer.ConstantData}.
+     */
+    public static final class ImmutableConstantData implements ConstantData {
+
+        private final ConstantType type;
+        private final List<ConstantValueData> values;
+
+        public ImmutableConstantData(ConstantType type, List<ConstantValueData> values) {
+            this.type = type;
+            this.values = values;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public ConstantType getType() {
+            return type;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public List<ConstantValueData> getValues() {
+            return values;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof ImmutableConstantData)) return false;
+
+            ImmutableConstantData that = (ImmutableConstantData) o;
+
+            if (getType() != that.getType()) return false;
+            return getValues().equals(that.getValues());
+        }
+
+        @Override
+        public int hashCode() {
+            int result = getType().hashCode();
+            result = 31 * result + getValues().hashCode();
+            return result;
+        }
+    }
+
+    /**
+     * An immutable {@link MappingDataContainer.ConstantValueData}.
+     */
+    public static final class ImmutableConstantValueData implements ConstantValueData {
+
+        private final int value;
+        private final String reference;
+
+        public ImmutableConstantValueData(int value, String reference) {
+            this.value = value;
+            this.reference = reference;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int getValue() {
+            return value;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String getReference() {
+            return reference;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof ImmutableConstantValueData)) return false;
+
+            ImmutableConstantValueData that = (ImmutableConstantValueData) o;
+
+            if (getValue() != that.getValue()) return false;
+            return getReference().equals(that.getReference());
+        }
+
+        @Override
+        public int hashCode() {
+            int result = getValue();
+            result = 31 * result + getReference().hashCode();
+            return result;
         }
     }
 }

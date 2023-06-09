@@ -22,14 +22,28 @@ public final class MappingUtil {
             MutableClassData classData = builder.createClass(cls.getName()).addJavadoc(cls.getJavadoc());
 
             // Copy fields
-            cls.getFields().forEach(field -> classData.createField(field.getName(), field.getDescriptor()).addJavadoc(field.getJavadoc()));
+            cls.getFields().forEach(field -> {
+                final MappingDataBuilder.MutableFieldData fieldData = classData.createField(field.getName(), field.getDescriptor()).addJavadoc(field.getJavadoc());
+
+                //Copy constant
+                if (field.getConstant() != null) {
+                    fieldData.setConstant(new MappingDataBuilder.MutableConstantData(field.getConstant()));
+                }
+            });
 
             // Copy methods
             cls.getMethods().forEach(method -> {
                 MutableMethodData methodData = classData.createMethod(method.getName(), method.getDescriptor()).addJavadoc(method.getJavadoc());
 
                 // Copy parameters
-                method.getParameters().forEach(param -> methodData.createParameter(param.getIndex()).setName(param.getName()).setJavadoc(param.getJavadoc()));
+                method.getParameters().forEach(param -> {
+                    final MappingDataBuilder.MutableParameterData parameterData = methodData.createParameter(param.getIndex()).setName(param.getName()).setJavadoc(param.getJavadoc());
+
+                    //Copy constant
+                    if (param.getConstant() != null) {
+                        parameterData.setConstant(new MappingDataBuilder.MutableConstantData(param.getConstant()));
+                    }
+                });
             });
         });
 
@@ -42,9 +56,9 @@ public final class MappingUtil {
      *
      * <p>All entries from the base mapping data is copied over to the resulting mapping data container.</p>
      *
-     * <p>If an entry in the base mapping data has a corresponding entry in the new mapping data, the javadocs (and
-     * names for parameters) from the new mapping data entry is used; otherwise, the javadocs (and parameter names)
-     * from the base mapping data is used.</p>
+     * <p>If an entry in the base mapping data has a corresponding entry in the new mapping data, the javadocs,
+     * names for parameters and the constant data from the new mapping data entry is used; otherwise,
+     * the data from the base mapping data is used.</p>
      *
      * <p>If a {@link ClassData class entry} from the new mapping data is present in the base mapping data,
      * all new fields and methods (including parameters) from the new mapping data is copied over. Likewise, if
@@ -71,10 +85,10 @@ public final class MappingUtil {
                     .addJavadoc(newCls != null ? newCls.getJavadoc() : cls.getJavadoc());
 
             cls.getFields().forEach(field -> {
-
                 FieldData newField = newCls != null ? newCls.getField(field.getName()) : null;
                 classData.createField(field.getName(), field.getDescriptor())
-                        .addJavadoc(newField != null ? newField.getJavadoc() : field.getJavadoc());
+                        .addJavadoc(newField != null ? newField.getJavadoc() : field.getJavadoc())
+                        .setConstant(newField != null ? newField.getConstant() : field.getConstant());
             });
 
             cls.getMethods().forEach(method -> {
@@ -86,12 +100,13 @@ public final class MappingUtil {
                     ParameterData newParam = newMethod != null ? newMethod.getParameter(param.getIndex()) : null;
                     methodData.createParameter(param.getIndex())
                             .setName(newParam != null ? newParam.getName() : param.getName())
-                            .setJavadoc(newParam != null ? newParam.getJavadoc() : param.getJavadoc());
+                            .setJavadoc(newParam != null ? newParam.getJavadoc() : param.getJavadoc())
+                            .setConstant(newParam != null ? newParam.getConstant() : param.getConstant());
                 });
                 if (newMethod != null) {
                     newMethod.getParameters().forEach(param -> {
                         if (method.getParameter(param.getIndex()) == null)
-                            methodData.createParameter(param.getIndex()).setName(param.getName()).setJavadoc(param.getJavadoc());
+                            methodData.createParameter(param.getIndex()).setName(param.getName()).setJavadoc(param.getJavadoc()).setConstant(param.getConstant());
                     });
                 }
             });

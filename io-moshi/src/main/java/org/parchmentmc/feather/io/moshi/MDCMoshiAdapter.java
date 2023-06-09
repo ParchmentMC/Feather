@@ -8,6 +8,7 @@ import org.parchmentmc.feather.mapping.VersionedMappingDataContainer;
 import org.parchmentmc.feather.util.SimpleVersion;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -91,7 +92,8 @@ public class MDCMoshiAdapter {
     @ToJson
     void fieldToJson(JsonWriter writer,
                      MappingDataContainer.FieldData fieldData,
-                     JsonAdapter<List<String>> stringListAdapter) throws IOException {
+                     JsonAdapter<List<String>> stringListAdapter,
+                     JsonAdapter<MappingDataContainer.ConstantData> constantDataAdapter) throws IOException {
         if (isIgnoreNonDocumented() && fieldData.getJavadoc().isEmpty()) return;
 
         writer.beginObject()
@@ -99,6 +101,8 @@ public class MDCMoshiAdapter {
                 .name("descriptor").value(fieldData.getDescriptor());
         if (!fieldData.getJavadoc().isEmpty())
             writer.name("javadoc").jsonValue(stringListAdapter.toJsonValue(fieldData.getJavadoc()));
+        if (fieldData.getConstant() != null)
+            writer.name("constant").jsonValue(constantDataAdapter.toJsonValue(fieldData.getConstant()));
         writer.endObject();
     }
 
@@ -123,8 +127,9 @@ public class MDCMoshiAdapter {
     }
 
     @ToJson
-    void paramToJson(JsonWriter writer,
-                     MappingDataContainer.ParameterData paramData) throws IOException {
+    void paramFromJson(JsonWriter writer,
+                       MappingDataContainer.ParameterData paramData,
+                       JsonAdapter<MappingDataContainer.ConstantData> constantDataAdapter) throws IOException {
         if (isIgnoreNonDocumented() && paramData.getName() == null && paramData.getJavadoc() == null) return;
 
         writer.beginObject()
@@ -133,6 +138,32 @@ public class MDCMoshiAdapter {
             writer.name("name").value(paramData.getName());
         if (paramData.getJavadoc() != null)
             writer.name("javadoc").value(paramData.getJavadoc());
+        if (paramData.getConstant() != null)
+            writer.name("constant").jsonValue(constantDataAdapter.toJsonValue(paramData.getConstant()));
+        writer.endObject();
+    }
+
+    @ToJson
+    void constantToJson(JsonWriter writer,
+                        MappingDataContainer.ConstantData constantData,
+                        JsonAdapter<MappingDataContainer.ConstantType> constantTypeAdapter,
+                        JsonAdapter<Collection<? extends MappingDataContainer.ConstantValueData>> valueDataAdapter) throws IOException {
+        writer.beginObject();
+
+        writer.name("type").value(constantTypeAdapter.toJson(constantData.getType()));
+        writer.name("values").jsonValue(valueDataAdapter.toJsonValue(constantData.getValues()));
+
+        writer.endObject();
+    }
+
+    @ToJson
+    void constantValueToJson(JsonWriter writer,
+                             MappingDataContainer.ConstantValueData constantValueData) throws IOException {
+        writer.beginObject();
+
+        writer.name("value").value(constantValueData.getValue());
+        writer.name("reference").value(constantValueData.getReference());
+
         writer.endObject();
     }
 
@@ -252,10 +283,12 @@ public class MDCMoshiAdapter {
 
     @FromJson
     MappingDataContainer.FieldData fieldFromJson(JsonReader reader,
-                                                 JsonAdapter<List<String>> stringListAdapter) throws IOException {
+                                                 JsonAdapter<List<String>> stringListAdapter,
+                                                 JsonAdapter<MappingDataContainer.ConstantData> constantDataAdapter) throws IOException {
         String name = null;
         String descriptor = null;
         List<String> javadoc = null;
+        MappingDataContainer.ConstantData constant = null;
 
         reader.beginObject();
         while (reader.hasNext()) {
@@ -270,6 +303,9 @@ public class MDCMoshiAdapter {
                 case "javadoc":
                     javadoc = stringListAdapter.fromJson(reader);
                     break;
+                case "constant":
+                    constant = constantDataAdapter.fromJson(reader);
+                    break;
                 default:
                     reader.skipName();
                     break;
@@ -281,7 +317,7 @@ public class MDCMoshiAdapter {
         if (descriptor == null) throw new IllegalArgumentException("Field descriptor must not be null");
         if (javadoc == null) javadoc = Collections.emptyList();
 
-        return new ImmutableMappingDataContainer.ImmutableFieldData(name, descriptor, javadoc);
+        return new ImmutableMappingDataContainer.ImmutableFieldData(name, descriptor, javadoc, constant);
     }
 
     @FromJson
@@ -325,11 +361,13 @@ public class MDCMoshiAdapter {
     }
 
     @FromJson
-    MappingDataContainer.ParameterData paramToJson(JsonReader reader) throws IOException {
+    MappingDataContainer.ParameterData paramFromJson(JsonReader reader,
+                                                     JsonAdapter<MappingDataContainer.ConstantData> constantDataAdapter) throws IOException {
 
         byte index = -1;
         String name = null;
         String javadoc = null;
+        MappingDataContainer.ConstantData constant = null;
 
         reader.beginObject();
         while (reader.hasNext()) {
@@ -344,6 +382,9 @@ public class MDCMoshiAdapter {
                 case "javadoc":
                     javadoc = reader.nextString();
                     break;
+                case "constant":
+                    constant = constantDataAdapter.fromJson(reader);
+                    break;
                 default:
                     reader.skipName();
                     break;
@@ -353,6 +394,64 @@ public class MDCMoshiAdapter {
 
         if (index < 0) throw new IllegalArgumentException("Parameter index must be present and positive");
 
-        return new ImmutableMappingDataContainer.ImmutableParameterData(index, name, javadoc);
+        return new ImmutableMappingDataContainer.ImmutableParameterData(index, name, javadoc, constant);
+    }
+
+    @FromJson
+    MappingDataContainer.ConstantData constantFromJson(JsonReader reader,
+                                                       JsonAdapter<MappingDataContainer.ConstantType> constantTypeAdapter,
+                                                       JsonAdapter<Collection<? extends MappingDataContainer.ConstantValueData>> constantValuesAdapter) throws IOException {
+        MappingDataContainer.ConstantType type = null;
+        Collection<? extends MappingDataContainer.ConstantValueData> values = null;
+
+        reader.beginObject();
+        while(reader.hasNext()) {
+            String propertyName = reader.nextName();
+            switch (propertyName) {
+                case "type":
+                    type = constantTypeAdapter.fromJson(reader);
+                    break;
+                case "values":
+                    values = constantValuesAdapter.fromJson(reader);
+                    break;
+                default:
+                    reader.skipName();
+                    break;
+            }
+        }
+        reader.endObject();
+
+        if (type == null) throw new IllegalArgumentException("Constant type must not be null");
+        if (values == null) values = Collections.emptyList();
+
+        return new ImmutableMappingDataContainer.ImmutableConstantData(type, new ArrayList<>(values));
+    }
+
+    @FromJson
+    MappingDataContainer.ConstantValueData constantValueFromJson(JsonReader reader) throws IOException {
+        Integer value = null;
+        String reference = null;
+
+        reader.beginObject();
+        while (reader.hasNext()) {
+            String propertyName = reader.nextName();
+            switch (propertyName) {
+                case "value":
+                    value = reader.nextInt();
+                    break;
+                case "reference":
+                    reference = reader.nextString();
+                    break;
+                default:
+                    reader.skipName();
+                    break;
+            }
+        }
+        reader.endObject();
+
+        if (value == null) throw new IllegalArgumentException("Constant value must not be null");
+        if (reference == null) throw new IllegalArgumentException("Constant reference must not be null");
+
+        return new ImmutableMappingDataContainer.ImmutableConstantValueData(value, reference);
     }
 }
