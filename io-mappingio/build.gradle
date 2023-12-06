@@ -6,6 +6,7 @@ dependencies {
     api libs.mappingio
     
     compileOnly libs.jetbrains.annotations
+    testCompileOnly libs.jetbrains.annotations
 
     testFixturesApi testFixtures(project(':feather'))
 }
