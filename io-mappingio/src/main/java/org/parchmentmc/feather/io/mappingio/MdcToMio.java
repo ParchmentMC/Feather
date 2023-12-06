@@ -17,6 +17,7 @@ public class MdcToMio {
      *
      * @param mdc The {@link MappingDataContainer} to read from.
      * @param srcNs The source namespace to use for the tree.
+     * @return The constructed {@link MappingTree}.
      * @throws IOException If an I/O error occurs.
      */
     public static MappingTree toTree(MappingDataContainer mdc, String srcNs) throws IOException {
@@ -29,6 +30,7 @@ public class MdcToMio {
      * Reads mapping data from a given {@link MappingDataContainer} and passes it to a {@link MappingVisitor} (on the source namespace).
      * 
      * @param mdc The {@link MappingDataContainer} to read from.
+     * @param visitor The {@link MappingVisitor} to pass the data to.
      * @param srcNs The source namespace to pass to the visitor.
      * @throws IOException If an I/O error occurs.
      */
