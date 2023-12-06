@@ -84,7 +84,7 @@ public class MioToMdc {
             if (lvIndex > Byte.MAX_VALUE) throw new IOException("Feather doesn't support lvIndices larger than " + Byte.MAX_VALUE);
             arg = mth.getOrCreateParameter((byte) lvIndex);
 
-            return false;
+            return true;
         }
 
         @Override
