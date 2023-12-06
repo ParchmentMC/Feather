@@ -10,4 +10,7 @@ dependencies {
 
     implementation project(':io-moshi')
     testImplementation testFixtures(project(':io-moshi'))
+
+    implementation project(':io-mappingio')
+    testImplementation testFixtures(project(':io-mappingio'))
 }
