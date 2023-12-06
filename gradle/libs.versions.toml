@@ -6,6 +6,8 @@ guava = '32.0.1-jre'
 # IO subproject dependencies
 gson = '2.10.1'
 moshi = '1.12.0' # Fixed to 1.12.0 because that's the last version written in Java
+mappingio = '0.5.1'
+jetbrains-annotations = '24.0.1'
 
 # Test engine
 junit = '5.9.3'
@@ -16,6 +18,8 @@ guava = { module = 'com.google.guava:guava', version.ref = 'guava' }
 
 gson = { module = 'com.google.code.gson:gson', version.ref = 'gson' }
 moshi = { module = 'com.squareup.moshi:moshi', version.ref = 'moshi' }
+mappingio = { module = 'net.fabricmc:mapping-io', version.ref = 'mappingio' }
+jetbrains-annotations = { module = 'org.jetbrains:annotations', version.ref = 'jetbrains-annotations' }
 
 junit-api = { module = 'org.junit.jupiter:junit-jupiter-api', version.ref = 'junit' }
 junit-engine = { module = 'org.junit.jupiter:junit-jupiter-engine', version.ref = 'junit' }
