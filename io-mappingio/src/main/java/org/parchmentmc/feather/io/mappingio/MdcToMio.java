@@ -66,6 +66,10 @@ public class MdcToMio {
                     for (MappingDataContainer.ParameterData arg : mth.getParameters()) {
                         if (!visitor.visitMethodArg(-1, arg.getIndex(), arg.getName())) continue;
                         if (!visitor.visitElementContent(MappedElementKind.METHOD_ARG)) continue;
+
+                        if (arg.getJavadoc() != null) {
+                            visitor.visitComment(MappedElementKind.METHOD_ARG, arg.getJavadoc());
+                        }
                     }
                 }
             }
